@@ -1,0 +1,106 @@
+[gd_scene load_steps=20 format=3 uid="uid://7u1t5lj73shm"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_vjs00"]
+[ext_resource type="SpriteFrames" uid="uid://ehb24hk0pp4f" path="res://earth.tres" id="2_xh3yj"]
+[ext_resource type="SpriteFrames" uid="uid://jg1sba203dy1" path="res://ring.tres" id="3_1e4n2"]
+[ext_resource type="PackedScene" uid="uid://bqyvvs4okav4v" path="res://wall.tscn" id="17_scrdm"]
+[ext_resource type="PackedScene" uid="uid://bvhan5hl443fw" path="res://shield.tscn" id="18_cfhbj"]
+[ext_resource type="Texture2D" uid="uid://clj250d2u8a68" path="res://resource/bluesuper.png" id="21_wmghm"]
+[ext_resource type="Texture2D" uid="uid://crnwhvpvvmd3s" path="res://resource/greensuper.png" id="22_c4qvy"]
+[ext_resource type="Texture2D" uid="uid://d2drycla3osa0" path="res://resource/greysuper.png" id="23_0xsao"]
+[ext_resource type="Texture2D" uid="uid://vurdteixnjop" path="res://resource/orangesuper.png" id="24_pvcx2"]
+[ext_resource type="Texture2D" uid="uid://dgbne8k6spx3t" path="res://resource/purplesuper.png" id="25_rb8ka"]
+[ext_resource type="Texture2D" uid="uid://dnektxcimryvg" path="res://resource/redsuper.png" id="26_rdlw3"]
+[ext_resource type="Texture2D" uid="uid://28thjnqii8h5" path="res://resource/whitesuper.png" id="27_yf6py"]
+[ext_resource type="Texture2D" uid="uid://dar3r7wywn6oi" path="res://resource/yellowsuper.png" id="28_uv0ok"]
+[ext_resource type="Script" path="res://background.gd" id="29_wwbn1"]
+[ext_resource type="PackedScene" uid="uid://b770gdo2mqi4w" path="res://ball.tscn" id="30_ffr3t"]
+[ext_resource type="PackedScene" uid="uid://cl6ach10yquj3" path="res://cloud.tscn" id="32_2sv23"]
+[ext_resource type="Texture2D" uid="uid://33kl7mlwjv6d" path="res://resource/background.png" id="32_jcwxu"]
+[ext_resource type="PackedScene" uid="uid://ps4caq2gwlh7" path="res://bullet.tscn" id="33_tp1ok"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lcr4u"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("21_wmghm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_c4qvy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_0xsao")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_pvcx2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_rb8ka")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_rdlw3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_yf6py")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_uv0ok")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_vjs00")
+
+[node name="EarthShieldSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(345, 393)
+sprite_frames = ExtResource("2_xh3yj")
+animation = &"earth"
+autoplay = "earth"
+frame_progress = 0.0524473
+
+[node name="RingBulletSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(282, 395)
+sprite_frames = ExtResource("3_1e4n2")
+animation = &"ring"
+autoplay = "ring"
+frame_progress = 0.432714
+
+[node name="SuperBulletSprites" type="AnimatedSprite2D" parent="."]
+position = Vector2(340, 286)
+sprite_frames = SubResource("SpriteFrames_lcr4u")
+autoplay = "default"
+
+[node name="Background" type="ParallaxBackground" parent="."]
+script = ExtResource("29_wwbn1")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="Background"]
+motion_mirroring = Vector2(2000, 2000)
+
+[node name="BGSprite" type="Sprite2D" parent="Background/ParallaxLayer"]
+texture = ExtResource("32_jcwxu")
+centered = false
+
+[node name="CloudContainer" type="Node2D" parent="."]
+
+[node name="BallContainer" type="Node2D" parent="."]
+
+[node name="BulletContainer" type="Node2D" parent="."]
+
+[node name="Ball" parent="." instance=ExtResource("30_ffr3t")]
+visible = false
+script = null
+
+[node name="Bullet" parent="." instance=ExtResource("33_tp1ok")]
+visible = false
+
+[node name="Cloud" parent="." instance=ExtResource("32_2sv23")]
+visible = false
+script = null
+
+[node name="Wall" parent="." instance=ExtResource("17_scrdm")]
+
+[node name="Shield" parent="." instance=ExtResource("18_cfhbj")]
+visible = false

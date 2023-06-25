@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://cl6ach10yquj3"]
+
+[ext_resource type="Texture2D" uid="uid://cn6wswk48mkr3" path="res://resource/Clouds.png" id="1_6nals"]
+[ext_resource type="Script" path="res://cloud.gd" id="2_2smlx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7a461"]
+atlas = ExtResource("1_6nals")
+region = Rect2(0, 0, 256, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3r7v1"]
+atlas = ExtResource("1_6nals")
+region = Rect2(0, 128, 256, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aw8km"]
+atlas = ExtResource("1_6nals")
+region = Rect2(0, 256, 256, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_javg0"]
+atlas = ExtResource("1_6nals")
+region = Rect2(0, 384, 256, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vhsvy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7a461")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3r7v1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aw8km")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_javg0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_idypp"]
+radius = 38.0
+height = 158.0
+
+[node name="Cloud" type="Area2D"]
+modulate = Color(1, 1, 1, 0.356863)
+z_index = 100
+script = ExtResource("2_2smlx")
+
+[node name="CloudSprites" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_vhsvy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.56899
+shape = SubResource("CapsuleShape2D_idypp")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+scale = Vector2(7.68, 3.76)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
