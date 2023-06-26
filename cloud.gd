@@ -1,6 +1,6 @@
 extends Area2D
 
-var speed_limit := 50
+var speed_limit :float = 50
 var velocity :Vector2
 
 

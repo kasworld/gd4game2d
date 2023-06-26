@@ -6,7 +6,7 @@ signal fire_bullet(c :int, p :Vector2, v :Vector2)
 signal ended(c :int)
 
 var team :int = -1
-var speed_limit := 200
+var speed_limit :float = 200
 var rotate_dir :float
 var velocity :Vector2
 var alive := true
@@ -18,7 +18,7 @@ func spawn(c :int, p :Vector2):
 	position = p
 	$TimerLife.wait_time = randf() * 300 +1
 	$TimerLife.start()
-	velocity =  random_vector2(speed_limit)
+	velocity =  random_vector2()*speed_limit
 	rotate_dir = randf_range(-5,5)
 
 func add_shield():
@@ -33,7 +33,7 @@ func _process(delta: float) -> void:
 		return
 	rotate(delta*rotate_dir)
 	if randf() > 0.9 :
-		emit_signal("fire_bullet",$ColorBallSprites.frame, position, random_vector2(300))
+		emit_signal("fire_bullet",$ColorBallSprites.frame, position, random_vector2())
 	if randf() > 0.95 :
 		add_shield()
 
@@ -50,8 +50,8 @@ func end():
 func _on_timer_life_timeout() -> void:
 	end()
 
-func random_vector2(l :float) ->Vector2:
-	return Vector2.ONE.rotated( randf() * 2 * PI ) * l
+func random_vector2() ->Vector2:
+	return Vector2.DOWN.rotated( randf() * 2 * PI )
 
 func line2normal(l ) -> Vector2:
 	return (l.b - l.a).orthogonal().normalized()
