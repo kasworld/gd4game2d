@@ -43,8 +43,8 @@ func ballStart():
 
 func add_shield():
 	var sh = shield_scene.instantiate()
-	sh.spawn($ColorBallSprites.frame)
 	add_child(sh)
+	sh.spawn($ColorBallSprites.frame)
 
 
 # Called when the node enters the scene tree for the first time.
