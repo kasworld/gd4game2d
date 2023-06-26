@@ -79,7 +79,7 @@ animations = [{
 
 [node name="Bullet" type="Area2D"]
 collision_layer = 2
-collision_mask = 191
+collision_mask = 63
 script = ExtResource("1_p3vqn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -90,4 +90,7 @@ sprite_frames = SubResource("SpriteFrames_jxnt7")
 
 [node name="TimerLife" type="Timer" parent="."]
 
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
 [connection signal="timeout" from="TimerLife" to="." method="_on_timer_life_timeout"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

@@ -26,9 +26,9 @@ func add_shield():
 
 func _process(delta: float) -> void:
 	rotate(delta*rotate_dir)
-	if randf() > 0.99 :
-		emit_signal("fire_bullet",$ColorBallSprites.frame, position + velocity/velocity.abs() * $CollisionShape2D.shape.radius*2 , velocity)
-	if randf() > 0.99 :
+	if randf() > 0.9 :
+		emit_signal("fire_bullet",$ColorBallSprites.frame, position, random_vector2(300))
+	if randf() > 0.95 :
 		add_shield()
 
 func _physics_process(delta: float) -> void:

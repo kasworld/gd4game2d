@@ -30,3 +30,6 @@ func _physics_process(delta: float) -> void:
 
 func _on_timer_life_timeout() -> void:
 	end()
+
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
+	end()
