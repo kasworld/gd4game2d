@@ -3,18 +3,19 @@ class_name Ball extends Area2D
 var shield_scene = preload("res://shield.tscn")
 
 signal fire_bullet(c :int, p :Vector2, v :Vector2)
-signal ended()
+signal ended(c :int)
 
 var team :int = -1
 var speed_limit := 200
 var rotate_dir :float
 var velocity :Vector2
+var alive := true
 
-func spawn(p :Vector2):
-	$ColorBallSprites.frame = randi_range(0,15)
+func spawn(c :int, p :Vector2):
+	$ColorBallSprites.frame = c
 	team = $ColorBallSprites.frame /2
 	position = p
-	$TimerLife.wait_time = randf() * 30 +1
+	$TimerLife.wait_time = randf() * 300 +1
 	$TimerLife.start()
 	velocity =  random_vector2(speed_limit)
 	rotate_dir = randf_range(-5,5)
@@ -35,9 +36,14 @@ func _physics_process(delta: float) -> void:
 	position += velocity * delta
 	velocity = velocity.limit_length(speed_limit)
 
+func end():
+	if alive:
+		alive = false
+		queue_free()
+		emit_signal("ended", $ColorBallSprites.frame)
+
 func _on_timer_life_timeout() -> void:
-	queue_free()
-	emit_signal("ended")
+	end()
 
 func random_vector2(l :float) ->Vector2:
 	return Vector2.ONE.rotated( randf() * 2 * PI ) * l
@@ -52,8 +58,11 @@ func _on_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, 
 		var nvt = line2normal(other_shape_node.shape)
 		velocity = velocity.bounce(nvt)
 	elif area is Ball:
-		pass
+		if area.team != team:
+			end()
 	elif area is Bullet:
-		pass
+		if area.team != team:
+			end()
 	elif area is Shield:
-		pass
+		if area.team != team:
+			end()

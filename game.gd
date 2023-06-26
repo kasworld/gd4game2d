@@ -13,12 +13,12 @@ func new_cloud():
 	clouds.append(nc)
 	$CloudContainer.add_child(nc)
 
-func new_ball():
+func new_ball(c:int):
 	var nb = ball_scene.instantiate()
 	$BallContainer.add_child(nb)
 	var vpsize = get_viewport_rect().size
-	var p = Vector2(randf_range(0,vpsize.x),randf_range(0,vpsize.y))
-	nb.spawn(p)
+	var p = Vector2(randf_range(10,vpsize.x-10),randf_range(10,vpsize.y-10))
+	nb.spawn(c,p)
 	nb.fire_bullet.connect(fire_bullet)
 	nb.ended.connect(new_ball)
 
@@ -30,8 +30,8 @@ func _ready():
 	for i in range(10):
 		new_cloud()
 
-	for i in range(10):
-		new_ball()
+	for c in range(16):
+		new_ball(c)
 
 func fire_bullet(c :int, p :Vector2, v :Vector2):
 	var bl = bullet_scene.instantiate()

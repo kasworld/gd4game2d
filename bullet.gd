@@ -6,6 +6,7 @@ var speed := 300
 var rotate_dir :float
 var team :int = -1
 var velocity :Vector2
+var alive := true
 
 func spawn(c :int,p :Vector2, v :Vector2)->void:
 	$AnimatedSprite2D.frame = c
@@ -18,8 +19,10 @@ func spawn(c :int,p :Vector2, v :Vector2)->void:
 
 
 func end():
-	emit_signal("ended")
-	queue_free()
+	if alive:
+		alive = false
+		emit_signal("ended")
+		queue_free()
 
 func _process(delta: float) -> void:
 	rotate(delta*rotate_dir)
@@ -33,3 +36,16 @@ func _on_timer_life_timeout() -> void:
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	end()
+
+
+func _on_area_entered(area: Area2D) -> void:
+	if area is Ball:
+		if area.team != team:
+			end()
+	elif area is Bullet:
+		if area.team != team:
+			end()
+	elif area is Shield:
+		if area.team != team:
+			end()
+
