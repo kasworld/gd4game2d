@@ -27,6 +27,10 @@ func add_shield():
 	sh.spawn($ColorBallSprites.frame)
 
 func _process(delta: float) -> void:
+	var vp = get_viewport_rect()
+	if not vp.has_point( position):
+		end()
+		return
 	rotate(delta*rotate_dir)
 	if randf() > 0.9 :
 		emit_signal("fire_bullet",$ColorBallSprites.frame, position, random_vector2(300))

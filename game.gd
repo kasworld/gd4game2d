@@ -30,7 +30,7 @@ func _ready():
 	for i in range(10):
 		new_cloud()
 
-	for c in range(16*4):
+	for c in range(16*2):
 		new_ball(c)
 
 func fire_bullet(c :int, p :Vector2, v :Vector2):

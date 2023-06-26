@@ -18,7 +18,6 @@ func spawn(c :int,p :Vector2, v :Vector2)->void:
 	$TimerLife.wait_time = 10
 	$TimerLife.start()
 
-
 func end():
 	if alive:
 		alive = false
@@ -37,7 +36,6 @@ func _on_timer_life_timeout() -> void:
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	end()
-
 
 func _on_area_entered(area: Area2D) -> void:
 	if area is Ball:

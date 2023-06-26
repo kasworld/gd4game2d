@@ -17,16 +17,12 @@ func end():
 		alive = false
 		queue_free()
 
-func _ready() -> void:
-	pass # Replace with function body.
-
 func _process(delta: float) -> void:
 	rotate(delta*rotate_dir)
 	position = position.rotated(delta*rotate_dir)
 
 func _on_timer_life_timeout() -> void:
 	end()
-
 
 func _on_area_entered(area: Area2D) -> void:
 	if area is Ball:
