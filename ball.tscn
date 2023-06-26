@@ -1,8 +1,6 @@
-[gd_scene load_steps=31 format=3 uid="uid://b770gdo2mqi4w"]
+[gd_scene load_steps=20 format=3 uid="uid://b770gdo2mqi4w"]
 
 [ext_resource type="Script" path="res://ball.gd" id="1_v147x"]
-[ext_resource type="SpriteFrames" uid="uid://d3a7u3b3bj4yi" path="res://spawn_ball.tres" id="4_rcowe"]
-[ext_resource type="Texture2D" uid="uid://6fwshaq24pmp" path="res://resource/explo1e.png" id="5_men4n"]
 [ext_resource type="Texture2D" uid="uid://y7v21l1peg8w" path="res://resource/blueball1.png" id="6_ap7o0"]
 [ext_resource type="Texture2D" uid="uid://1smb0qe1etyw" path="res://resource/blueball.png" id="7_nomor"]
 [ext_resource type="Texture2D" uid="uid://d24f6y6e624xk" path="res://resource/greenball1.png" id="8_rh7f1"]
@@ -22,70 +20,6 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y6oq3"]
 radius = 16.1245
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_quyq6"]
-atlas = ExtResource("5_men4n")
-region = Rect2(0, 0, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vt541"]
-atlas = ExtResource("5_men4n")
-region = Rect2(48, 0, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tw85k"]
-atlas = ExtResource("5_men4n")
-region = Rect2(96, 0, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fdppp"]
-atlas = ExtResource("5_men4n")
-region = Rect2(144, 0, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_k87rc"]
-atlas = ExtResource("5_men4n")
-region = Rect2(192, 0, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6exya"]
-atlas = ExtResource("5_men4n")
-region = Rect2(240, 0, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6x68v"]
-atlas = ExtResource("5_men4n")
-region = Rect2(288, 0, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_suvau"]
-atlas = ExtResource("5_men4n")
-region = Rect2(336, 0, 48, 48)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_dynan"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_quyq6")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vt541")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tw85k")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fdppp")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_k87rc")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6exya")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6x68v")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_suvau")
-}],
-"loop": false,
-"name": &"default",
-"speed": 5.0
-}]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_nokl4"]
 animations = [{
@@ -156,27 +90,10 @@ metadata/_edit_group_ = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_y6oq3")
 
-[node name="SpawnSprite" type="AnimatedSprite2D" parent="."]
-visible = false
-scale = Vector2(0.5, 0.5)
-sprite_frames = ExtResource("4_rcowe")
-frame = 5
-speed_scale = 2.0
-
-[node name="ExplodeSprite" type="AnimatedSprite2D" parent="."]
-visible = false
-sprite_frames = SubResource("SpriteFrames_dynan")
-frame = 5
-frame_progress = 0.471056
-speed_scale = 2.0
-
 [node name="TimerLife" type="Timer" parent="."]
 one_shot = true
 
 [node name="ColorBallSprites" type="AnimatedSprite2D" parent="."]
-visible = false
 sprite_frames = SubResource("SpriteFrames_nokl4")
 
-[connection signal="animation_finished" from="SpawnSprite" to="." method="_on_ball_spawn_sprite_animation_finished"]
-[connection signal="animation_finished" from="ExplodeSprite" to="." method="_on_ball_explode_sprite_animation_finished"]
 [connection signal="timeout" from="TimerLife" to="." method="_on_timer_life_timeout"]

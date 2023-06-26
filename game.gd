@@ -16,6 +16,9 @@ func new_cloud():
 func new_ball():
 	var nb = ball_scene.instantiate()
 	$BallContainer.add_child(nb)
+	var vpsize = get_viewport_rect().size
+	var p = Vector2(randf_range(0,vpsize.x),randf_range(0,vpsize.y))
+	nb.spawn(p)
 	nb.fire_bullet.connect(fire_bullet)
 	nb.ended.connect(new_ball)
 
