@@ -9,6 +9,7 @@ var velocity :Vector2
 var alive := true
 
 func spawn(c :int,p :Vector2, v :Vector2)->void:
+	c = c % 16
 	$AnimatedSprite2D.frame = c
 	team = $AnimatedSprite2D.frame /2
 	position = p

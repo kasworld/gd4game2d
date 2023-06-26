@@ -5,6 +5,7 @@ var team :int = -1
 var alive := true
 
 func spawn(c :int):
+	c = c % 16
 	$AnimatedSprite2D.frame = c
 	team = $AnimatedSprite2D.frame /2
 	rotate_dir = randf_range(-5,5)

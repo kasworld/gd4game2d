@@ -12,6 +12,7 @@ var velocity :Vector2
 var alive := true
 
 func spawn(c :int, p :Vector2):
+	c = c % 16
 	$ColorBallSprites.frame = c
 	team = $ColorBallSprites.frame /2
 	position = p
