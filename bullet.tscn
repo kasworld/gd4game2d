@@ -77,7 +77,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Bullet" type="CharacterBody2D"]
+[node name="Bullet" type="Area2D"]
 collision_layer = 2
 collision_mask = 191
 script = ExtResource("1_p3vqn")
@@ -90,5 +90,4 @@ sprite_frames = SubResource("SpriteFrames_jxnt7")
 
 [node name="TimerLife" type="Timer" parent="."]
 
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="timeout" from="TimerLife" to="." method="_on_timer_life_timeout"]

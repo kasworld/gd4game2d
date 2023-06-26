@@ -1,10 +1,11 @@
-extends CharacterBody2D
+class_name Bullet extends Area2D
 
 signal ended()
 
-var speed := 10
+var speed := 300
 var rotate_dir :float
 var team :int = -1
+var velocity :Vector2
 
 func spawn(c :int,p :Vector2, v :Vector2)->void:
 	$AnimatedSprite2D.frame = c
@@ -24,9 +25,8 @@ func _process(delta: float) -> void:
 	rotate(delta*rotate_dir)
 
 func _physics_process(delta: float) -> void:
-	var collision_info = move_and_collide(velocity)
-	if collision_info:
-		end()
+	position += velocity * delta
+	velocity = velocity.limit_length(speed)
 
 func _on_timer_life_timeout() -> void:
 	end()

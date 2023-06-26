@@ -77,15 +77,9 @@ animations = [{
 "speed": 1.0
 }]
 
-[node name="Ball" type="CharacterBody2D"]
+[node name="Ball" type="Area2D"]
 collision_mask = 191
-motion_mode = 1
-wall_min_slide_angle = 0.0
-platform_on_leave = 2
-platform_floor_layers = 4294901760
-platform_wall_layers = 128
 script = ExtResource("1_v147x")
-metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_y6oq3")
@@ -96,4 +90,5 @@ one_shot = true
 [node name="ColorBallSprites" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_nokl4")
 
+[connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
 [connection signal="timeout" from="TimerLife" to="." method="_on_timer_life_timeout"]

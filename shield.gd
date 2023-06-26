@@ -1,4 +1,4 @@
-extends Area2D
+class_name Shield extends Area2D
 
 var rotate_dir :float
 var team :int = -1
