@@ -29,8 +29,11 @@ func add_shield():
 func _process(delta: float) -> void:
 	var vp = get_viewport_rect()
 	if not vp.has_point( position):
-		end()
-		return
+		print("invalid ball pos ", position)
+		var r = $CollisionShape2D.shape.radius
+		var clampvt = Vector2(r*3,r*3)
+		position = position.clamp(vp.position + clampvt, vp.end - clampvt)
+		print("new ball pos ", position)
 	rotate(delta*rotate_dir)
 	if randf() > 0.9 :
 		emit_signal("fire_bullet",$ColorBallSprites.frame, position, random_vector2())
@@ -44,8 +47,8 @@ func _physics_process(delta: float) -> void:
 func end():
 	if alive:
 		alive = false
-		queue_free()
 		emit_signal("ended", $ColorBallSprites.frame)
+		queue_free()
 
 func _on_timer_life_timeout() -> void:
 	end()
@@ -71,3 +74,4 @@ func _on_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, 
 	elif area is Shield:
 		if area.team != team:
 			end()
+

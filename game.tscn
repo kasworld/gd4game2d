@@ -30,14 +30,12 @@ centered = false
 
 [node name="Ball" parent="." instance=ExtResource("30_ffr3t")]
 visible = false
-script = null
 
 [node name="Bullet" parent="." instance=ExtResource("33_tp1ok")]
 visible = false
 
 [node name="Cloud" parent="." instance=ExtResource("32_2sv23")]
 visible = false
-script = null
 
 [node name="Wall" parent="." instance=ExtResource("17_scrdm")]
 

@@ -14,6 +14,9 @@ func new_cloud():
 	$CloudContainer.add_child(nc)
 
 func new_ball(c:int):
+	call_deferred("new_ball_defered",c)
+
+func new_ball_defered(c:int):
 	var nb = ball_scene.instantiate()
 	$BallContainer.add_child(nb)
 	var vpsize = get_viewport_rect().size
@@ -22,8 +25,6 @@ func new_ball(c:int):
 	nb.fire_bullet.connect(fire_bullet)
 	nb.ended.connect(new_ball)
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
 
