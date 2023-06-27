@@ -12,6 +12,7 @@ var velocity :Vector2
 func spawn(c :int,p :Vector2, bl :Ball)->void:
 	c = c % 16
 	team = c / 2
+	$AnimatedSprite2D.frame = c / 2
 	dest_ball = bl
 	dest_ball.ended.connect(end)
 	position = p
@@ -19,7 +20,6 @@ func spawn(c :int,p :Vector2, bl :Ball)->void:
 	$TimerLife.wait_time = 10
 	$TimerLife.start()
 	velocity = (dest_ball.position - position).normalized() * speed
-
 
 func end():
 	if alive:
