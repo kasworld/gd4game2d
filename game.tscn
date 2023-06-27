@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://7u1t5lj73shm"]
+[gd_scene load_steps=10 format=3 uid="uid://7u1t5lj73shm"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_vjs00"]
+[ext_resource type="PackedScene" uid="uid://b183gwkmqcfc4" path="res://ball_spawn_sprite.tscn" id="9_d7xkt"]
 [ext_resource type="PackedScene" uid="uid://bqyvvs4okav4v" path="res://wall.tscn" id="17_scrdm"]
 [ext_resource type="PackedScene" uid="uid://bvhan5hl443fw" path="res://shield.tscn" id="18_cfhbj"]
 [ext_resource type="Script" path="res://background.gd" id="29_wwbn1"]
@@ -40,4 +41,7 @@ visible = false
 [node name="Wall" parent="." instance=ExtResource("17_scrdm")]
 
 [node name="Shield" parent="." instance=ExtResource("18_cfhbj")]
+visible = false
+
+[node name="BallSpawnSprite" parent="." instance=ExtResource("9_d7xkt")]
 visible = false
