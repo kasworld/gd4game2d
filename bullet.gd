@@ -1,6 +1,6 @@
 class_name Bullet extends Area2D
 
-signal ended()
+signal ended(p :Vector2)
 
 var speed :float = 300.0
 var rotate_dir :float
@@ -21,7 +21,7 @@ func spawn(c :int,p :Vector2, v :Vector2)->void:
 func end():
 	if alive:
 		alive = false
-		emit_signal("ended")
+		emit_signal("ended",position)
 		queue_free()
 
 func _process(delta: float) -> void:

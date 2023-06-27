@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfa1niklea7dd"]
+
+[ext_resource type="SpriteFrames" uid="uid://brn2ppgvodgej" path="res://explode_bullet.tres" id="1_vxfeo"]
+[ext_resource type="Script" path="res://bullet_explode_effect.gd" id="2_c4xs1"]
+
+[node name="BulletExplodeEffect" type="AnimatedSprite2D"]
+sprite_frames = ExtResource("1_vxfeo")
+speed_scale = 4.0
+script = ExtResource("2_c4xs1")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

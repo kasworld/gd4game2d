@@ -6,7 +6,7 @@ var cloud_scene = preload("res://cloud.tscn")
 var bullet_scene = preload("res://bullet.tscn")
 var ball_spawn_sprite = preload("res://ball_spawn_sprite.tscn")
 var ball_explode_sprite = preload("res://ball_explode_effect.tscn")
-
+var bullet_explode_sprite = preload("res://bullet_explode_effect.tscn")
 
 func new_cloud():
 	var nc = cloud_scene.instantiate()
@@ -49,4 +49,10 @@ func ball_explode_effect(c:int, p :Vector2):
 func fire_bullet(c :int, p :Vector2, v :Vector2):
 	var bl = bullet_scene.instantiate()
 	$BulletContainer.add_child(bl)
+	bl.ended.connect(bullet_explode_effect)
 	bl.spawn(c,p,v)
+
+func bullet_explode_effect(p :Vector2):
+	var bee = bullet_explode_sprite.instantiate()
+	$EffectContainer.add_child(bee)
+	bee.spawn(p)

@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://7u1t5lj73shm"]
+[gd_scene load_steps=12 format=3 uid="uid://7u1t5lj73shm"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_vjs00"]
 [ext_resource type="PackedScene" uid="uid://b183gwkmqcfc4" path="res://ball_spawn_sprite.tscn" id="9_d7xkt"]
 [ext_resource type="PackedScene" uid="uid://bu7kn0mcn45o7" path="res://ball_explode_effect.tscn" id="10_jojaq"]
+[ext_resource type="PackedScene" uid="uid://dfa1niklea7dd" path="res://bullet_explode_effect.tscn" id="11_0jpu0"]
 [ext_resource type="PackedScene" uid="uid://bqyvvs4okav4v" path="res://wall.tscn" id="17_scrdm"]
 [ext_resource type="PackedScene" uid="uid://bvhan5hl443fw" path="res://shield.tscn" id="18_cfhbj"]
 [ext_resource type="Script" path="res://background.gd" id="29_wwbn1"]
@@ -51,3 +52,5 @@ visible = false
 
 [node name="BallExplodeEffect" parent="." instance=ExtResource("10_jojaq")]
 visible = false
+
+[node name="BulletExplodeEffect" parent="." instance=ExtResource("11_0jpu0")]
