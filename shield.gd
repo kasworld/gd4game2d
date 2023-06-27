@@ -16,7 +16,7 @@ func spawn(t :Team.Type):
 func end():
 	if alive:
 		alive = false
-		emit_signal("ended", position)
+		emit_signal("ended", global_position)
 		queue_free()
 
 func _process(delta: float) -> void:
