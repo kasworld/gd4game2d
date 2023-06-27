@@ -3,7 +3,7 @@ class_name Ball extends Area2D
 var shield_scene = preload("res://shield.tscn")
 
 signal fire_bullet(t :Team.Type, p :Vector2, v :Vector2)
-signal fire_homming(t :Team.Type, p :Vector2, dest :Ball)
+signal fire_homming(me :Ball, dest :Ball)
 signal shield_ended(p :Vector2)
 signal ended(t :Team.Type, p :Vector2)
 
@@ -46,7 +46,7 @@ func _process(delta: float) -> void:
 	if randf() > 0.9 :
 		emit_signal("fire_bullet",team, position, random_vector2())
 	if randf() > 0.99 :
-		emit_signal("fire_homming",team, position, null)
+		emit_signal("fire_homming",self, null)
 	if randf() > 0.95 :
 		add_shield()
 

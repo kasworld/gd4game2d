@@ -63,12 +63,21 @@ func get_random_ball()->Ball:
 	var ball_list = $BallContainer.get_children()
 	return ball_list.pick_random()
 
-func fire_homming(t :Team.Type, p :Vector2, dst :Ball):
-	dst = get_random_ball()
+func fire_homming(me :Ball, dst :Ball):
+#	var dst :Ball
+	var try = 10
+	while try > 0 :
+		dst = get_random_ball()
+		if dst != me:
+			break
+		try -= 1
+	if dst == me:
+		print("no homming target ", me)
+		return
 	var hbl = homming_bullet_scene.instantiate()
 	$BulletContainer.add_child(hbl)
 	hbl.ended.connect(bullet_explode_effect)
-	hbl.spawn(t,p,dst)
+	hbl.spawn(me.team,me.position,dst)
 
 func bullet_explode_effect(p :Vector2):
 	var bee = bullet_explode_sprite.instantiate()
