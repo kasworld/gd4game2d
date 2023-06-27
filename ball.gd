@@ -46,7 +46,7 @@ func _process(delta: float) -> void:
 	if randf() > 0.9 :
 		emit_signal("fire_bullet",team, position, random_vector2())
 	if randf() > 0.99 :
-		emit_signal("fire_homming",team, position, self)
+		emit_signal("fire_homming",team, position, null)
 	if randf() > 0.95 :
 		add_shield()
 

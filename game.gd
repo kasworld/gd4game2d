@@ -24,7 +24,7 @@ func _ready():
 	for i in range(10):
 		new_cloud()
 
-	for t in range(16*1):
+	for t in range(Team.Type.LEN):
 		ball_spawn_effect(t % Team.Type.LEN)
 
 func ball_spawn_effect(t :Team.Type):
