@@ -3,6 +3,7 @@ class_name Ball extends Area2D
 var shield_scene = preload("res://shield.tscn")
 
 signal fire_bullet(c :int, p :Vector2, v :Vector2)
+signal fire_homming(c :int, p :Vector2, dest :Ball)
 signal ended(c :int, p :Vector2)
 
 var team :int = -1
@@ -17,7 +18,7 @@ func get_radius()->float:
 func spawn(c :int, p :Vector2):
 	c = c % 16
 	$ColorBallSprites.frame = c
-	team = $ColorBallSprites.frame /2
+	team = c / 2
 	position = p
 	$TimerLife.wait_time = randf() * 300 +1
 	$TimerLife.start()
@@ -40,6 +41,8 @@ func _process(delta: float) -> void:
 	rotate(delta*rotate_dir)
 	if randf() > 0.9 :
 		emit_signal("fire_bullet",$ColorBallSprites.frame, position, random_vector2())
+	if randf() > 0.99 :
+		emit_signal("fire_homming",$ColorBallSprites.frame, position, self)
 	if randf() > 0.95 :
 		add_shield()
 
@@ -75,6 +78,9 @@ func _on_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, 
 		if area.team != team:
 			end()
 	elif area is Shield:
+		if area.team != team:
+			end()
+	elif area is HommingBullet:
 		if area.team != team:
 			end()
 

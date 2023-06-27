@@ -1,26 +1,30 @@
 extends Node2D
 
-
 var ball_scene = preload("res://ball.tscn")
-var cloud_scene = preload("res://cloud.tscn")
-var bullet_scene = preload("res://bullet.tscn")
 var ball_spawn_sprite = preload("res://ball_spawn_sprite.tscn")
 var ball_explode_sprite = preload("res://ball_explode_effect.tscn")
+
+var bullet_scene = preload("res://bullet.tscn")
 var bullet_explode_sprite = preload("res://bullet_explode_effect.tscn")
+
+var homming_bullet_scene = preload("res://homming_bullet.tscn")
+
+var cloud_scene = preload("res://cloud.tscn")
 
 func new_cloud():
 	var nc = cloud_scene.instantiate()
 	nc.visible = true
 	$CloudContainer.add_child(nc)
-var ball_radius :float
+
+@onready var ball_radius :float = $Ball.get_radius()
+
 func _ready():
 	randomize()
-	ball_radius = $Ball.get_radius()
 
 	for i in range(10):
 		new_cloud()
 
-	for c in range(16*2):
+	for c in range(16*1):
 		ball_spawn_effect(c)
 
 func ball_spawn_effect(c:int):
@@ -38,6 +42,7 @@ func new_ball_defered(c:int, p :Vector2):
 	var nb = ball_scene.instantiate()
 	$BallContainer.add_child(nb)
 	nb.fire_bullet.connect(fire_bullet)
+	nb.fire_homming.connect(fire_homming)
 	nb.ended.connect(ball_explode_effect)
 	nb.spawn(c,p)
 
@@ -52,6 +57,17 @@ func fire_bullet(c :int, p :Vector2, v :Vector2):
 	$BulletContainer.add_child(bl)
 	bl.ended.connect(bullet_explode_effect)
 	bl.spawn(c,p,v)
+
+func get_random_ball()->Ball:
+	var ball_list = $BallContainer.get_children()
+	return ball_list.pick_random()
+
+func fire_homming(c :int, p :Vector2, dst :Ball):
+	dst = get_random_ball()
+	var hbl = homming_bullet_scene.instantiate()
+	$BulletContainer.add_child(hbl)
+	hbl.ended.connect(bullet_explode_effect)
+	hbl.spawn(c,p,dst)
 
 func bullet_explode_effect(p :Vector2):
 	var bee = bullet_explode_sprite.instantiate()

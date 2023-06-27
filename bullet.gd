@@ -11,7 +11,7 @@ var alive := true
 func spawn(c :int,p :Vector2, v :Vector2)->void:
 	c = c % 16
 	$AnimatedSprite2D.frame = c
-	team = $AnimatedSprite2D.frame /2
+	team = c / 2
 	position = p
 	velocity = v.normalized() * speed
 	rotate_dir = randf_range(-5,5)
@@ -45,6 +45,9 @@ func _on_area_entered(area: Area2D) -> void:
 		if area.team != team:
 			end()
 	elif area is Shield:
+		if area.team != team:
+			end()
+	elif area is HommingBullet:
 		if area.team != team:
 			end()
 

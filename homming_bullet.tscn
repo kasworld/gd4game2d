@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://cwrcrvtx8kfca"]
+
+[ext_resource type="Script" path="res://homming_bullet.gd" id="1_lgavg"]
+[ext_resource type="SpriteFrames" uid="uid://jg1sba203dy1" path="res://ring.tres" id="1_txech"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6uydk"]
+radius = 15.1327
+
+[node name="HommingBullet" type="Area2D"]
+collision_layer = 8
+collision_mask = 61
+script = ExtResource("1_lgavg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_6uydk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("1_txech")
+animation = &"ring"
+
+[node name="TimerLife" type="Timer" parent="."]
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="timeout" from="TimerLife" to="." method="_on_timer_timeout"]

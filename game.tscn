@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://7u1t5lj73shm"]
+[gd_scene load_steps=13 format=3 uid="uid://7u1t5lj73shm"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_vjs00"]
+[ext_resource type="PackedScene" uid="uid://cwrcrvtx8kfca" path="res://homming_bullet.tscn" id="6_1xhs3"]
 [ext_resource type="PackedScene" uid="uid://b183gwkmqcfc4" path="res://ball_spawn_sprite.tscn" id="9_d7xkt"]
 [ext_resource type="PackedScene" uid="uid://bu7kn0mcn45o7" path="res://ball_explode_effect.tscn" id="10_jojaq"]
 [ext_resource type="PackedScene" uid="uid://dfa1niklea7dd" path="res://bullet_explode_effect.tscn" id="11_0jpu0"]
@@ -39,13 +40,16 @@ visible = false
 [node name="Bullet" parent="." instance=ExtResource("33_tp1ok")]
 visible = false
 
+[node name="HommingBullet" parent="." instance=ExtResource("6_1xhs3")]
+visible = false
+
+[node name="Shield" parent="." instance=ExtResource("18_cfhbj")]
+visible = false
+
 [node name="Cloud" parent="." instance=ExtResource("32_2sv23")]
 visible = false
 
 [node name="Wall" parent="." instance=ExtResource("17_scrdm")]
-
-[node name="Shield" parent="." instance=ExtResource("18_cfhbj")]
-visible = false
 
 [node name="BallSpawnSprite" parent="." instance=ExtResource("9_d7xkt")]
 visible = false
