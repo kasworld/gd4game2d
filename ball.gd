@@ -4,6 +4,7 @@ var shield_scene = preload("res://shield.tscn")
 
 signal fire_bullet(c :int, p :Vector2, v :Vector2)
 signal fire_homming(c :int, p :Vector2, dest :Ball)
+signal shield_ended(p :Vector2)
 signal ended(c :int, p :Vector2)
 
 var team :int = -1
@@ -28,7 +29,11 @@ func spawn(c :int, p :Vector2):
 func add_shield():
 	var sh = shield_scene.instantiate()
 	add_child(sh)
+	sh.ended.connect(shield_end)
 	sh.spawn($ColorBallSprites.frame)
+
+func shield_end(p :Vector2):
+	emit_signal("shield_ended",p)
 
 func _process(delta: float) -> void:
 	var vp = get_viewport_rect()
@@ -53,6 +58,10 @@ func _physics_process(delta: float) -> void:
 func end():
 	if alive:
 		alive = false
+#		var shield_list = get_children()
+#		for o in shield_list:
+#			if o is Shield:
+#				shield_end(o.position)
 		emit_signal("ended", $ColorBallSprites.frame, position)
 		queue_free()
 

@@ -43,6 +43,7 @@ func new_ball_defered(c:int, p :Vector2):
 	$BallContainer.add_child(nb)
 	nb.fire_bullet.connect(fire_bullet)
 	nb.fire_homming.connect(fire_homming)
+	nb.shield_ended.connect(bullet_explode_effect)
 	nb.ended.connect(ball_explode_effect)
 	nb.spawn(c,p)
 
