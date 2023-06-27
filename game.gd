@@ -24,6 +24,7 @@ func _ready():
 	for i in range(10):
 		new_cloud()
 
+#	for t in range(2):
 	for t in range(Team.Type.LEN):
 		ball_spawn_effect(t % Team.Type.LEN)
 
@@ -54,30 +55,35 @@ func ball_explode_effect(t :Team.Type, p :Vector2):
 	bee.spawn(t,p)
 
 func fire_bullet(t :Team.Type, p :Vector2, v :Vector2):
+	var dst = find_other_team_ball(t)
+	if dst.team == t:
+		return
+	v = dst.position - p
 	var bl = bullet_scene.instantiate()
 	$BulletContainer.add_child(bl)
 	bl.ended.connect(bullet_explode_effect)
 	bl.spawn(t,p,v)
 
-func get_random_ball()->Ball:
+func find_other_team_ball(t :Team.Type)->Ball:
 	var ball_list = $BallContainer.get_children()
-	return ball_list.pick_random()
-
-func fire_homming(me :Ball, dst :Ball):
-#	var dst :Ball
+	var dst :Ball
 	var try = 10
 	while try > 0 :
-		dst = get_random_ball()
-		if dst != me:
+		dst = ball_list.pick_random()
+		if dst.team != t:
 			break
 		try -= 1
-	if dst == me:
-		print("no homming target ", me)
+	return dst
+
+func fire_homming(t :Team.Type, p :Vector2, dst :Ball):
+#	var dst :Ball
+	dst = find_other_team_ball(t)
+	if dst.team == t: # no team kill
 		return
 	var hbl = homming_bullet_scene.instantiate()
 	$BulletContainer.add_child(hbl)
 	hbl.ended.connect(bullet_explode_effect)
-	hbl.spawn(me.team,me.position,dst)
+	hbl.spawn(t,p,dst)
 
 func bullet_explode_effect(p :Vector2):
 	var bee = bullet_explode_sprite.instantiate()
