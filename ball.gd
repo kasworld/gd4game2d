@@ -11,6 +11,9 @@ var rotate_dir :float
 var velocity :Vector2
 var alive := true
 
+func get_radius()->float:
+	return $CollisionShape2D.shape.radius
+
 func spawn(c :int, p :Vector2):
 	c = c % 16
 	$ColorBallSprites.frame = c
@@ -30,7 +33,7 @@ func _process(delta: float) -> void:
 	var vp = get_viewport_rect()
 	if not vp.has_point( position):
 		print("invalid ball pos ", position)
-		var r = $CollisionShape2D.shape.radius
+		var r = get_radius()
 		var clampvt = Vector2(r*3,r*3)
 		position = position.clamp(vp.position + clampvt, vp.end - clampvt)
 		print("new ball pos ", position)

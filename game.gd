@@ -12,9 +12,10 @@ func new_cloud():
 	var nc = cloud_scene.instantiate()
 	nc.visible = true
 	$CloudContainer.add_child(nc)
-
+var ball_radius :float
 func _ready():
 	randomize()
+	ball_radius = $Ball.get_radius()
 
 	for i in range(10):
 		new_cloud()
@@ -24,7 +25,7 @@ func _ready():
 
 func ball_spawn_effect(c:int):
 	var vpsize = get_viewport_rect().size
-	var p = Vector2(randf_range(10,vpsize.x-10),randf_range(10,vpsize.y-10))
+	var p = Vector2(randf_range(ball_radius*3,vpsize.x-ball_radius*3),randf_range(ball_radius*3,vpsize.y-ball_radius*3))
 	var bse = ball_spawn_sprite.instantiate()
 	$EffectContainer.add_child(bse)
 	bse.ended.connect(new_ball)

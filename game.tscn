@@ -54,3 +54,4 @@ visible = false
 visible = false
 
 [node name="BulletExplodeEffect" parent="." instance=ExtResource("11_0jpu0")]
+visible = false
