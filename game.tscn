@@ -1,17 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://7u1t5lj73shm"]
+[gd_scene load_steps=5 format=3 uid="uid://7u1t5lj73shm"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_vjs00"]
-[ext_resource type="PackedScene" uid="uid://cwrcrvtx8kfca" path="res://homming_bullet.tscn" id="6_1xhs3"]
-[ext_resource type="PackedScene" uid="uid://b183gwkmqcfc4" path="res://ball_spawn_sprite.tscn" id="9_d7xkt"]
-[ext_resource type="PackedScene" uid="uid://bu7kn0mcn45o7" path="res://ball_explode_effect.tscn" id="10_jojaq"]
-[ext_resource type="PackedScene" uid="uid://dfa1niklea7dd" path="res://bullet_explode_effect.tscn" id="11_0jpu0"]
 [ext_resource type="PackedScene" uid="uid://bqyvvs4okav4v" path="res://wall.tscn" id="17_scrdm"]
-[ext_resource type="PackedScene" uid="uid://bvhan5hl443fw" path="res://shield.tscn" id="18_cfhbj"]
 [ext_resource type="Script" path="res://background.gd" id="29_wwbn1"]
-[ext_resource type="PackedScene" uid="uid://b770gdo2mqi4w" path="res://ball.tscn" id="30_ffr3t"]
-[ext_resource type="PackedScene" uid="uid://cl6ach10yquj3" path="res://cloud.tscn" id="32_2sv23"]
 [ext_resource type="Texture2D" uid="uid://33kl7mlwjv6d" path="res://resource/background.png" id="32_jcwxu"]
-[ext_resource type="PackedScene" uid="uid://ps4caq2gwlh7" path="res://bullet.tscn" id="33_tp1ok"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_vjs00")
@@ -34,28 +26,4 @@ centered = false
 
 [node name="EffectContainer" type="Node2D" parent="."]
 
-[node name="Ball" parent="." instance=ExtResource("30_ffr3t")]
-visible = false
-
-[node name="Bullet" parent="." instance=ExtResource("33_tp1ok")]
-visible = false
-
-[node name="HommingBullet" parent="." instance=ExtResource("6_1xhs3")]
-visible = false
-
-[node name="Shield" parent="." instance=ExtResource("18_cfhbj")]
-visible = false
-
-[node name="Cloud" parent="." instance=ExtResource("32_2sv23")]
-visible = false
-
 [node name="Wall" parent="." instance=ExtResource("17_scrdm")]
-
-[node name="BallSpawnSprite" parent="." instance=ExtResource("9_d7xkt")]
-visible = false
-
-[node name="BallExplodeEffect" parent="." instance=ExtResource("10_jojaq")]
-visible = false
-
-[node name="BulletExplodeEffect" parent="." instance=ExtResource("11_0jpu0")]
-visible = false

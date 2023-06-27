@@ -16,7 +16,7 @@ func new_cloud():
 	nc.visible = true
 	$CloudContainer.add_child(nc)
 
-@onready var ball_radius :float = $Ball.get_radius()
+@onready var ball_radius :float = ball_scene.instantiate().get_radius()
 
 func _ready():
 	randomize()
