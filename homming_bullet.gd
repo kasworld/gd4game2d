@@ -2,14 +2,15 @@ class_name HommingBullet extends Area2D
 
 signal ended(p :Vector2)
 
-var speed_limit :float = 200
+var speed_limit :float = 300
 var speed :float
 var rotate_dir :float
 var team :Team.Type = Team.Type.NONE
 var alive := true
 var dest_ball :Ball
 var velocity :Vector2
-var dest_pos :Vector2
+var dest_pos :Array[Vector2]
+var dest_pos_len = 10
 
 func spawn(t :Team.Type, p :Vector2, bl :Ball)->void:
 	team = t
@@ -21,6 +22,8 @@ func spawn(t :Team.Type, p :Vector2, bl :Ball)->void:
 	speed = randf_range(speed_limit/2, speed_limit)
 	$TimerLife.wait_time = 10
 	$TimerLife.start()
+	for i in range(dest_pos_len):
+		dest_pos.push_back(dest_ball.position)
 	update_velocity()
 
 func dest_ball_end(_t :Team.Type, _p :Vector2):
@@ -28,8 +31,10 @@ func dest_ball_end(_t :Team.Type, _p :Vector2):
 
 func update_velocity():
 	if dest_ball != null:
-		velocity = (dest_pos - position).normalized() * speed
-		dest_pos = dest_ball.position
+		var dp = dest_pos.pop_front()
+		velocity += (dp - position).normalized() * speed
+		velocity = velocity.limit_length(speed)
+		dest_pos.push_back(dest_ball.position)
 
 func end():
 	if alive:
