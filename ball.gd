@@ -3,7 +3,7 @@ class_name Ball extends Area2D
 var shield_scene = preload("res://shield.tscn")
 
 signal fire_bullet(c :int, p :Vector2, v :Vector2)
-signal ended(c :int)
+signal ended(c :int, p :Vector2)
 
 var team :int = -1
 var speed_limit :float = 200
@@ -47,7 +47,7 @@ func _physics_process(delta: float) -> void:
 func end():
 	if alive:
 		alive = false
-		emit_signal("ended", $ColorBallSprites.frame)
+		emit_signal("ended", $ColorBallSprites.frame, position)
 		queue_free()
 
 func _on_timer_life_timeout() -> void:
