@@ -4,15 +4,14 @@ signal ended(p :Vector2)
 
 var speed :float = 150.0
 var rotate_dir :float
-var team :int = -1
+var team :Team.Type = Team.Type.NONE
 var alive := true
 var dest_ball :Ball
 var velocity :Vector2
 
-func spawn(c :int,p :Vector2, bl :Ball)->void:
-	c = c % 16
-	team = c / 2
-	$AnimatedSprite2D.frame = c / 2
+func spawn(t :Team.Type, p :Vector2, bl :Ball)->void:
+	team = t
+	$AnimatedSprite2D.frame = t
 	dest_ball = bl
 	dest_ball.ended.connect(dest_ball_end)
 	position = p
@@ -21,7 +20,7 @@ func spawn(c :int,p :Vector2, bl :Ball)->void:
 	$TimerLife.start()
 	velocity = (dest_ball.position - position).normalized() * speed
 
-func dest_ball_end(c :int, p :Vector2):
+func dest_ball_end(_t :Team.Type, _p :Vector2):
 	end()
 
 func end():

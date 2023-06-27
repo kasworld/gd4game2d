@@ -3,13 +3,12 @@ class_name Shield extends Area2D
 signal ended(p :Vector2)
 
 var rotate_dir :float
-var team :int = -1
+var team :Team.Type = Team.Type.NONE
 var alive := true
 
-func spawn(c :int):
-	c = c % 16
-	$AnimatedSprite2D.frame = c
-	team = c / 2
+func spawn(t :Team.Type):
+	$AnimatedSprite2D.frame = t*2 + randi_range(0,1)
+	team = t
 	rotate_dir = randf_range(-5,5)
 	$TimerLife.wait_time = randf() * 10  +1
 	$TimerLife.start()

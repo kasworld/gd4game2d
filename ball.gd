@@ -2,12 +2,12 @@ class_name Ball extends Area2D
 
 var shield_scene = preload("res://shield.tscn")
 
-signal fire_bullet(c :int, p :Vector2, v :Vector2)
-signal fire_homming(c :int, p :Vector2, dest :Ball)
+signal fire_bullet(t :Team.Type, p :Vector2, v :Vector2)
+signal fire_homming(t :Team.Type, p :Vector2, dest :Ball)
 signal shield_ended(p :Vector2)
-signal ended(c :int, p :Vector2)
+signal ended(t :Team.Type, p :Vector2)
 
-var team :int = -1
+var team :Team.Type = Team.Type.NONE
 var speed_limit :float = 200
 var rotate_dir :float
 var velocity :Vector2
@@ -16,10 +16,9 @@ var alive := true
 func get_radius()->float:
 	return $CollisionShape2D.shape.radius
 
-func spawn(c :int, p :Vector2):
-	c = c % 16
-	$ColorBallSprites.frame = c
-	team = c / 2
+func spawn(t :Team.Type, p :Vector2):
+	$ColorBallSprites.frame = t*2 + randi_range(0,1)
+	team = t
 	position = p
 	$TimerLife.wait_time = randf() * 300 +1
 	$TimerLife.start()
@@ -30,7 +29,7 @@ func add_shield():
 	var sh = shield_scene.instantiate()
 	add_child(sh)
 	sh.ended.connect(shield_end)
-	sh.spawn($ColorBallSprites.frame)
+	sh.spawn(team)
 
 func shield_end(p :Vector2):
 	emit_signal("shield_ended",p)
@@ -45,9 +44,9 @@ func _process(delta: float) -> void:
 		print("new ball pos ", position)
 	rotate(delta*rotate_dir)
 	if randf() > 0.9 :
-		emit_signal("fire_bullet",$ColorBallSprites.frame, position, random_vector2())
+		emit_signal("fire_bullet",team, position, random_vector2())
 	if randf() > 0.99 :
-		emit_signal("fire_homming",$ColorBallSprites.frame, position, self)
+		emit_signal("fire_homming",team, position, self)
 	if randf() > 0.95 :
 		add_shield()
 
@@ -62,7 +61,7 @@ func end():
 #		for o in shield_list:
 #			if o is Shield:
 #				shield_end(o.position)
-		emit_signal("ended", $ColorBallSprites.frame, position)
+		emit_signal("ended", team, position)
 		queue_free()
 
 func _on_timer_life_timeout() -> void:
@@ -74,7 +73,7 @@ func random_vector2() ->Vector2:
 func line2normal(l ) -> Vector2:
 	return (l.b - l.a).orthogonal().normalized()
 
-func _on_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
+func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, _local_shape_index: int) -> void:
 	if area is Wall:
 		var other_shape_owner = area.shape_find_owner(area_shape_index)
 		var other_shape_node = area.shape_owner_get_owner(other_shape_owner)

@@ -1,6 +1,5 @@
 class_name Wall extends Area2D
 
-
 func set_ab(o, v1,v2):
 	o.shape.a = v1
 	o.shape.b = v2

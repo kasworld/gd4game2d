@@ -4,14 +4,13 @@ signal ended(p :Vector2)
 
 var speed :float = 300.0
 var rotate_dir :float
-var team :int = -1
+var team :Team.Type = Team.Type.NONE
 var velocity :Vector2
 var alive := true
 
-func spawn(c :int,p :Vector2, v :Vector2)->void:
-	c = c % 16
-	$AnimatedSprite2D.frame = c
-	team = c / 2
+func spawn(t :Team.Type,p :Vector2, v :Vector2)->void:
+	$AnimatedSprite2D.frame = t*2 + randi_range(0,1)
+	team = t
 	position = p
 	velocity = v.normalized() * speed
 	rotate_dir = randf_range(-5,5)

@@ -1,14 +1,14 @@
 extends AnimatedSprite2D
 
-signal ended(c :int, p :Vector2)
+signal ended(t :Team.Type, p :Vector2)
 
-var team_c :int
+var team :int
 
-func spawn(c :int, p :Vector2):
-	team_c = c
+func spawn(t :Team.Type, p :Vector2):
+	team = t
 	position = p
 	play_backwards("default")
 
 func _on_animation_finished() -> void:
-	emit_signal("ended",team_c, position)
+	emit_signal("ended",team, position)
 	queue_free()

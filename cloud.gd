@@ -3,8 +3,6 @@ extends Area2D
 var speed_limit :float = 50
 var velocity :Vector2
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var vprt = get_viewport_rect()
 	position.x =  randi_range(100,vprt.size.x-100)
@@ -25,7 +23,7 @@ func line2normal(l ) -> Vector2:
 	return (l.b - l.a).orthogonal().normalized()
 
 
-func _on_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
+func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, _local_shape_index: int) -> void:
 	if area is Wall:
 		var other_shape_owner = area.shape_find_owner(area_shape_index)
 		var other_shape_node = area.shape_owner_get_owner(other_shape_owner)
