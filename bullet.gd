@@ -21,7 +21,7 @@ func spawn(c :int,p :Vector2, v :Vector2)->void:
 func end():
 	if alive:
 		alive = false
-		emit_signal("ended",position)
+		emit_signal("ended", position)
 		queue_free()
 
 func _process(delta: float) -> void:

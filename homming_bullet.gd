@@ -14,24 +14,27 @@ func spawn(c :int,p :Vector2, bl :Ball)->void:
 	team = c / 2
 	$AnimatedSprite2D.frame = c / 2
 	dest_ball = bl
-	dest_ball.ended.connect(end)
+	dest_ball.ended.connect(dest_ball_end)
 	position = p
 	rotate_dir = randf_range(-5,5)
 	$TimerLife.wait_time = 10
 	$TimerLife.start()
 	velocity = (dest_ball.position - position).normalized() * speed
 
+func dest_ball_end(c :int, p :Vector2):
+	end()
+
 func end():
 	if alive:
 		alive = false
-		emit_signal("ended",position)
+		emit_signal("ended", position)
 		queue_free()
 
 func _process(delta: float) -> void:
 	rotate(delta*rotate_dir)
 
 func _physics_process(delta: float) -> void:
-	if dest_ball == null:
+	if dest_ball == null or not dest_ball.alive :
 		end()
 		return
 	position += velocity * delta
