@@ -58,10 +58,9 @@ func fire_bullet(t :Team.Type, p :Vector2, v :Vector2):
 	var dst = find_other_team_ball(t)
 	if dst.team == t:
 		return
-	v = dst.position - p
+#	v = dst.position - p
+	v = Team.calc_aim_vector2(p, 300.0, dst.position, dst.velocity )
 
-#	var rad = Team.calc_aim_angle(p, 300.0, dst.position, dst.velocity )
-#	v = Vector2.RIGHT.rotated(rad)
 	var bl = bullet_scene.instantiate()
 	$BulletContainer.add_child(bl)
 	bl.ended.connect(bullet_explode_effect)
