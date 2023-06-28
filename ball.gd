@@ -22,7 +22,7 @@ func spawn(t :Team.Type, p :Vector2):
 	position = p
 	$TimerLife.wait_time = randf() * 300 +1
 	$TimerLife.start()
-	velocity =  random_vector2()*speed_limit
+	velocity = random_vector2()*speed_limit
 	rotate_dir = randf_range(-5,5)
 
 func add_shield():
@@ -43,24 +43,23 @@ func _process(delta: float) -> void:
 		position = position.clamp(vp.position + clampvt, vp.end - clampvt)
 		print("new ball pos ", position)
 	rotate(delta*rotate_dir)
-	if randf() > 0.9 :
+	if randf() < 5.0*delta :
 		emit_signal("fire_bullet",team, position, random_vector2())
-	if randf() > 0.99 :
+	if randf() < 2.0*delta :
 		emit_signal("fire_homming",team, position, null)
-	if randf() > 0.95 :
+	if randf() < 2.0*delta :
 		add_shield()
 
 func _physics_process(delta: float) -> void:
+	if randf() < 5.0*delta:
+		velocity = velocity.rotated( (randf()-0.5)*PI)
+		velocity = velocity.limit_length(speed_limit)
 	position += velocity * delta
 	velocity = velocity.limit_length(speed_limit)
 
 func end():
 	if alive:
 		alive = false
-#		var shield_list = get_children()
-#		for o in shield_list:
-#			if o is Shield:
-#				shield_end(o.position)
 		emit_signal("ended", team, position)
 		queue_free()
 
