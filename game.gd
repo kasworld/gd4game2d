@@ -13,7 +13,6 @@ var cloud_scene = preload("res://cloud.tscn")
 
 func new_cloud():
 	var nc = cloud_scene.instantiate()
-	nc.visible = true
 	$CloudContainer.add_child(nc)
 
 @onready var ball_radius :float = ball_scene.instantiate().get_radius()

@@ -1,22 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://7u1t5lj73shm"]
+[gd_scene load_steps=4 format=3 uid="uid://7u1t5lj73shm"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_vjs00"]
+[ext_resource type="PackedScene" uid="uid://cocfmr8wyudsh" path="res://background.tscn" id="2_5tsxc"]
 [ext_resource type="PackedScene" uid="uid://bqyvvs4okav4v" path="res://wall.tscn" id="17_scrdm"]
-[ext_resource type="Script" path="res://background.gd" id="29_wwbn1"]
-[ext_resource type="Texture2D" uid="uid://33kl7mlwjv6d" path="res://resource/background.png" id="32_jcwxu"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_vjs00")
-
-[node name="Background" type="ParallaxBackground" parent="."]
-script = ExtResource("29_wwbn1")
-
-[node name="ParallaxLayer" type="ParallaxLayer" parent="Background"]
-motion_mirroring = Vector2(2000, 2000)
-
-[node name="BGSprite" type="Sprite2D" parent="Background/ParallaxLayer"]
-texture = ExtResource("32_jcwxu")
-centered = false
 
 [node name="CloudContainer" type="Node2D" parent="."]
 
@@ -27,3 +16,5 @@ centered = false
 [node name="EffectContainer" type="Node2D" parent="."]
 
 [node name="Wall" parent="." instance=ExtResource("17_scrdm")]
+
+[node name="Background" parent="." instance=ExtResource("2_5tsxc")]
