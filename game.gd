@@ -22,8 +22,7 @@ func inc_team_stat(team : Team.Type, statname: String)->void:
 
 func _ready():
 	randomize()
-	var tt = Team.new()
-	$UILayer/HUD.make(tt)
+	$UILayer/HUD.init_stat()
 
 	for i in range(10):
 		new_cloud()

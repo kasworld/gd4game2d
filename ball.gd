@@ -40,7 +40,7 @@ func _process(delta: float) -> void:
 	if not vp.has_point( position):
 		print("invalid ball pos ", position)
 		var r = get_radius()
-		var clampvt = Vector2(r*3,r*3)
+		var clampvt = Vector2(r*4,r*4)
 		position = position.clamp(vp.position + clampvt, vp.end - clampvt)
 		print("new ball pos ", position)
 	rotate(delta*rotate_dir)

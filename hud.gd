@@ -29,7 +29,7 @@ var team_stat := {}
 # team_stat_label[team_name][stat_culumn] :Label
 var team_stat_label := {}
 
-func make(teamstat :Team):
+func init_stat():
 	add_label("TeamStat")
 	for s in StatCulumnString:
 		add_label(s)
