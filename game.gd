@@ -17,6 +17,9 @@ func new_cloud():
 
 @onready var ball_radius :float = ball_scene.instantiate().get_radius()
 
+func inc_team_stat(team : Team.Type, statname: String)->void:
+	$UILayer/HUD.inc_stat(team,statname)
+
 func _ready():
 	randomize()
 	var tt = Team.new()
@@ -41,6 +44,7 @@ func new_ball(t :Team.Type, p :Vector2):
 	call_deferred("new_ball_defered",t,p)
 
 func new_ball_defered(t :Team.Type, p :Vector2):
+	inc_team_stat(t,"new_ball")
 	var nb = ball_scene.instantiate()
 	$BallContainer.add_child(nb)
 	nb.fire_bullet.connect(fire_bullet)
@@ -56,6 +60,7 @@ func ball_explode_effect(t :Team.Type, p :Vector2):
 	bee.spawn(t,p)
 
 func fire_bullet(t :Team.Type, p :Vector2, v :Vector2):
+	inc_team_stat(t,"new_bullet")
 	var dst = find_other_team_ball(t)
 	if dst.team == t:
 		return
@@ -79,6 +84,7 @@ func find_other_team_ball(t :Team.Type)->Ball:
 	return dst
 
 func fire_homming(t :Team.Type, p :Vector2, dst :Ball):
+	inc_team_stat(t,"new_homming")
 #	var dst :Ball
 	dst = find_other_team_ball(t)
 	if dst.team == t: # no team kill

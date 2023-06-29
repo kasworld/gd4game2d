@@ -1,6 +1,5 @@
 extends Control
 
-
 const TeamName :Array[String] = [
 	"BLUE",
 	"GREEN",
@@ -50,6 +49,7 @@ func add_label(s :String)->Label:
 	$TeamStatGrid.add_child(lb)
 	return lb
 
-func inc_stat(teamname : String, statname: String)->void:
+func inc_stat(team : Team.Type, statname: String)->void:
+	var teamname = TeamName[team]
 	team_stat[teamname][statname] += 1
 	team_stat_label[teamname][statname].text = str(team_stat[teamname][statname])

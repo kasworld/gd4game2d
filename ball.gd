@@ -26,6 +26,7 @@ func spawn(t :Team.Type, p :Vector2):
 	rotate_dir = randf_range(-5,5)
 
 func add_shield():
+	get_tree().current_scene.inc_team_stat(team,"new_shield")
 	var sh = shield_scene.instantiate()
 	add_child(sh)
 	sh.ended.connect(shield_end)
@@ -52,6 +53,7 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	if randf() < 5.0*delta:
+		get_tree().current_scene.inc_team_stat(team,"accel")
 		velocity = velocity.rotated( (randf()-0.5)*PI)
 		velocity = velocity.limit_length(speed_limit)
 	position += velocity * delta
