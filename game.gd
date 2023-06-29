@@ -19,6 +19,7 @@ func new_cloud():
 
 func _ready():
 	randomize()
+	Team.new()
 
 	for i in range(10):
 		new_cloud()
