@@ -9,8 +9,7 @@ var team :Team.Type = Team.Type.NONE
 var alive := true
 var dest_ball :Ball
 var velocity :Vector2
-var dest_pos :Array[Vector2]
-var dest_pos_len = 10
+var accel :Vector2
 
 func spawn(t :Team.Type, p :Vector2, bl :Ball)->void:
 	team = t
@@ -19,22 +18,14 @@ func spawn(t :Team.Type, p :Vector2, bl :Ball)->void:
 	dest_ball.ended.connect(dest_ball_end)
 	position = p
 	rotate_dir = randf_range(-5,5)
-	speed = randf_range(speed_limit/2, speed_limit)
+	speed = randfn(speed_limit, speed_limit/10.0)
+	if speed < 100 :
+		speed = 100
 	$TimerLife.wait_time = 10
 	$TimerLife.start()
-	for i in range(dest_pos_len):
-		dest_pos.push_back(dest_ball.position)
-	update_velocity()
 
 func dest_ball_end(_t :Team.Type, _p :Vector2):
 	end()
-
-func update_velocity():
-	if dest_ball != null:
-		var dp = dest_pos.pop_front()
-		velocity += (dp - position).normalized() * speed
-		velocity = velocity.limit_length(speed)
-		dest_pos.push_back(dest_ball.position)
 
 func end():
 	if alive:
@@ -46,8 +37,10 @@ func _process(delta: float) -> void:
 	rotate(delta*rotate_dir)
 
 func _physics_process(delta: float) -> void:
+	velocity = velocity.limit_length(speed)
 	position += velocity * delta
-	update_velocity()
+	velocity +=accel
+	accel = (dest_ball.position - position)
 
 func _on_timer_life_timeout() -> void:
 	end()
