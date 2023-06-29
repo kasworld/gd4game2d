@@ -19,7 +19,8 @@ func new_cloud():
 
 func _ready():
 	randomize()
-	Team.new()
+	var tt = Team.new()
+	$UILayer/HUD.make(tt)
 
 	for i in range(10):
 		new_cloud()

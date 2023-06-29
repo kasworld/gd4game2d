@@ -1,11 +1,18 @@
 extends Control
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+func make(teamstat :Team):
+	add_label("TeamStat")
+	for s in Team.StatCulumnString:
+		add_label(s)
 
+	for t in Team.TeamName:
+		add_label(t)
+		for c in Team.StatCulumnString:
+			add_label("0")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func add_label(s :String)->void:
+	var lb = Label.new()
+	lb.text = s
+	$GridContainer.add_child(lb)
+

@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://s5uj50u6rb05"]
+[gd_scene load_steps=4 format=3 uid="uid://s5uj50u6rb05"]
 
 [ext_resource type="Script" path="res://hud.gd" id="1_b1ff5"]
+
+[sub_resource type="SystemFont" id="SystemFont_j3k1p"]
+subpixel_positioning = 0
+
+[sub_resource type="Theme" id="Theme_axbka"]
+default_font = SubResource("SystemFont_j3k1p")
+default_font_size = 20
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -10,3 +17,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_b1ff5")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_axbka")
+columns = 10
