@@ -55,15 +55,19 @@ func _on_timer_life_timeout() -> void:
 func _on_area_entered(area: Area2D) -> void:
 	if area is Ball:
 		if area.team != team:
+			get_tree().current_scene.inc_team_stat(area.team,"kill_ball")
 			end()
 	elif area is Bullet:
 		if area.team != team:
+			get_tree().current_scene.inc_team_stat(area.team,"kill_bullet")
 			end()
 	elif area is Shield:
 		if area.team != team:
+			get_tree().current_scene.inc_team_stat(area.team,"kill_shield")
 			end()
 	elif area is HommingBullet:
 		if area.team != team:
+			get_tree().current_scene.inc_team_stat(area.team,"kill_homming")
 			end()
 
 
