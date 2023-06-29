@@ -12,6 +12,10 @@ var speed_limit :float = 200
 var rotate_dir :float
 var velocity :Vector2
 var alive := true
+var life_start := Time.get_unix_time_from_system()
+
+func get_age_sec()->float:
+	return Time.get_unix_time_from_system() - life_start
 
 func get_radius()->float:
 	return $CollisionShape2D.shape.radius
@@ -20,8 +24,6 @@ func spawn(t :Team.Type, p :Vector2):
 	$ColorBallSprites.frame = t*2 + randi_range(0,1)
 	team = t
 	position = p
-	$TimerLife.wait_time = randf() * 300 +1
-	$TimerLife.start()
 	velocity = random_vector2()*speed_limit
 	rotate_dir = randf_range(-5,5)
 
@@ -38,7 +40,7 @@ func shield_end(p :Vector2):
 func _process(delta: float) -> void:
 	var vp = get_viewport_rect()
 	if not vp.has_point( position):
-		print("invalid ball pos ", position)
+		print("invalid ball pos ", position, get_age_sec() )
 		var r = get_radius()
 		var clampvt = Vector2(r*4,r*4)
 		position = position.clamp(vp.position + clampvt, vp.end - clampvt)
@@ -64,9 +66,6 @@ func end():
 		alive = false
 		emit_signal("ended", team, position)
 		queue_free()
-
-func _on_timer_life_timeout() -> void:
-	end()
 
 func random_vector2() ->Vector2:
 	return Vector2.DOWN.rotated( randf() * 2 * PI )
