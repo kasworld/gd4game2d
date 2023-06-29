@@ -18,7 +18,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_b1ff5")
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="TeamStatGrid" type="GridContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
