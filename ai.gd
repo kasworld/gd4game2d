@@ -1,17 +1,4 @@
-class_name Team extends Object
-
-enum Type {
-	NONE =-1,
-	BLUE,
-	GREEN,
-	GREY,
-	ORANGE,
-	PURPLE,
-	RED,
-	WHITE,
-	YELLOW,
-	LEN,
-}
+class_name AI extends Object
 
 static func phase(vt :Vector2)->float:
 	return atan2(vt.y,vt.x)

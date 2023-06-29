@@ -58,7 +58,7 @@ func fire_bullet(t :Team.Type, p :Vector2, v :Vector2):
 	if dst.team == t:
 		return
 #	v = dst.position - p
-	v = Team.calc_aim_vector2(p, 300.0, dst.position, dst.velocity )
+	v = AI.calc_aim_vector2(p, 300.0, dst.position, dst.velocity )
 
 	var bl = bullet_scene.instantiate()
 	$BulletContainer.add_child(bl)
