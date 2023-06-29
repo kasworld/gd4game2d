@@ -40,7 +40,8 @@ func _physics_process(delta: float) -> void:
 	velocity = velocity.limit_length(speed)
 	position += velocity * delta
 	velocity +=accel
-	accel = (dest_ball.position - position)
+	if randf() < 0.1:
+		accel = (dest_ball.position - position)
 
 func _on_timer_life_timeout() -> void:
 	end()
