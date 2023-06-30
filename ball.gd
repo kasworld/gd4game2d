@@ -20,10 +20,21 @@ func get_age_sec()->float:
 func get_radius()->float:
 	return $CollisionShape2D.shape.radius
 
+func clamp_pos()->void:
+	var vp = get_viewport_rect()
+	if not vp.has_point( position):
+		var oldp = position
+		print("", position, get_age_sec() )
+		var r = get_radius()
+		var clampvt = Vector2(r*4,r*4)
+		position = position.clamp(vp.position + clampvt, vp.end - clampvt)
+		print("invalid ball(%s) pos %s to %s" % [get_age_sec(),oldp, position])
+
 func spawn(t :Team.Type, p :Vector2):
 	$ColorBallSprites.frame = t*2 + randi_range(0,1)
 	team = t
 	position = p
+	clamp_pos()
 	velocity = random_vector2()*speed_limit
 	rotate_dir = randf_range(-5,5)
 
@@ -38,13 +49,6 @@ func shield_end(p :Vector2):
 	emit_signal("shield_ended",p)
 
 func _process(delta: float) -> void:
-	var vp = get_viewport_rect()
-	if not vp.has_point( position):
-		print("invalid ball pos ", position, get_age_sec() )
-		var r = get_radius()
-		var clampvt = Vector2(r*4,r*4)
-		position = position.clamp(vp.position + clampvt, vp.end - clampvt)
-		print("new ball pos ", position)
 	rotate(delta*rotate_dir)
 	if randf() < 5.0*delta :
 		emit_signal("fire_bullet",team, position, random_vector2())
@@ -57,9 +61,9 @@ func _physics_process(delta: float) -> void:
 	if randf() < 5.0*delta:
 		get_tree().current_scene.inc_team_stat(team,"accel")
 		velocity = velocity.rotated( (randf()-0.5)*PI)
-		velocity = velocity.limit_length(speed_limit)
-	position += velocity * delta
 	velocity = velocity.limit_length(speed_limit)
+	position += velocity * delta
+	clamp_pos()
 
 func end():
 	if alive:
