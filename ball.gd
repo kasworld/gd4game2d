@@ -24,7 +24,6 @@ func clamp_pos()->void:
 	var vp = get_viewport_rect()
 	if not vp.has_point( position):
 		var oldp = position
-		print("", position, get_age_sec() )
 		var r = get_radius()
 		var clampvt = Vector2(r*4,r*4)
 		position = position.clamp(vp.position + clampvt, vp.end - clampvt)
