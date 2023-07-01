@@ -24,12 +24,12 @@ window/stretch/mode="canvas_items"
 
 [layer_names]
 
-2d_physics/layer_1="MainBalls"
-2d_physics/layer_2="Bullets"
-2d_physics/layer_3="SuperBullets"
-2d_physics/layer_4="HommingBullets"
-2d_physics/layer_5="Shields"
-2d_physics/layer_6="SuperShields"
+2d_physics/layer_1="Balls"
+2d_physics/layer_2="Scan1"
+2d_physics/layer_3="Scan2"
+2d_physics/layer_4="Shields"
+2d_physics/layer_5="Bullets"
+2d_physics/layer_6="HommingBullets"
 2d_physics/layer_7="Clouds"
 2d_physics/layer_8="BoundWalls"
 
