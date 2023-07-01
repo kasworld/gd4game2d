@@ -54,16 +54,15 @@ func shield_end(p :Vector2):
 
 func _process(delta: float) -> void:
 	rotate(delta*rotate_dir)
-	if randf() < 5.0*delta :
+	if AI.do_fire_bullet(team,delta,position,velocity):
 		emit_signal("fire_bullet",team, position, random_vector2())
-	if randf() < 2.0*delta :
+	if AI.do_fire_homming(team,delta,position,velocity):
 		emit_signal("fire_homming",team, position, null)
-	if randf() < 2.0*delta :
+	if AI.do_add_shield(team,delta,position,velocity):
 		add_shield()
 
 func _physics_process(delta: float) -> void:
-#	$AI.accel(team,delta,velocity)
-	if randf() < 5.0*delta:
+	if AI.do_accel(team,delta,position,velocity):
 		emit_signal("inc_team_stat",team,"accel")
 		velocity = velocity.rotated( (randf()-0.5)*PI)
 	velocity = velocity.limit_length(speed_limit)

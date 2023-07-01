@@ -1,5 +1,4 @@
-class_name AI extends Node
-
+class_name AI
 
 static func calc_aim_vector2(
 	src_pos :Vector2,
@@ -15,7 +14,23 @@ static func calc_aim_vector2(
 	var rtn = vt.rotated(a1)
 	return rtn
 
-#func accel(team :Team.Type,delta :float, velocity :Vector2)->void:
-#	if randf() < 5.0*delta:
-#		get_tree().current_scene.inc_team_stat(team,"accel")
-#		velocity = velocity.rotated( (randf()-0.5)*PI)
+
+static func do_accel(team :Team.Type,delta :float,pos: Vector2, velocity :Vector2)->bool:
+	if randf() < 5.0*delta:
+		return true
+	return false
+
+static func do_fire_bullet(team :Team.Type,delta :float,pos: Vector2, velocity :Vector2)->bool:
+	if randf() < 5.0*delta :
+		return true
+	return false
+
+static func do_fire_homming(team :Team.Type,delta :float,pos: Vector2, velocity :Vector2)->bool:
+	if randf() < 2.0*delta :
+		return true
+	return false
+
+static func do_add_shield(team :Team.Type,delta :float,pos: Vector2, velocity :Vector2)->bool:
+	if randf() < 2.0*delta :
+		return true
+	return false
