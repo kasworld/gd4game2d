@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://b770gdo2mqi4w"]
+[gd_scene load_steps=21 format=3 uid="uid://b770gdo2mqi4w"]
 
 [ext_resource type="Script" path="res://ball.gd" id="1_v147x"]
 [ext_resource type="Texture2D" uid="uid://y7v21l1peg8w" path="res://resource/blueball1.png" id="6_ap7o0"]
@@ -77,8 +77,12 @@ animations = [{
 "speed": 1.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_pdhjq"]
+radius = 200.0
+
 [node name="Ball" type="Area2D"]
-collision_mask = 191
+collision_layer = 7
+collision_mask = 185
 script = ExtResource("1_v147x")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -86,5 +90,8 @@ shape = SubResource("CircleShape2D_y6oq3")
 
 [node name="ColorBallSprites" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_nokl4")
+
+[node name="Scan1" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_pdhjq")
 
 [connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]

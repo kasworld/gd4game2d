@@ -47,8 +47,10 @@ func _physics_process(delta: float) -> void:
 func _on_timer_life_timeout() -> void:
 	end()
 
-func _on_area_entered(area: Area2D) -> void:
+func _on_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
 	if area is Ball:
+		if area_shape_index != 0: # ball kill area
+			return
 		if area.team != team:
 			emit_signal("inc_team_stat",area.team,"kill_ball")
 			end()
@@ -64,5 +66,3 @@ func _on_area_entered(area: Area2D) -> void:
 		if area.team != team:
 			emit_signal("inc_team_stat",area.team,"kill_homming")
 			end()
-
-

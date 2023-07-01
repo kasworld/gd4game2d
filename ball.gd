@@ -81,26 +81,40 @@ func random_vector2() ->Vector2:
 func line2normal(l ) -> Vector2:
 	return (l.b - l.a).orthogonal().normalized()
 
-func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, _local_shape_index: int) -> void:
-	if area is Wall:
-		var other_shape_owner = area.shape_find_owner(area_shape_index)
-		var other_shape_node = area.shape_owner_get_owner(other_shape_owner)
-		var nvt = line2normal(other_shape_node.shape)
-		velocity = velocity.bounce(nvt)
-	elif area is Ball:
-		if area.team != team:
-			emit_signal("inc_team_stat",area.team,"kill_ball")
-			end()
-	elif area is Bullet:
-		if area.team != team:
-			emit_signal("inc_team_stat",area.team,"kill_bullet")
-			end()
-	elif area is Shield:
-		if area.team != team:
-			emit_signal("inc_team_stat",area.team,"kill_shield")
-			end()
-	elif area is HommingBullet:
-		if area.team != team:
-			emit_signal("inc_team_stat",area.team,"kill_homming")
-			end()
-
+func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
+	var local_shape_owner = shape_find_owner(local_shape_index)
+	var local_shape_node = shape_owner_get_owner(local_shape_owner)
+#	print_debug("ball ",local_shape_index," ",local_shape_owner," ",local_shape_node)
+	match local_shape_index:
+		0: # $CollisionShape2D
+			if area is Wall:
+				var other_shape_owner = area.shape_find_owner(area_shape_index)
+				var other_shape_node = area.shape_owner_get_owner(other_shape_owner)
+				var nvt = line2normal(other_shape_node.shape)
+				velocity = velocity.bounce(nvt)
+			elif area is Ball:
+				if area.team != team:
+					emit_signal("inc_team_stat",area.team,"kill_ball")
+					end()
+			elif area is Bullet:
+				if area.team != team:
+					emit_signal("inc_team_stat",area.team,"kill_bullet")
+					end()
+			elif area is Shield:
+				if area.team != team:
+					emit_signal("inc_team_stat",area.team,"kill_shield")
+					end()
+			elif area is HommingBullet:
+				if area.team != team:
+					emit_signal("inc_team_stat",area.team,"kill_homming")
+					end()
+		1: # $Scan1
+			if area is Wall:
+				pass
+			elif area.team != team:
+				print_debug("scan1 ", area)
+		2: # $Scan2
+			if area is Wall:
+				pass
+			elif area.team != team:
+				print_debug("scan2 ", area)
