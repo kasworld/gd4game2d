@@ -1,7 +1,5 @@
-class_name AI extends Object
+class_name AI extends Node
 
-static func phase(vt :Vector2)->float:
-	return atan2(vt.y,vt.x)
 
 static func calc_aim_vector2(
 	src_pos :Vector2,
@@ -12,7 +10,12 @@ static func calc_aim_vector2(
 	var dst_speed = dst_vel.length()
 	if dst_speed == 0 :
 		return vt
-	var a2 = phase(dst_vel) - phase(vt)
+	var a2 = vt.angle_to(dst_vel)
 	var a1 = asin(dst_speed/src_speed * sin(a2))
 	var rtn = vt.rotated(a1)
 	return rtn
+
+#func accel(team :Team.Type,delta :float, velocity :Vector2)->void:
+#	if randf() < 5.0*delta:
+#		get_tree().current_scene.inc_team_stat(team,"accel")
+#		velocity = velocity.rotated( (randf()-0.5)*PI)

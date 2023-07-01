@@ -57,6 +57,7 @@ func _process(delta: float) -> void:
 		add_shield()
 
 func _physics_process(delta: float) -> void:
+#	$AI.accel(team,delta,velocity)
 	if randf() < 5.0*delta:
 		get_tree().current_scene.inc_team_stat(team,"accel")
 		velocity = velocity.rotated( (randf()-0.5)*PI)
