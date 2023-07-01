@@ -6,6 +6,7 @@ signal fire_bullet(t :Team.Type, p :Vector2, v :Vector2)
 signal fire_homming(t :Team.Type, p :Vector2, dest :Ball)
 signal shield_ended(p :Vector2)
 signal ended(t :Team.Type, p :Vector2)
+signal inc_team_stat(team : Team.Type, statname: String)
 
 var team :Team.Type = Team.Type.NONE
 var speed_limit :float = 200
@@ -38,10 +39,14 @@ func spawn(t :Team.Type, p :Vector2):
 	rotate_dir = randf_range(-5,5)
 
 func add_shield():
-	get_tree().current_scene.inc_team_stat(team,"new_shield")
+	emit_signal("inc_team_stat",team,"new_shield")
 	var sh = shield_scene.instantiate()
 	add_child(sh)
 	sh.ended.connect(shield_end)
+	sh.inc_team_stat.connect(
+		func(team : Team.Type, statname: String):
+			emit_signal("inc_team_stat",team,statname)
+			)
 	sh.spawn(team)
 
 func shield_end(p :Vector2):
@@ -59,7 +64,7 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 #	$AI.accel(team,delta,velocity)
 	if randf() < 5.0*delta:
-		get_tree().current_scene.inc_team_stat(team,"accel")
+		emit_signal("inc_team_stat",team,"accel")
 		velocity = velocity.rotated( (randf()-0.5)*PI)
 	velocity = velocity.limit_length(speed_limit)
 	position += velocity * delta
@@ -85,18 +90,18 @@ func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int,
 		velocity = velocity.bounce(nvt)
 	elif area is Ball:
 		if area.team != team:
-			get_tree().current_scene.inc_team_stat(area.team,"kill_ball")
+			emit_signal("inc_team_stat",area.team,"kill_ball")
 			end()
 	elif area is Bullet:
 		if area.team != team:
-			get_tree().current_scene.inc_team_stat(area.team,"kill_bullet")
+			emit_signal("inc_team_stat",area.team,"kill_bullet")
 			end()
 	elif area is Shield:
 		if area.team != team:
-			get_tree().current_scene.inc_team_stat(area.team,"kill_shield")
+			emit_signal("inc_team_stat",area.team,"kill_shield")
 			end()
 	elif area is HommingBullet:
 		if area.team != team:
-			get_tree().current_scene.inc_team_stat(area.team,"kill_homming")
+			emit_signal("inc_team_stat",area.team,"kill_homming")
 			end()
 

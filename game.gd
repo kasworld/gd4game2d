@@ -48,6 +48,7 @@ func new_ball_defered(t :Team.Type, p :Vector2):
 	nb.fire_homming.connect(fire_homming)
 	nb.shield_ended.connect(bullet_explode_effect)
 	nb.ended.connect(ball_explode_effect)
+	nb.inc_team_stat.connect(inc_team_stat)
 	nb.spawn(t,p)
 
 func ball_explode_effect(t :Team.Type, p :Vector2):
@@ -67,6 +68,7 @@ func fire_bullet(t :Team.Type, p :Vector2, v :Vector2):
 	var bl = bullet_scene.instantiate()
 	$BulletContainer.add_child(bl)
 	bl.ended.connect(bullet_explode_effect)
+	bl.inc_team_stat.connect(inc_team_stat)
 	bl.spawn(t,p,v)
 
 func find_other_team_ball(t :Team.Type)->Ball:
@@ -89,6 +91,7 @@ func fire_homming(t :Team.Type, p :Vector2, dst :Ball):
 	var hbl = homming_bullet_scene.instantiate()
 	$BulletContainer.add_child(hbl)
 	hbl.ended.connect(bullet_explode_effect)
+	hbl.inc_team_stat.connect(inc_team_stat)
 	hbl.spawn(t,p,dst)
 
 func bullet_explode_effect(p :Vector2):
