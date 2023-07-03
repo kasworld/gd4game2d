@@ -44,7 +44,7 @@ func ball_spawn_effect(t :Team.Type):
 	bse.spawn(t,p)
 
 func new_ball(t :Team.Type, p :Vector2):
-	call_deferred("new_ball_defered",t,p)
+	new_ball_defered.call_deferred(t,p)
 
 func new_ball_defered(t :Team.Type, p :Vector2):
 	inc_team_stat(t,"new_ball")

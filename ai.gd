@@ -34,3 +34,12 @@ static func do_add_shield(_team :Team.Type,delta :float,_pos: Vector2, _velocity
 	if randf() < 2.0*delta :
 		return true
 	return false
+
+static func calc_danger_level(me :Ball, dst :Area2D)->float:
+	if me.team == dst.team :
+		return 0.0
+	if not me.alive or not dst.alive:
+		return 0.0
+	var l = (dst.global_position-me.global_position).length()
+#	var vl = (dst.velocity-me.velocity).length()
+	return 1000.0/l

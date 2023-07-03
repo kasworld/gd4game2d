@@ -74,10 +74,6 @@ func _process(delta: float) -> void:
 		add_shield()
 
 func _physics_process(delta: float) -> void:
-#	if in_scan_area_list.size() != 0:
-#		print_debug(in_scan_area_list)
-
-
 	if AI.do_accel(team,delta,position,velocity):
 		emit_signal("inc_team_stat",team,"accel")
 		velocity = velocity.rotated( (randf()-0.5)*PI)
@@ -85,8 +81,8 @@ func _physics_process(delta: float) -> void:
 	velocity = velocity.limit_length(speed_limit)
 	position += velocity * delta
 	clamp_pos()
-
-#	in_scan_area_list = []
+	most_danger_value = 0
+	most_danger_area2d = null
 
 func end():
 	if alive:
@@ -100,7 +96,8 @@ func random_vector2() ->Vector2:
 func line2normal(l ) -> Vector2:
 	return (l.b - l.a).orthogonal().normalized()
 
-var in_scan_area_list = []
+var most_danger_area2d :Area2D # ball , bullet, shield, homming
+var most_danger_value :float = 0
 
 func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
 #	var local_shape_owner = shape_find_owner(local_shape_index)
@@ -132,8 +129,9 @@ func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int,
 		1: # $Scan1
 			if area is Wall:
 				pass
-			elif area.team != team:
-#				print_debug("scan1 ", area)
-#				if area.alive:
-#					in_scan_area_list.append(area)
-				pass
+			else :
+				var dval = AI.calc_danger_level(self, area)
+				if dval > most_danger_value:
+					most_danger_value = dval
+					most_danger_area2d = area
+#					print_debug(most_danger_area2d,most_danger_value)
