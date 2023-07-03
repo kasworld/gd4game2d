@@ -16,7 +16,7 @@ static func calc_aim_vector2(
 
 
 static func do_accel(_team :Team.Type,delta :float,_pos: Vector2, _velocity :Vector2)->bool:
-	if randf() < 5.0*delta:
+	if randf() < 30.0*delta:
 		return true
 	return false
 

@@ -28,6 +28,7 @@ func make_spawn_pos()->Vector2:
 		randf_range(clampr,vp.x-clampr),
 		randf_range(clampr,vp.y-clampr),
 		)
+#	p = Vector2(randfn(500, 100),randfn(500, 100))
 	return p
 
 func clamp_pos()->void:
@@ -75,8 +76,10 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	if AI.do_accel(team,delta,position,velocity):
-		emit_signal("inc_team_stat",team,"accel")
-		velocity = velocity.rotated( (randf()-0.5)*PI)
+		if most_danger_area2d != null:
+			velocity = (position - most_danger_area2d.global_position)
+			velocity = velocity.rotated( (randf()-0.5)*PI)
+			emit_signal("inc_team_stat",team,"accel")
 
 	velocity = velocity.limit_length(speed_limit)
 	position += velocity * delta
@@ -100,38 +103,35 @@ var most_danger_area2d :Area2D # ball , bullet, shield, homming
 var most_danger_value :float = 0
 
 func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
-#	var local_shape_owner = shape_find_owner(local_shape_index)
-#	var local_shape_node = shape_owner_get_owner(local_shape_owner)
-#	print_debug("ball ",local_shape_index," ",local_shape_owner," ",local_shape_node)
-	match local_shape_index:
-		0: # $CollisionShape2D
-			if area is Wall:
-				var other_shape_owner = area.shape_find_owner(area_shape_index)
-				var other_shape_node = area.shape_owner_get_owner(other_shape_owner)
-				var nvt = line2normal(other_shape_node.shape)
-				velocity = velocity.bounce(nvt)
-			elif area is Ball:
-				if area.team != team:
-					emit_signal("inc_team_stat",area.team,"kill_ball")
-					end()
-			elif area is Bullet:
-				if area.team != team:
-					emit_signal("inc_team_stat",area.team,"kill_bullet")
-					end()
-			elif area is Shield:
-				if area.team != team:
-					emit_signal("inc_team_stat",area.team,"kill_shield")
-					end()
-			elif area is HommingBullet:
-				if area.team != team:
-					emit_signal("inc_team_stat",area.team,"kill_homming")
-					end()
-		1: # $Scan1
-			if area is Wall:
-				pass
-			else :
-				var dval = AI.calc_danger_level(self, area)
-				if dval > most_danger_value:
-					most_danger_value = dval
-					most_danger_area2d = area
+	var local_shape_owner = shape_find_owner(local_shape_index)
+	var local_shape_node = shape_owner_get_owner(local_shape_owner)
+#	print_debug("ball ",local_shape_node.global_position)
+	if local_shape_node == $CollisionShape2D:
+		if area is Wall:
+			var other_shape_owner = area.shape_find_owner(area_shape_index)
+			var other_shape_node = area.shape_owner_get_owner(other_shape_owner)
+			var nvt = line2normal(other_shape_node.shape)
+			velocity = velocity.bounce(nvt)
+		elif area is Ball:
+			if area.team != team and area_shape_index == 0:
+				emit_signal("inc_team_stat",area.team,"kill_ball")
+				end()
+		elif area is Bullet:
+			if area.team != team:
+				emit_signal("inc_team_stat",area.team,"kill_bullet")
+				end()
+		elif area is Shield:
+			if area.team != team:
+				emit_signal("inc_team_stat",area.team,"kill_shield")
+				end()
+		elif area is HommingBullet:
+			if area.team != team:
+				emit_signal("inc_team_stat",area.team,"kill_homming")
+				end()
+	elif local_shape_node == $Scan1:
+		if not(area is Wall):
+			var dval = AI.calc_danger_level(self, area)
+			if dval > most_danger_value:
+				most_danger_value = dval
+				most_danger_area2d = area
 #					print_debug(most_danger_area2d,most_danger_value)
