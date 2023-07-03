@@ -65,18 +65,28 @@ func add_shield():
 func shield_end(p :Vector2):
 	emit_signal("shield_ended",p)
 
+func not_null_and_alive(o :Area2D)->bool:
+	return o != null and o.alive
+
 func _process(delta: float) -> void:
 	rotate(delta*rotate_dir)
 	if AI.do_fire_bullet(team,delta,position,velocity):
-		emit_signal("fire_bullet",team, position, Vector2.ZERO)
+		if not_null_and_alive(most_danger_area2d) and not(most_danger_area2d is HommingBullet) :
+			emit_signal("fire_bullet",team, position, most_danger_area2d.global_position)
+		else:
+			emit_signal("fire_bullet",team, position, Vector2.ZERO)
 	if AI.do_fire_homming(team,delta,position,velocity):
-		emit_signal("fire_homming",team, position, null)
+		if not_null_and_alive(most_danger_area2d) and (
+			(most_danger_area2d is Ball) or (most_danger_area2d is HommingBullet) ):
+			emit_signal("fire_homming",team, position, most_danger_area2d)
+		else:
+			emit_signal("fire_homming",team, position, null)
 	if AI.do_add_shield(team,delta,position,velocity):
 		add_shield()
 
 func _physics_process(delta: float) -> void:
 	if AI.do_accel(team,delta,position,velocity):
-		if most_danger_area2d != null and most_danger_area2d.alive:
+		if not_null_and_alive(most_danger_area2d):
 			velocity += (position - most_danger_area2d.global_position).limit_length(speed_limit)
 			velocity = velocity.rotated( (randf()-0.5)*PI)
 			emit_signal("inc_team_stat",team,"accel")
