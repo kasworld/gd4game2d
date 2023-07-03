@@ -21,12 +21,21 @@ func get_age_sec()->float:
 func get_radius()->float:
 	return $CollisionShape2D.shape.radius
 
+func make_spawn_pos()->Vector2:
+	var vp = get_viewport_rect().size
+	var clampr = get_radius()*3
+	var p = Vector2(
+		randf_range(clampr,vp.x-clampr),
+		randf_range(clampr,vp.y-clampr),
+		)
+	return p
+
 func clamp_pos()->void:
 	var vp = get_viewport_rect()
 	if not vp.has_point( position):
 		var oldp = position
 		var r = get_radius()
-		var clampvt = Vector2(r*4,r*4)
+		var clampvt = Vector2(r*3,r*3)
 		position = position.clamp(vp.position + clampvt, vp.end - clampvt)
 		print("invalid ball(%s) pos %s to %s" % [get_age_sec(),oldp, position])
 
@@ -37,6 +46,9 @@ func spawn(t :Team.Type, p :Vector2):
 	clamp_pos()
 	velocity = random_vector2()*speed_limit
 	rotate_dir = randf_range(-5,5)
+	monitorable = true
+	monitoring = true
+	visible = true
 
 func add_shield():
 	emit_signal("inc_team_stat",team,"new_shield")
@@ -91,7 +103,7 @@ func line2normal(l ) -> Vector2:
 var in_scan_area_list = []
 
 func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
-	var local_shape_owner = shape_find_owner(local_shape_index)
+#	var local_shape_owner = shape_find_owner(local_shape_index)
 #	var local_shape_node = shape_owner_get_owner(local_shape_owner)
 #	print_debug("ball ",local_shape_index," ",local_shape_owner," ",local_shape_node)
 	match local_shape_index:

@@ -18,9 +18,16 @@ func new_cloud():
 func inc_team_stat(team : Team.Type, statname: String)->void:
 	$UILayer/HUD.inc_stat(team,statname)
 
+var make_spawn_pos :Callable
+
 func _ready():
 	randomize()
 	$UILayer/HUD.init_stat()
+
+	# for make pos only
+	var nb = ball_scene.instantiate()
+	add_child(nb)
+	make_spawn_pos = nb.make_spawn_pos
 
 	for i in range(10):
 		new_cloud()
@@ -30,11 +37,10 @@ func _ready():
 		ball_spawn_effect(t % Team.Type.LEN)
 
 func ball_spawn_effect(t :Team.Type):
-	var vpsize = get_viewport_rect().size
 	var bse = ball_spawn_sprite.instantiate()
 	$EffectContainer.add_child(bse)
 	bse.ended.connect(new_ball)
-	var p = Vector2(randf_range(0,vpsize.x),randf_range(0,vpsize.y))
+	var p = make_spawn_pos.call()
 	bse.spawn(t,p)
 
 func new_ball(t :Team.Type, p :Vector2):
