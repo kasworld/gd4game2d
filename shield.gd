@@ -27,7 +27,7 @@ func _process(delta: float) -> void:
 func _on_timer_life_timeout() -> void:
 	end()
 
-func _on_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
+func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, _local_shape_index: int) -> void:
 	if area is Ball:
 		if area_shape_index != 0: # ball kill area
 			return

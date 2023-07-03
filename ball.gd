@@ -44,8 +44,8 @@ func add_shield():
 	add_child(sh)
 	sh.ended.connect(shield_end)
 	sh.inc_team_stat.connect(
-		func(team : Team.Type, statname: String):
-			emit_signal("inc_team_stat",team,statname)
+		func(t : Team.Type, statname: String):
+			emit_signal("inc_team_stat",t,statname)
 			)
 	sh.spawn(team)
 
@@ -55,19 +55,26 @@ func shield_end(p :Vector2):
 func _process(delta: float) -> void:
 	rotate(delta*rotate_dir)
 	if AI.do_fire_bullet(team,delta,position,velocity):
-		emit_signal("fire_bullet",team, position, random_vector2())
+		emit_signal("fire_bullet",team, position, Vector2.ZERO)
 	if AI.do_fire_homming(team,delta,position,velocity):
 		emit_signal("fire_homming",team, position, null)
 	if AI.do_add_shield(team,delta,position,velocity):
 		add_shield()
 
 func _physics_process(delta: float) -> void:
+#	if in_scan_area_list.size() != 0:
+#		print_debug(in_scan_area_list)
+
+
 	if AI.do_accel(team,delta,position,velocity):
 		emit_signal("inc_team_stat",team,"accel")
 		velocity = velocity.rotated( (randf()-0.5)*PI)
+
 	velocity = velocity.limit_length(speed_limit)
 	position += velocity * delta
 	clamp_pos()
+
+#	in_scan_area_list = []
 
 func end():
 	if alive:
@@ -81,9 +88,11 @@ func random_vector2() ->Vector2:
 func line2normal(l ) -> Vector2:
 	return (l.b - l.a).orthogonal().normalized()
 
+var in_scan_area_list = []
+
 func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
 	var local_shape_owner = shape_find_owner(local_shape_index)
-	var local_shape_node = shape_owner_get_owner(local_shape_owner)
+#	var local_shape_node = shape_owner_get_owner(local_shape_owner)
 #	print_debug("ball ",local_shape_index," ",local_shape_owner," ",local_shape_node)
 	match local_shape_index:
 		0: # $CollisionShape2D
@@ -112,9 +121,7 @@ func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int,
 			if area is Wall:
 				pass
 			elif area.team != team:
-				print_debug("scan1 ", area)
-		2: # $Scan2
-			if area is Wall:
+#				print_debug("scan1 ", area)
+#				if area.alive:
+#					in_scan_area_list.append(area)
 				pass
-			elif area.team != team:
-				print_debug("scan2 ", area)

@@ -15,22 +15,22 @@ static func calc_aim_vector2(
 	return rtn
 
 
-static func do_accel(team :Team.Type,delta :float,pos: Vector2, velocity :Vector2)->bool:
+static func do_accel(_team :Team.Type,delta :float,_pos: Vector2, _velocity :Vector2)->bool:
 	if randf() < 5.0*delta:
 		return true
 	return false
 
-static func do_fire_bullet(team :Team.Type,delta :float,pos: Vector2, velocity :Vector2)->bool:
+static func do_fire_bullet(_team :Team.Type,delta :float,_pos: Vector2, _velocity :Vector2)->bool:
 	if randf() < 5.0*delta :
 		return true
 	return false
 
-static func do_fire_homming(team :Team.Type,delta :float,pos: Vector2, velocity :Vector2)->bool:
+static func do_fire_homming(_team :Team.Type,delta :float,_pos: Vector2, _velocity :Vector2)->bool:
 	if randf() < 2.0*delta :
 		return true
 	return false
 
-static func do_add_shield(team :Team.Type,delta :float,pos: Vector2, velocity :Vector2)->bool:
+static func do_add_shield(_team :Team.Type,delta :float,_pos: Vector2, _velocity :Vector2)->bool:
 	if randf() < 2.0*delta :
 		return true
 	return false

@@ -25,8 +25,8 @@ func _ready():
 	for i in range(10):
 		new_cloud()
 
-	for t in range(2):
-#	for t in range(Team.Type.LEN):
+#	for t in range(2):
+	for t in range(Team.Type.LEN):
 		ball_spawn_effect(t % Team.Type.LEN)
 
 func ball_spawn_effect(t :Team.Type):
@@ -59,11 +59,11 @@ func ball_explode_effect(t :Team.Type, p :Vector2):
 
 func fire_bullet(t :Team.Type, p :Vector2, v :Vector2):
 	inc_team_stat(t,"new_bullet")
-	var dst = find_other_team_ball(t)
-	if dst.team == t:
-		return
-#	v = dst.position - p
-	v = AI.calc_aim_vector2(p, 300.0, dst.position, dst.velocity )
+	if v == Vector2.ZERO:
+		var dst = find_other_team_ball(t)
+		if dst.team == t:
+			return
+		v = AI.calc_aim_vector2(p, 300.0, dst.position, dst.velocity )
 
 	var bl = bullet_scene.instantiate()
 	$BulletContainer.add_child(bl)
@@ -84,8 +84,8 @@ func find_other_team_ball(t :Team.Type)->Ball:
 
 func fire_homming(t :Team.Type, p :Vector2, dst :Ball):
 	inc_team_stat(t,"new_homming")
-#	var dst :Ball
-	dst = find_other_team_ball(t)
+	if dst == null:
+		dst = find_other_team_ball(t)
 	if dst.team == t: # no team kill
 		return
 	var hbl = homming_bullet_scene.instantiate()

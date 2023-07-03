@@ -81,7 +81,7 @@ animations = [{
 radius = 200.0
 
 [node name="Ball" type="Area2D"]
-collision_layer = 7
+collision_layer = 3
 collision_mask = 185
 script = ExtResource("1_v147x")
 
