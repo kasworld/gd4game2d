@@ -76,7 +76,7 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	if AI.do_accel(team,delta,position,velocity):
-		if most_danger_area2d != null:
+		if most_danger_area2d != null and most_danger_area2d.alive:
 			velocity = (position - most_danger_area2d.global_position)
 			velocity = velocity.rotated( (randf()-0.5)*PI)
 			emit_signal("inc_team_stat",team,"accel")
