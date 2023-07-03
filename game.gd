@@ -18,11 +18,11 @@ func _ready():
 	randomize()
 	$UILayer/HUD.init_stat()
 
-	for i in range(10):
+	for i in range(100):
 		$CloudContainer.add_child(cloud_scene.instantiate())
 
 #	for t in range(2):
-	for t in range(Team.Type.LEN):
+	for t in range(Team.Type.LEN*10):
 		ball_spawn_effect(t % Team.Type.LEN)
 
 func ball_spawn_effect(t :Team.Type):
