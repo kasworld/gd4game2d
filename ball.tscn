@@ -82,8 +82,7 @@ radius = 200.0
 
 [node name="Ball" type="Area2D"]
 visible = false
-collision_layer = 3
-collision_mask = 185
+collision_mask = 57
 monitoring = false
 monitorable = false
 script = ExtResource("1_v147x")

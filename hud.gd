@@ -58,7 +58,7 @@ func inc_stat(team : Team.Type, statname: String)->void:
 	team_stat[teamname][statname] += 1
 	team_stat_label[teamname][statname].text = str(team_stat[teamname][statname])
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	fps += 1
 
 func _on_timer_timeout() -> void:

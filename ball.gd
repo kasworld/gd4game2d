@@ -26,30 +26,10 @@ func get_age_sec()->float:
 func get_radius()->float:
 	return $CollisionShape2D.shape.radius
 
-func make_spawn_pos()->Vector2:
-	var vp = get_viewport_rect().size
-	var clampr = get_radius()*3
-	var p = Vector2(
-		randf_range(clampr,vp.x-clampr),
-		randf_range(clampr,vp.y-clampr),
-		)
-#	p = Vector2(randfn(500, 100),randfn(500, 100))
-	return p
-
-func clamp_pos()->void:
-	var vp = get_viewport_rect()
-	if not vp.has_point( position):
-		var oldp = position
-		var r = get_radius()
-		var clampvt = Vector2(r*3,r*3)
-		position = position.clamp(vp.position + clampvt, vp.end - clampvt)
-		print("invalid ball(%s) pos %s to %s" % [get_age_sec(),oldp, position])
-
 func spawn(t :Team.Type, p :Vector2):
 	$ColorBallSprites.frame = t*2 + randi_range(0,1)
 	team = t
 	position = p
-	clamp_pos()
 	velocity = random_vector2()*speed_limit
 	rotate_dir = randf_range(-5,5)
 	monitorable = true
@@ -90,7 +70,23 @@ func _physics_process(delta: float) -> void:
 		emit_signal("inc_team_stat",team,"accel")
 
 	position += velocity * delta
-	clamp_pos()
+
+	var r = get_radius()
+	var vp = get_viewport_rect().size
+
+	if position.x < r :
+		position.x = r
+		velocity.x = abs(velocity.x)
+	elif position.x > vp.x - r:
+		position.x = vp.x - r
+		velocity.x = -abs(velocity.x)
+	if position.y < r :
+		position.y = r
+		velocity.y = abs(velocity.y)
+	elif position.y > vp.y - r:
+		position.y = vp.y - r
+		velocity.y = -abs(velocity.y)
+
 	most_danger_value = 0
 	most_danger_area2d = null
 
@@ -112,14 +108,8 @@ var most_danger_value :float = 0
 func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
 	var local_shape_owner = shape_find_owner(local_shape_index)
 	var local_shape_node = shape_owner_get_owner(local_shape_owner)
-#	print_debug("ball ",local_shape_node.global_position)
 	if local_shape_node == $CollisionShape2D:
-		if area is Wall:
-			var other_shape_owner = area.shape_find_owner(area_shape_index)
-			var other_shape_node = area.shape_owner_get_owner(other_shape_owner)
-			var nvt = line2normal(other_shape_node.shape)
-			velocity = velocity.bounce(nvt)
-		elif area is Ball:
+		if area is Ball:
 			if area.team != team and area_shape_index == 0:
 				emit_signal("inc_team_stat",area.team,"kill_ball")
 				end()
@@ -135,10 +125,14 @@ func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int,
 			if area.team != team:
 				emit_signal("inc_team_stat",area.team,"kill_homming")
 				end()
+		else:
+			print_debug("unknown Area2 ", area)
+
 	elif local_shape_node == $Scan1:
 		if not(area is Wall):
 			var dval = ai.calc_danger_level(self, area)
 			if dval > most_danger_value:
 				most_danger_value = dval
 				most_danger_area2d = area
-#					print_debug(most_danger_area2d,most_danger_value)
+	else:
+		print_debug("unknown local shape ", local_shape_node)
