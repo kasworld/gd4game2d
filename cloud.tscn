@@ -39,14 +39,13 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_idypp"]
-radius = 38.0
-height = 158.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_205vd"]
+radius = 43.0
 
 [node name="Cloud" type="Area2D"]
 modulate = Color(1, 1, 1, 0.356863)
-collision_layer = 64
-collision_mask = 128
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("2_2smlx")
 
 [node name="CloudSprites" type="AnimatedSprite2D" parent="."]
@@ -54,6 +53,4 @@ sprite_frames = SubResource("SpriteFrames_vhsvy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = -1.56899
-shape = SubResource("CapsuleShape2D_idypp")
-
-[connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
+shape = SubResource("CircleShape2D_205vd")

@@ -28,8 +28,6 @@ window/stretch/mode="canvas_items"
 2d_physics/layer_4="Shields"
 2d_physics/layer_5="Bullets"
 2d_physics/layer_6="HommingBullets"
-2d_physics/layer_7="Clouds"
-2d_physics/layer_8="BoundWalls"
 
 [physics]
 

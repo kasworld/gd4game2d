@@ -129,10 +129,9 @@ func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int,
 			print_debug("unknown Area2 ", area)
 
 	elif local_shape_node == $Scan1:
-		if not(area is Wall):
-			var dval = ai.calc_danger_level(self, area)
-			if dval > most_danger_value:
-				most_danger_value = dval
-				most_danger_area2d = area
+		var dval = ai.calc_danger_level(self, area)
+		if dval > most_danger_value:
+			most_danger_value = dval
+			most_danger_area2d = area
 	else:
 		print_debug("unknown local shape ", local_shape_node)
