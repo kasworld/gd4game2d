@@ -3,7 +3,8 @@ class_name HommingBullet extends Area2D
 signal ended(p :Vector2)
 signal inc_team_stat(team : Team.Type, statname: String)
 
-var speed_limit :float = 300
+const SPEED_LIMIT :float = 300
+
 var speed :float
 var rotate_dir :float
 var team :Team.Type = Team.Type.NONE
@@ -19,7 +20,7 @@ func spawn(t :Team.Type, p :Vector2, bl :Ball)->void:
 	dest_ball.ended.connect(dest_ball_end)
 	position = p
 	rotate_dir = randf_range(-5,5)
-	speed = randfn(speed_limit, speed_limit/10.0)
+	speed = randfn(SPEED_LIMIT, SPEED_LIMIT/10.0)
 	if speed < 100 :
 		speed = 100
 	$TimerLife.wait_time = 10

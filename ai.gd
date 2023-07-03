@@ -18,9 +18,9 @@ func do_accel(_team :Team.Type,delta :float,_pos: Vector2, velocity :Vector2, o 
 	if randf() > 30.0*delta:
 		return velocity
 	if not_null_and_alive(o):
-		velocity += (position - o.global_position).limit_length(Ball.speed_limit)
+		velocity += (position - o.global_position).limit_length(Ball.SPEED_LIMIT)
 		velocity = velocity.rotated( (randf()-0.5)*PI)
-		velocity = velocity.limit_length(Ball.speed_limit)
+		velocity = velocity.limit_length(Ball.SPEED_LIMIT)
 	return velocity
 
 func not_null_and_alive(o :Area2D)->bool:
@@ -44,7 +44,7 @@ func do_fire_bullet(team :Team.Type,delta :float,o :Area2D)->Vector2:
 			dst = bl
 	if dst == null:
 		return Vector2.ZERO
-	var v = calc_aim_vector2(position, Bullet.speed, dst.global_position, dst.velocity )
+	var v = calc_aim_vector2(position, Bullet.SPEED_LIMIT, dst.global_position, dst.velocity )
 	return v
 
 func do_fire_homming(team :Team.Type,delta :float,o :Area2D)->Area2D:

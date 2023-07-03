@@ -8,8 +8,9 @@ signal shield_ended(p :Vector2)
 signal ended(t :Team.Type, p :Vector2)
 signal inc_team_stat(team : Team.Type, statname: String)
 
+const SPEED_LIMIT :float = 200
+
 var team :Team.Type = Team.Type.NONE
-const speed_limit :float = 200
 var rotate_dir :float
 var velocity :Vector2
 var alive := true
@@ -27,7 +28,7 @@ func spawn(t :Team.Type, p :Vector2):
 	$ColorBallSprites.frame = t*2 + randi_range(0,1)
 	team = t
 	position = p
-	velocity = Vector2.DOWN.rotated( randf() * 2 * PI )*speed_limit
+	velocity = Vector2.DOWN.rotated( randf() * 2 * PI )*SPEED_LIMIT
 	rotate_dir = randf_range(-5,5)
 	monitorable = true
 	monitoring = true

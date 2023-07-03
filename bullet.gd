@@ -3,7 +3,8 @@ class_name Bullet extends Area2D
 signal ended(p :Vector2)
 signal inc_team_stat(team : Team.Type, statname: String)
 
-const speed :float = 300.0
+const SPEED_LIMIT :float = 300.0
+
 var rotate_dir :float
 var team :Team.Type = Team.Type.NONE
 var velocity :Vector2
@@ -13,7 +14,7 @@ func spawn(t :Team.Type,p :Vector2, v :Vector2)->void:
 	$AnimatedSprite2D.frame = t*2 + randi_range(0,1)
 	team = t
 	position = p
-	velocity = v.normalized() * speed
+	velocity = v.normalized() * SPEED_LIMIT
 	rotate_dir = randf_range(-5,5)
 	$TimerLife.wait_time = 10
 	$TimerLife.start()
@@ -29,7 +30,7 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	position += velocity * delta
-	velocity = velocity.limit_length(speed)
+	velocity = velocity.limit_length(SPEED_LIMIT)
 
 func _on_timer_life_timeout() -> void:
 	end()
