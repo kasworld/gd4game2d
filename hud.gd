@@ -29,6 +29,9 @@ var team_stat := {}
 # team_stat_label[team_name][stat_culumn] :Label
 var team_stat_label := {}
 
+var life_start := Time.get_unix_time_from_system()
+var fps :int
+
 func init_stat():
 	add_label("TeamStat")
 	for s in StatCulumnString:
@@ -54,3 +57,11 @@ func inc_stat(team : Team.Type, statname: String)->void:
 	var teamname = TeamName[team]
 	team_stat[teamname][statname] += 1
 	team_stat_label[teamname][statname].text = str(team_stat[teamname][statname])
+
+func _process(delta: float) -> void:
+	fps += 1
+
+func _on_timer_timeout() -> void:
+	var dur = Time.get_unix_time_from_system() - life_start
+	$GameInfo.text = "GameLife: %d:%d\nFPS:%d" %[dur / 60, fmod(dur,60), fps ]
+	fps = 0
