@@ -73,6 +73,8 @@ func fire_bullet(t :Team.Type, p :Vector2, v :Vector2):
 
 func find_other_team_ball(t :Team.Type)->Ball:
 	var ball_list = $BallContainer.get_children()
+	if ball_list.size() == 0:
+		return null
 	var dst :Ball
 	var try = 10
 	while try > 0 :
