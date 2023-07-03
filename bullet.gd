@@ -56,3 +56,5 @@ func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int,
 		if area.team != team:
 			emit_signal("inc_team_stat",area.team,"kill_homming")
 			end()
+	else:
+		print_debug("unknown Area2D ", area)

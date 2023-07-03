@@ -23,14 +23,11 @@ func _ready() -> void:
 func get_age_sec()->float:
 	return Time.get_unix_time_from_system() - life_start
 
-func get_radius()->float:
-	return $CollisionShape2D.shape.radius
-
 func spawn(t :Team.Type, p :Vector2):
 	$ColorBallSprites.frame = t*2 + randi_range(0,1)
 	team = t
 	position = p
-	velocity = random_vector2()*speed_limit
+	velocity = Vector2.DOWN.rotated( randf() * 2 * PI )*speed_limit
 	rotate_dir = randf_range(-5,5)
 	monitorable = true
 	monitoring = true
@@ -71,7 +68,7 @@ func _physics_process(delta: float) -> void:
 
 	position += velocity * delta
 
-	var r = get_radius()
+	var r = $CollisionShape2D.shape.radius
 	var vp = get_viewport_rect().size
 
 	if position.x < r :
@@ -96,11 +93,6 @@ func end():
 		emit_signal("ended", team, position)
 		queue_free()
 
-func random_vector2() ->Vector2:
-	return Vector2.DOWN.rotated( randf() * 2 * PI )
-
-func line2normal(l ) -> Vector2:
-	return (l.b - l.a).orthogonal().normalized()
 
 var most_danger_area2d :Area2D # ball , bullet, shield, homming
 var most_danger_value :float = 0
