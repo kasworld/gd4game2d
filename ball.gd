@@ -14,6 +14,11 @@ var rotate_dir :float
 var velocity :Vector2
 var alive := true
 var life_start := Time.get_unix_time_from_system()
+var ai :AI
+
+func _ready() -> void:
+	ai = AI.new()
+	add_child(ai)
 
 func get_age_sec()->float:
 	return Time.get_unix_time_from_system() - life_start
@@ -68,42 +73,22 @@ func shield_end(p :Vector2):
 func not_null_and_alive(o :Area2D)->bool:
 	return o != null and o.alive
 
-func find_other_team_ball() ->Ball:
-	var bl = get_tree().current_scene.find_other_team_ball(team)
-	if not not_null_and_alive(bl) or bl.team == team:
-		return null
-	return bl
 
 func _process(delta: float) -> void:
 	rotate(delta*rotate_dir)
-	if AI.do_fire_bullet(team,delta,position,velocity):
-		var dst :Area2D
-		if not_null_and_alive(most_danger_area2d) and not(most_danger_area2d is HommingBullet) :
-			dst = most_danger_area2d
-		else:
-			var bl = find_other_team_ball()
-			if bl != null:
-				dst = bl
-		if dst != null:
-			var v = AI.calc_aim_vector2(position, Bullet.speed, dst.position, dst.velocity )
-			emit_signal("fire_bullet",team, position, v)
+	var v = ai.do_fire_bullet(team,delta,most_danger_area2d)
+	if v != Vector2.ZERO:
+		emit_signal("fire_bullet",team, position, v)
 
-	if AI.do_fire_homming(team,delta,position,velocity):
-		var dst :Area2D
-		if not_null_and_alive(most_danger_area2d) and (	(most_danger_area2d is Ball) or (most_danger_area2d is HommingBullet) ):
-			dst = most_danger_area2d
-		else:
-			var bl = find_other_team_ball()
-			if bl != null:
-				dst = bl
-		if dst != null:
-			emit_signal("fire_homming",team, position, dst)
+	var dst = ai.do_fire_homming(team,delta,most_danger_area2d)
+	if dst != null:
+		emit_signal("fire_homming",team, position, dst)
 
-	if AI.do_add_shield(team,delta,position,velocity):
+	if ai.do_add_shield(team,delta,position,velocity):
 		add_shield()
 
 func _physics_process(delta: float) -> void:
-	if AI.do_accel(team,delta,position,velocity):
+	if ai.do_accel(team,delta,position,velocity):
 		if not_null_and_alive(most_danger_area2d):
 			velocity += (position - most_danger_area2d.global_position).limit_length(speed_limit)
 			velocity = velocity.rotated( (randf()-0.5)*PI)
@@ -158,7 +143,7 @@ func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int,
 				end()
 	elif local_shape_node == $Scan1:
 		if not(area is Wall):
-			var dval = AI.calc_danger_level(self, area)
+			var dval = ai.calc_danger_level(self, area)
 			if dval > most_danger_value:
 				most_danger_value = dval
 				most_danger_area2d = area
