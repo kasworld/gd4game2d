@@ -11,10 +11,6 @@ var homming_bullet_scene = preload("res://homming_bullet.tscn")
 
 var cloud_scene = preload("res://cloud.tscn")
 
-func new_cloud():
-	var nc = cloud_scene.instantiate()
-	$CloudContainer.add_child(nc)
-
 func inc_team_stat(team : Team.Type, statname: String)->void:
 	$UILayer/HUD.inc_stat(team,statname)
 
@@ -23,7 +19,7 @@ func _ready():
 	$UILayer/HUD.init_stat()
 
 	for i in range(10):
-		new_cloud()
+		$CloudContainer.add_child(cloud_scene.instantiate())
 
 #	for t in range(2):
 	for t in range(Team.Type.LEN):
