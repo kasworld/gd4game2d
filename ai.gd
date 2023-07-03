@@ -14,11 +14,14 @@ func calc_aim_vector2(
 	var rtn = vt.rotated(a1)
 	return rtn
 
-
-func do_accel(_team :Team.Type,delta :float,_pos: Vector2, _velocity :Vector2)->bool:
+func do_accel(_team :Team.Type,delta :float,_pos: Vector2, velocity :Vector2, o :Area2D)->Vector2:
 	if randf() > 30.0*delta:
-		return true
-	return false
+		return velocity
+	if not_null_and_alive(o):
+		velocity += (position - o.global_position).limit_length(Ball.speed_limit)
+		velocity = velocity.rotated( (randf()-0.5)*PI)
+		velocity = velocity.limit_length(Ball.speed_limit)
+	return velocity
 
 func not_null_and_alive(o :Area2D)->bool:
 	return o != null and o.alive

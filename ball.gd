@@ -9,7 +9,7 @@ signal ended(t :Team.Type, p :Vector2)
 signal inc_team_stat(team : Team.Type, statname: String)
 
 var team :Team.Type = Team.Type.NONE
-var speed_limit :float = 200
+const speed_limit :float = 200
 var rotate_dir :float
 var velocity :Vector2
 var alive := true
@@ -70,10 +70,6 @@ func add_shield():
 func shield_end(p :Vector2):
 	emit_signal("shield_ended",p)
 
-func not_null_and_alive(o :Area2D)->bool:
-	return o != null and o.alive
-
-
 func _process(delta: float) -> void:
 	rotate(delta*rotate_dir)
 	var v = ai.do_fire_bullet(team,delta,most_danger_area2d)
@@ -88,13 +84,11 @@ func _process(delta: float) -> void:
 		add_shield()
 
 func _physics_process(delta: float) -> void:
-	if ai.do_accel(team,delta,position,velocity):
-		if not_null_and_alive(most_danger_area2d):
-			velocity += (position - most_danger_area2d.global_position).limit_length(speed_limit)
-			velocity = velocity.rotated( (randf()-0.5)*PI)
-			emit_signal("inc_team_stat",team,"accel")
+	var oldv = velocity
+	velocity = ai.do_accel(team,delta,position,velocity, most_danger_area2d)
+	if oldv != velocity:
+		emit_signal("inc_team_stat",team,"accel")
 
-	velocity = velocity.limit_length(speed_limit)
 	position += velocity * delta
 	clamp_pos()
 	most_danger_value = 0
