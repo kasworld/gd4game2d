@@ -65,12 +65,6 @@ func ball_explode_effect(t :Team.Type, p :Vector2):
 
 func fire_bullet(t :Team.Type, p :Vector2, v :Vector2):
 	inc_team_stat(t,"new_bullet")
-	if v == Vector2.ZERO:
-		var dst = find_other_team_ball(t)
-		if dst.team == t:
-			return
-		v = AI.calc_aim_vector2(p, 300.0, dst.position, dst.velocity )
-
 	var bl = bullet_scene.instantiate()
 	$BulletContainer.add_child(bl)
 	bl.ended.connect(bullet_explode_effect)
@@ -83,17 +77,13 @@ func find_other_team_ball(t :Team.Type)->Ball:
 	var try = 10
 	while try > 0 :
 		dst = ball_list.pick_random()
-		if dst.team != t:
+		if dst != null and dst.alive and dst.team != t:
 			break
 		try -= 1
 	return dst
 
 func fire_homming(t :Team.Type, p :Vector2, dst :Ball):
 	inc_team_stat(t,"new_homming")
-	if dst == null:
-		dst = find_other_team_ball(t)
-	if dst.team == t: # no team kill
-		return
 	var hbl = homming_bullet_scene.instantiate()
 	$BulletContainer.add_child(hbl)
 	hbl.ended.connect(bullet_explode_effect)

@@ -68,19 +68,37 @@ func shield_end(p :Vector2):
 func not_null_and_alive(o :Area2D)->bool:
 	return o != null and o.alive
 
+func find_other_team_ball() ->Ball:
+	var bl = get_tree().current_scene.find_other_team_ball(team)
+	if not not_null_and_alive(bl) or bl.team == team:
+		return null
+	return bl
+
 func _process(delta: float) -> void:
 	rotate(delta*rotate_dir)
 	if AI.do_fire_bullet(team,delta,position,velocity):
+		var dst :Area2D
 		if not_null_and_alive(most_danger_area2d) and not(most_danger_area2d is HommingBullet) :
-			emit_signal("fire_bullet",team, position, most_danger_area2d.global_position)
+			dst = most_danger_area2d
 		else:
-			emit_signal("fire_bullet",team, position, Vector2.ZERO)
+			var bl = find_other_team_ball()
+			if bl != null:
+				dst = bl
+		if dst != null:
+			var v = AI.calc_aim_vector2(position, Bullet.speed, dst.position, dst.velocity )
+			emit_signal("fire_bullet",team, position, v)
+
 	if AI.do_fire_homming(team,delta,position,velocity):
-		if not_null_and_alive(most_danger_area2d) and (
-			(most_danger_area2d is Ball) or (most_danger_area2d is HommingBullet) ):
-			emit_signal("fire_homming",team, position, most_danger_area2d)
+		var dst :Area2D
+		if not_null_and_alive(most_danger_area2d) and (	(most_danger_area2d is Ball) or (most_danger_area2d is HommingBullet) ):
+			dst = most_danger_area2d
 		else:
-			emit_signal("fire_homming",team, position, null)
+			var bl = find_other_team_ball()
+			if bl != null:
+				dst = bl
+		if dst != null:
+			emit_signal("fire_homming",team, position, dst)
+
 	if AI.do_add_shield(team,delta,position,velocity):
 		add_shield()
 

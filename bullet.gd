@@ -3,7 +3,7 @@ class_name Bullet extends Area2D
 signal ended(p :Vector2)
 signal inc_team_stat(team : Team.Type, statname: String)
 
-var speed :float = 300.0
+const speed :float = 300.0
 var rotate_dir :float
 var team :Team.Type = Team.Type.NONE
 var velocity :Vector2
