@@ -63,5 +63,5 @@ func _process(delta: float) -> void:
 
 func _on_timer_timeout() -> void:
 	var dur = Time.get_unix_time_from_system() - life_start
-	$GameInfo.text = "GameLife: %d:%d\nFPS:%d" %[dur / 60, fmod(dur,60), fps ]
+	$GameInfo.text = "GameLife: %02d:%02d\nFPS:%02d" %[dur / 60, fmod(dur,60), fps ]
 	fps = 0
