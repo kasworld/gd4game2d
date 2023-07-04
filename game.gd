@@ -22,7 +22,7 @@ func _ready():
 		$CloudContainer.add_child(cloud_scene.instantiate())
 
 #	for t in range(2):
-	for t in range(Team.Type.LEN*10):
+	for t in range(Team.Type.LEN*1):
 		ball_spawn_effect(t % Team.Type.LEN)
 
 func ball_spawn_effect(t :Team.Type):
