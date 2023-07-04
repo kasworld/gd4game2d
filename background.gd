@@ -2,6 +2,7 @@ extends ParallaxBackground
 
 const SPEED_LIMIT :float = 150
 var velocity :Vector2
+var accel :Vector2
 
 func _ready() -> void:
 	$ParallaxLayer.motion_mirroring = $ParallaxLayer/BGSprite.texture.get_size()
@@ -9,6 +10,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if randf() < 1.0*delta:
-		velocity += velocity.rotated( (randf()-0.5) * PI / 2)
+		accel = velocity.rotated( (randf()-0.5) * PI / 2)/4
+	velocity += accel
 	velocity = velocity.limit_length(SPEED_LIMIT)
 	scroll_offset += velocity * delta
