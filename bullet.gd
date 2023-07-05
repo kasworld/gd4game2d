@@ -1,6 +1,6 @@
 class_name Bullet extends Area2D
 
-signal ended(p :Vector2)
+signal ended(team : Team.Type, p :Vector2)
 signal inc_team_stat(team : Team.Type, statname: String)
 
 const SPEED_LIMIT :float = 300.0
@@ -22,7 +22,7 @@ func spawn(t :Team.Type,p :Vector2, v :Vector2)->void:
 func end():
 	if alive:
 		alive = false
-		emit_signal("ended", position)
+		emit_signal("ended",team, position)
 		queue_free()
 
 func _physics_process(delta: float) -> void:

@@ -18,7 +18,7 @@ shape = SubResource("CircleShape2D_iwkv5")
 [node name="TimerLife" type="Timer" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.3, 0.3)
+scale = Vector2(0.35, 0.35)
 texture = ExtResource("2_eviwn")
 
 [connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]

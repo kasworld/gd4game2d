@@ -82,7 +82,7 @@ func fire_homming(t :Team.Type, p :Vector2, dst :Ball):
 	hbl.inc_team_stat.connect(inc_team_stat)
 	hbl.spawn(t,p,dst)
 
-func bullet_explode_effect(p :Vector2):
+func bullet_explode_effect(t :Team.Type, p :Vector2):
 	var bee = bullet_explode_sprite.instantiate()
 	$EffectContainer.add_child(bee)
-	bee.spawn(p)
+	bee.spawn(t, p)

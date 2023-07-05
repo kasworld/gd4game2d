@@ -4,7 +4,7 @@ var shield_scene = preload("res://shield.tscn")
 
 signal fire_bullet(t :Team.Type, p :Vector2, v :Vector2)
 signal fire_homming(t :Team.Type, p :Vector2, dest :Ball)
-signal shield_ended(p :Vector2)
+signal shield_ended(t :Team.Type, p :Vector2)
 signal ended(t :Team.Type, p :Vector2)
 signal inc_team_stat(team : Team.Type, statname: String)
 
@@ -45,8 +45,8 @@ func add_shield():
 			)
 	sh.spawn(team)
 
-func shield_end(p :Vector2):
-	emit_signal("shield_ended",p)
+func shield_end(t :Team.Type, p :Vector2):
+	emit_signal("shield_ended",t, p)
 
 func _process(delta: float) -> void:
 	var v = ai.do_fire_bullet(team,delta,most_danger_area2d)

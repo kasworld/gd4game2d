@@ -1,6 +1,6 @@
 class_name Shield extends Area2D
 
-signal ended(p :Vector2)
+signal ended(team : Team.Type, p :Vector2)
 signal inc_team_stat(team : Team.Type, statname: String)
 
 var rotate_dir :float
@@ -17,7 +17,7 @@ func spawn(t :Team.Type):
 func end():
 	if alive:
 		alive = false
-		emit_signal("ended", global_position)
+		emit_signal("ended",team, global_position)
 		queue_free()
 
 func _process(delta: float) -> void:

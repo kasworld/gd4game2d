@@ -1,11 +1,15 @@
 [gd_scene load_steps=3 format=3 uid="uid://dfa1niklea7dd"]
 
-[ext_resource type="SpriteFrames" uid="uid://brn2ppgvodgej" path="res://explode_bullet.tres" id="1_vxfeo"]
+[ext_resource type="Texture2D" uid="uid://dvyyrpqnnmsql" path="res://resource/ball.png" id="1_x8bic"]
 [ext_resource type="Script" path="res://bullet_explode_effect.gd" id="2_c4xs1"]
 
-[node name="BulletExplodeEffect" type="AnimatedSprite2D"]
-sprite_frames = ExtResource("1_vxfeo")
-speed_scale = 4.0
+[node name="BulletExplodeEffect" type="Sprite2D"]
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("1_x8bic")
 script = ExtResource("2_c4xs1")
 
-[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
