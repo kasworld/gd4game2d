@@ -8,6 +8,7 @@ var bullet_scene = preload("res://bullet.tscn")
 var bullet_explode_sprite = preload("res://bullet_explode_effect.tscn")
 
 var homming_bullet_scene = preload("res://homming_bullet.tscn")
+var homming_explode_sprite = preload("res://homming_explode_effect.tscn")
 
 var cloud_scene = preload("res://cloud.tscn")
 
@@ -78,11 +79,16 @@ func fire_homming(t :Team.Type, p :Vector2, dst :Ball):
 	inc_team_stat(t,"new_homming")
 	var hbl = homming_bullet_scene.instantiate()
 	$BulletContainer.add_child(hbl)
-	hbl.ended.connect(bullet_explode_effect)
+	hbl.ended.connect(homming_explode_effect)
 	hbl.inc_team_stat.connect(inc_team_stat)
 	hbl.spawn(t,p,dst)
 
 func bullet_explode_effect(t :Team.Type, p :Vector2):
 	var bee = bullet_explode_sprite.instantiate()
+	$EffectContainer.add_child(bee)
+	bee.spawn(t, p)
+
+func homming_explode_effect(t :Team.Type, p :Vector2):
+	var bee = homming_explode_sprite.instantiate()
 	$EffectContainer.add_child(bee)
 	bee.spawn(t, p)
