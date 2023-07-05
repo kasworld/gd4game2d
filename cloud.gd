@@ -13,6 +13,7 @@ func _ready() -> void:
 	if randi_range(0,1) == 0 :
 		$Sprite2D.flip_v = true
 	$Sprite2D.self_modulate.a = randf()
+	$Sprite2D.scale = Vector2.ONE * randf_range(0.3,0.7)
 
 func _physics_process(delta: float) -> void:
 	var r = $CollisionShape2D.shape.radius
