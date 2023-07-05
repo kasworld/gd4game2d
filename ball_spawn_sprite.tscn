@@ -1,12 +1,15 @@
 [gd_scene load_steps=3 format=3 uid="uid://b183gwkmqcfc4"]
 
-[ext_resource type="SpriteFrames" uid="uid://d3a7u3b3bj4yi" path="res://spawn_ball.tres" id="1_xam56"]
+[ext_resource type="Texture2D" uid="uid://dvyyrpqnnmsql" path="res://resource/ball.png" id="1_ait7c"]
 [ext_resource type="Script" path="res://ball_spawn_sprite.gd" id="2_kmi0y"]
 
-[node name="BallSpawnSprite" type="AnimatedSprite2D"]
-scale = Vector2(0.6, 0.6)
-sprite_frames = ExtResource("1_xam56")
-speed_scale = 2.0
+[node name="BallSpawnSprite" type="Sprite2D"]
+scale = Vector2(2, 2)
+texture = ExtResource("1_ait7c")
 script = ExtResource("2_kmi0y")
 
-[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
