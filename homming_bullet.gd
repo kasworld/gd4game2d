@@ -34,7 +34,7 @@ func change_color():
 		$Sprite2D.self_modulate = Team.TeamColor[team]
 
 var frame := 0
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	frame+=1
 	if frame % 15 == 0:
 		change_color()
