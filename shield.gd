@@ -8,7 +8,7 @@ var team :Team.Type = Team.Type.NONE
 var alive := true
 
 func spawn(t :Team.Type):
-	$AnimatedSprite2D.frame = t*2 + randi_range(0,1)
+	$Sprite2D.self_modulate = Team.TeamColor[t]
 	team = t
 	rotate_dir = randf_range(-5,5)
 	$TimerLife.wait_time = randf() * 10  +1
@@ -21,7 +21,6 @@ func end():
 		queue_free()
 
 func _process(delta: float) -> void:
-	rotate(delta*rotate_dir)
 	position = position.rotated(delta*rotate_dir)
 
 func _on_timer_life_timeout() -> void:

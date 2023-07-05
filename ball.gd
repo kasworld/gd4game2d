@@ -25,7 +25,7 @@ func get_age_sec()->float:
 	return Time.get_unix_time_from_system() - life_start
 
 func spawn(t :Team.Type, p :Vector2):
-	$ColorBallSprites.frame = t*2 + randi_range(0,1)
+	$ColorBallSprite.self_modulate = Team.TeamColor[t]
 	team = t
 	position = p
 	velocity = Vector2.DOWN.rotated( randf() * 2 * PI )*SPEED_LIMIT
@@ -49,7 +49,6 @@ func shield_end(p :Vector2):
 	emit_signal("shield_ended",p)
 
 func _process(delta: float) -> void:
-	rotate(delta*rotate_dir)
 	var v = ai.do_fire_bullet(team,delta,most_danger_area2d)
 	if v != Vector2.ZERO:
 		emit_signal("fire_bullet",team, position, v)

@@ -11,7 +11,7 @@ var velocity :Vector2
 var alive := true
 
 func spawn(t :Team.Type,p :Vector2, v :Vector2)->void:
-	$AnimatedSprite2D.frame = t*2 + randi_range(0,1)
+	$Sprite2D.self_modulate = Team.TeamColor[t]
 	team = t
 	position = p
 	velocity = v.normalized() * SPEED_LIMIT
@@ -24,9 +24,6 @@ func end():
 		alive = false
 		emit_signal("ended", position)
 		queue_free()
-
-func _process(delta: float) -> void:
-	rotate(delta*rotate_dir)
 
 func _physics_process(delta: float) -> void:
 	position += velocity * delta

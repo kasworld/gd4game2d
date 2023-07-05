@@ -15,7 +15,7 @@ var accel :Vector2
 
 func spawn(t :Team.Type, p :Vector2, bl :Ball)->void:
 	team = t
-	$AnimatedSprite2D.frame = t
+	$Sprite2D.self_modulate = Team.TeamColor[t]
 	dest_ball = bl
 	dest_ball.ended.connect(dest_ball_end)
 	position = p
@@ -34,9 +34,6 @@ func end():
 		alive = false
 		emit_signal("ended", position)
 		queue_free()
-
-func _process(delta: float) -> void:
-	rotate(delta*rotate_dir)
 
 func _physics_process(delta: float) -> void:
 	velocity = velocity.limit_length(speed)

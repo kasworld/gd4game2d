@@ -12,3 +12,14 @@ enum Type {
 	YELLOW,
 	LEN,
 }
+
+const TeamColor = {
+	Type.BLUE : Color.BLUE,
+	Type.GREEN : Color.GREEN,
+	Type.GREY : Color.BLACK,
+	Type.ORANGE : Color.ORANGE,
+	Type.PURPLE : Color.PURPLE,
+	Type.RED : Color.RED,
+	Type.WHITE : Color.WHITE,
+	Type.YELLOW : Color.YELLOW,
+}

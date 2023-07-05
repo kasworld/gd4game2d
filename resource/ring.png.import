@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://fb804va5w0ml"
-path="res://.godot/imported/redbullet1.png-b987537c2e999b44e17d464e06086745.ctex"
+uid="uid://bc1gt5fvhe58f"
+path="res://.godot/imported/ring.png-233a85d2c74482651cf02eb7833ab18b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resource/redbullet1.png"
-dest_files=["res://.godot/imported/redbullet1.png-b987537c2e999b44e17d464e06086745.ctex"]
+source_file="res://resource/ring.png"
+dest_files=["res://.godot/imported/ring.png-233a85d2c74482651cf02eb7833ab18b.ctex"]
 
 [params]
 
