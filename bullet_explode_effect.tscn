@@ -4,12 +4,10 @@
 [ext_resource type="Script" path="res://bullet_explode_effect.gd" id="2_c4xs1"]
 
 [node name="BulletExplodeEffect" type="Sprite2D"]
-scale = Vector2(0.35, 0.35)
 texture = ExtResource("1_x8bic")
 script = ExtResource("2_c4xs1")
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
 autostart = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

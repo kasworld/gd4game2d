@@ -4,7 +4,6 @@
 [ext_resource type="Script" path="res://ball_explode_effect.gd" id="2_huop3"]
 
 [node name="BallExplodeEffect" type="Sprite2D"]
-scale = Vector2(0.7, 0.7)
 texture = ExtResource("1_njubr")
 script = ExtResource("2_huop3")
 

@@ -4,12 +4,10 @@
 [ext_resource type="Script" path="res://ball_spawn_sprite.gd" id="2_kmi0y"]
 
 [node name="BallSpawnSprite" type="Sprite2D"]
-scale = Vector2(2, 2)
 texture = ExtResource("1_ait7c")
 script = ExtResource("2_kmi0y")
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
 autostart = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -14,7 +14,7 @@ var team :Team.Type = Team.Type.NONE
 var rotate_dir :float
 var velocity :Vector2
 var alive := true
-var life_start := Time.get_unix_time_from_system()
+var life_start :float
 var ai :AI
 
 func _ready() -> void:
@@ -33,6 +33,7 @@ func spawn(t :Team.Type, p :Vector2):
 	monitorable = true
 	monitoring = true
 	visible = true
+	life_start = Time.get_unix_time_from_system()
 
 func add_shield():
 	emit_signal("inc_team_stat",team,"new_shield")
