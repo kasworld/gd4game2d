@@ -26,6 +26,19 @@ func spawn(t :Team.Type, p :Vector2, bl :Ball)->void:
 	$TimerLife.wait_time = 10
 	$TimerLife.start()
 
+
+func change_color():
+	if $Sprite2D.self_modulate == Team.TeamColor[team]:
+		$Sprite2D.self_modulate = Team.TeamColor[dest_ball.team]
+	else:
+		$Sprite2D.self_modulate = Team.TeamColor[team]
+
+var frame := 0
+func _process(delta: float) -> void:
+	frame+=1
+	if frame % 15 == 0:
+		change_color()
+
 func dest_ball_end(_t :Team.Type, _p :Vector2):
 	end()
 
