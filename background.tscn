@@ -187,7 +187,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 5.0
+"speed": 15.0
 }]
 
 [node name="Background" type="ParallaxBackground"]
@@ -200,6 +200,4 @@ motion_mirroring = Vector2(2048, 2048)
 self_modulate = Color(0.501961, 0.501961, 0.501961, 1)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_3kt1b")
-frame = 33
-frame_progress = 0.437497
 centered = false

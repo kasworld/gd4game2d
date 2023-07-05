@@ -5,7 +5,6 @@ var velocity :Vector2
 var accel :Vector2
 
 func _ready() -> void:
-#	$ParallaxLayer.motion_mirroring = $ParallaxLayer/AnimatedSprite2D.texture.get_size()
 	velocity = Vector2.ONE.rotated( randf() * 2 * PI ) * SPEED_LIMIT
 	$ParallaxLayer/AnimatedSprite2D.play("default")
 
