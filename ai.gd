@@ -32,7 +32,7 @@ func find_other_team_ball(team :Team.Type) ->Ball:
 		return null
 	return bl
 
-func do_fire_bullet(team :Team.Type,delta :float,o :Area2D)->Vector2:
+func do_fire_bullet(from_pos :Vector2, team :Team.Type,delta :float,o :Area2D)->Vector2:
 	if randf() > 5.0*delta :
 		return Vector2.ZERO
 	var dst :Area2D
@@ -44,7 +44,7 @@ func do_fire_bullet(team :Team.Type,delta :float,o :Area2D)->Vector2:
 			dst = bl
 	if dst == null:
 		return Vector2.ZERO
-	var v = calc_aim_vector2(position, Bullet.SPEED_LIMIT, dst.global_position, dst.velocity )
+	var v = calc_aim_vector2(from_pos, Bullet.SPEED_LIMIT, dst.global_position, dst.velocity )
 	return v
 
 func do_fire_homming(team :Team.Type,delta :float,o :Area2D)->Area2D:

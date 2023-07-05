@@ -49,7 +49,7 @@ func shield_end(t :Team.Type, p :Vector2):
 	emit_signal("shield_ended",t, p)
 
 func _process(delta: float) -> void:
-	var v = ai.do_fire_bullet(team,delta,most_danger_area2d)
+	var v = ai.do_fire_bullet(position, team,delta,most_danger_area2d)
 	if v != Vector2.ZERO:
 		emit_signal("fire_bullet",team, position, v)
 
