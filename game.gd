@@ -78,7 +78,7 @@ func find_other_team_ball(t :Team.Type)->Ball:
 func fire_homming(t :Team.Type, p :Vector2, dst :Ball):
 	inc_team_stat(t,"new_homming")
 	var hbl = homming_bullet_scene.instantiate()
-	$BulletContainer.add_child(hbl)
+	$HommingContainer.add_child(hbl)
 	hbl.ended.connect(homming_explode_effect)
 	hbl.inc_team_stat.connect(inc_team_stat)
 	hbl.spawn(t,p,dst)
@@ -92,3 +92,13 @@ func homming_explode_effect(t :Team.Type, p :Vector2):
 	var bee = homming_explode_sprite.instantiate()
 	$EffectContainer.add_child(bee)
 	bee.spawn(t, p)
+
+
+func _on_stat_timer_timeout() -> void:
+	$UILayer/HUD.ball_count = $BallContainer.get_child_count()
+	$UILayer/HUD.bullet_count = $BulletContainer.get_child_count()
+	$UILayer/HUD.homming_count = $HommingContainer.get_child_count()
+	var shield_count = 0
+	for b in $BallContainer.get_children():
+		shield_count += b.shield_count
+	$UILayer/HUD.shield_count = shield_count

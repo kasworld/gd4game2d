@@ -19,6 +19,13 @@ z_index = 50
 
 [node name="BulletContainer" type="Node2D" parent="."]
 
+[node name="HommingContainer" type="Node2D" parent="."]
+
 [node name="EffectContainer" type="Node2D" parent="."]
 
 [node name="Background" parent="." instance=ExtResource("2_5tsxc")]
+
+[node name="StatTimer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="StatTimer" to="." method="_on_stat_timer_timeout"]

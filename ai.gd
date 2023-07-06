@@ -15,6 +15,7 @@ func calc_aim_vector2(
 	return rtn
 
 func rand_per_sec(delta :float, per_sec :float)->bool:
+#	return true
 	return randf() < per_sec*delta
 
 func do_accel(_team :Team.Type,delta :float,_pos: Vector2, velocity :Vector2, o :Area2D)->Vector2:

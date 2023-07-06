@@ -31,6 +31,10 @@ var team_stat_label := {}
 
 var life_start := Time.get_unix_time_from_system()
 var fps :int
+var ball_count :int
+var bullet_count :int
+var shield_count :int
+var homming_count :int
 
 func init_stat():
 	add_label("TeamStat")
@@ -58,10 +62,19 @@ func inc_stat(team : Team.Type, statname: String)->void:
 	team_stat[teamname][statname] += 1
 	team_stat_label[teamname][statname].text = str(team_stat[teamname][statname])
 
+
 func _process(_delta: float) -> void:
 	fps += 1
 
 func _on_timer_timeout() -> void:
 	var dur = Time.get_unix_time_from_system() - life_start
-	$GameInfo.text = "Run Time: %02d:%02d\nFPS: %02d" %[dur / 60, fmod(dur,60), fps ]
+	$GameInfo.text = "Run Time: %02d:%02d\nFPS: %02d\nBall: %d\nShield: %d\nBullet: %d\nHomming: %d" %[
+		dur / 60,
+		fmod(dur,60),
+		fps,
+		ball_count,
+		shield_count,
+		bullet_count,
+		homming_count,
+		]
 	fps = 0

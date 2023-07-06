@@ -16,6 +16,7 @@ var velocity :Vector2
 var alive := true
 var life_start :float
 var ai :AI
+var shield_count :int
 
 func _ready() -> void:
 	ai = AI.new()
@@ -36,6 +37,7 @@ func spawn(t :Team.Type, p :Vector2):
 	life_start = Time.get_unix_time_from_system()
 
 func add_shield():
+	shield_count +=1
 	emit_signal("inc_team_stat",team,"new_shield")
 	var sh = shield_scene.instantiate()
 	add_child(sh)
@@ -48,6 +50,7 @@ func add_shield():
 
 func shield_end(t :Team.Type, p :Vector2):
 	emit_signal("shield_ended",t, p)
+	shield_count -=1
 
 func _process(delta: float) -> void:
 	var v = ai.do_fire_bullet(position, team,delta,most_danger_area2d)
