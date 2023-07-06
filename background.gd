@@ -9,14 +9,17 @@ func _ready() -> void:
 	var mirrorsize = $ParallaxLayer.motion_mirroring
 	var sizewh = 256
 	var tilesize = 128
+	var scalevt = Vector2( sizewh/tilesize, sizewh/tilesize)
+	var tilecountvt = mirrorsize / sizewh
+#	print_debug(scalevt, tilecountvt)
 	var sp_frames = preload("res://background_water.tres")
 	sp_frames.set_animation_speed("default",10)
-	for x in mirrorsize.x/sizewh+1:
-		for y in mirrorsize.y/sizewh+1:
+	for x in tilecountvt.x+1:
+		for y in tilecountvt.y+1:
 			var anisp = AnimatedSprite2D.new()
 			anisp.sprite_frames = sp_frames
 			$ParallaxLayer.add_child(anisp)
-			anisp.scale = Vector2( sizewh/tilesize, sizewh/tilesize)
+			anisp.scale = scalevt
 			anisp.position = Vector2(sizewh*x, sizewh*y)
 			anisp.play("default")
 			anisp.self_modulate = anisp.self_modulate.darkened(0.2)
