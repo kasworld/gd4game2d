@@ -3,7 +3,7 @@ class_name Bullet extends Area2D
 signal ended(team : Team.Type, p :Vector2)
 signal inc_team_stat(team : Team.Type, statname: String)
 
-const SPEED_LIMIT :float = 300.0
+const SPEED_LIMIT :float = 500.0
 
 var rotate_dir :float
 var team :Team.Type = Team.Type.NONE

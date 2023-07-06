@@ -14,8 +14,11 @@ func calc_aim_vector2(
 	var rtn = vt.rotated(a1)
 	return rtn
 
+func rand_per_sec(delta :float, per_sec :float)->bool:
+	return randf() < per_sec*delta
+
 func do_accel(_team :Team.Type,delta :float,_pos: Vector2, velocity :Vector2, o :Area2D)->Vector2:
-	if randf() > 30.0*delta:
+	if not rand_per_sec(delta, 30.0):
 		return velocity
 	if not_null_and_alive(o):
 		velocity += (position - o.global_position).limit_length(Ball.SPEED_LIMIT)
@@ -33,7 +36,7 @@ func find_other_team_ball(team :Team.Type) ->Ball:
 	return bl
 
 func do_fire_bullet(from_pos :Vector2, team :Team.Type,delta :float,o :Area2D)->Vector2:
-	if randf() > 5.0*delta :
+	if not rand_per_sec(delta, 5.0):
 		return Vector2.ZERO
 	var dst :Area2D
 	if not_null_and_alive(o) and not(o is HommingBullet) :
@@ -48,7 +51,7 @@ func do_fire_bullet(from_pos :Vector2, team :Team.Type,delta :float,o :Area2D)->
 	return v
 
 func do_fire_homming(team :Team.Type,delta :float,o :Area2D)->Area2D:
-	if randf() > 2.0*delta :
+	if not rand_per_sec(delta, 2.0):
 		return null
 	if not_null_and_alive(o) and ((o is Ball) or (o is HommingBullet)):
 		return o
@@ -56,7 +59,7 @@ func do_fire_homming(team :Team.Type,delta :float,o :Area2D)->Area2D:
 		return find_other_team_ball(team)
 
 func do_add_shield(_team :Team.Type,delta :float,_pos: Vector2, _velocity :Vector2)->bool:
-	if randf() > 2.0*delta :
+	if not rand_per_sec(delta, 2.0):
 		return false
 	return true
 

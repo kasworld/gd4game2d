@@ -1,6 +1,6 @@
 extends ParallaxBackground
 
-const SPEED_LIMIT :float = 150
+const SPEED_LIMIT :float = 100
 var velocity :Vector2
 var accel :Vector2
 
@@ -11,8 +11,8 @@ func _ready() -> void:
 	var tilesize = 128
 	var sp_frames = preload("res://background_water.tres")
 	sp_frames.set_animation_speed("default",10)
-	for x in mirrorsize.x/sizewh:
-		for y in mirrorsize.y/sizewh:
+	for x in mirrorsize.x/sizewh+1:
+		for y in mirrorsize.y/sizewh+1:
 			var anisp = AnimatedSprite2D.new()
 			anisp.sprite_frames = sp_frames
 			$ParallaxLayer.add_child(anisp)
