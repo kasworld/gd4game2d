@@ -3,7 +3,7 @@ class_name Shield extends Area2D
 signal ended(team : Team.Type, p :Vector2)
 signal inc_team_stat(team : Team.Type, statname: String)
 
-const LIFE_SEC = 10
+const LIFE_SEC = 10.0
 
 var rotate_dir :float
 var team :Team.Type = Team.Type.NONE

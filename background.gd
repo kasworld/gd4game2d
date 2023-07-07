@@ -7,8 +7,8 @@ var accel :Vector2
 func _ready() -> void:
 	velocity = Vector2.ONE.rotated( randf() * 2 * PI ) * SPEED_LIMIT
 	var mirrorsize = $ParallaxLayer.motion_mirroring
-	var sizewh = 256
-	var tilesize = 128
+	var sizewh = 256.0
+	var tilesize = 128.0
 	var scalevt = Vector2( sizewh/tilesize, sizewh/tilesize)
 	var tilecountvt = mirrorsize / sizewh
 #	print_debug(scalevt, tilecountvt)
