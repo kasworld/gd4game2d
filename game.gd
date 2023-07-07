@@ -23,8 +23,19 @@ func _ready():
 		$CloudContainer.add_child(cloud_scene.instantiate())
 
 #	for t in range(2):
-	for t in range(Team.Type.LEN*1):
-		ball_spawn_effect(t % Team.Type.LEN)
+#		ball_spawn_effect(t)
+
+var team_to_add = 1
+func rand_per_sec(delta :float, per_sec :float)->bool:
+	return randf() < per_sec*delta
+func _process(delta: float) -> void:
+	if team_to_add > 0 and rand_per_sec(delta, 1):
+		team_to_add -= 1
+		add_full_team()
+
+func add_full_team():
+	for t in range(Team.Type.LEN):
+		ball_spawn_effect(t)
 
 func ball_spawn_effect(t :Team.Type):
 	var bse = ball_spawn_sprite.instantiate()
