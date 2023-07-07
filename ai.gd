@@ -18,11 +18,11 @@ func rand_per_sec(delta :float, per_sec :float)->bool:
 #	return true
 	return randf() < per_sec*delta
 
-func do_accel(_team :Team.Type,delta :float,_pos: Vector2, velocity :Vector2, o :Area2D)->Vector2:
+func do_accel(_team :Team.Type,delta :float,pos: Vector2, velocity :Vector2, o :Area2D)->Vector2:
 	if not rand_per_sec(delta, 30.0):
 		return velocity
 	if not_null_and_alive(o):
-		velocity += (position - o.global_position).limit_length(Ball.SPEED_LIMIT)
+		velocity = (pos - o.global_position).limit_length(Ball.SPEED_LIMIT)
 		velocity = velocity.rotated( (randf()-0.5)*PI)
 		velocity = velocity.limit_length(Ball.SPEED_LIMIT)
 	return velocity
