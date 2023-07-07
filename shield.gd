@@ -3,6 +3,8 @@ class_name Shield extends Area2D
 signal ended(team : Team.Type, p :Vector2)
 signal inc_team_stat(team : Team.Type, statname: String)
 
+const LIFE_SEC = 10
+
 var rotate_dir :float
 var team :Team.Type = Team.Type.NONE
 var alive := true
@@ -11,7 +13,7 @@ func spawn(t :Team.Type):
 	$Sprite2D.self_modulate = Team.TeamColor[t]
 	team = t
 	rotate_dir = randf_range(-5,5)
-	$TimerLife.wait_time = randf() * 10  +1
+	$TimerLife.wait_time = randfn(LIFE_SEC,LIFE_SEC/10)
 	$TimerLife.start()
 
 func end():

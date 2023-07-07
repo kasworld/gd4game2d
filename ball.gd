@@ -9,9 +9,10 @@ signal ended(t :Team.Type, p :Vector2)
 signal inc_team_stat(team : Team.Type, statname: String)
 
 const SPEED_LIMIT :float = 200
+const MAX_SHIELD = 36
+const INIT_SHIELD = 20
 
 var team :Team.Type = Team.Type.NONE
-var rotate_dir :float
 var velocity :Vector2
 var alive := true
 var life_start :float
@@ -30,13 +31,16 @@ func spawn(t :Team.Type, p :Vector2):
 	team = t
 	position = p
 	velocity = Vector2.DOWN.rotated( randf() * 2 * PI )*SPEED_LIMIT
-	rotate_dir = randf_range(-5,5)
 	monitorable = true
 	monitoring = true
 	visible = true
 	life_start = Time.get_unix_time_from_system()
+	for i in INIT_SHIELD:
+		add_shield()
 
 func add_shield():
+	if shield_count >= MAX_SHIELD:
+		return
 	shield_count +=1
 	emit_signal("inc_team_stat",team,"new_shield")
 	var sh = shield_scene.instantiate()

@@ -4,8 +4,8 @@ signal ended(team : Team.Type, p :Vector2)
 signal inc_team_stat(team : Team.Type, statname: String)
 
 const SPEED_LIMIT :float = 500.0
+const LIFE_SEC = 10
 
-var rotate_dir :float
 var team :Team.Type = Team.Type.NONE
 var velocity :Vector2
 var alive := true
@@ -15,8 +15,7 @@ func spawn(t :Team.Type,p :Vector2, v :Vector2)->void:
 	team = t
 	position = p
 	velocity = v.normalized() * SPEED_LIMIT
-	rotate_dir = randf_range(-5,5)
-	$TimerLife.wait_time = 10
+	$TimerLife.wait_time = LIFE_SEC
 	$TimerLife.start()
 
 func end():
