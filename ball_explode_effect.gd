@@ -1,6 +1,6 @@
-extends Sprite2D
+class_name BallExplodeSprite extends Sprite2D
 
-signal ended(t :Team.Type)
+signal ended(o :BallExplodeSprite)
 
 var team :Team.Type = Team.Type.NONE
 var life_start :float
@@ -19,5 +19,5 @@ func _process(delta: float) -> void:
 	rotate(delta*PI)
 
 func _on_timer_timeout() -> void:
-	emit_signal("ended",team)
-	queue_free()
+	emit_signal("ended",self)
+#	queue_free()

@@ -1,6 +1,6 @@
-extends Sprite2D
+class_name BallSpawnSprite extends Sprite2D
 
-signal ended(t :Team.Type, p :Vector2)
+signal ended(o :BallSpawnSprite)
 
 var team :int
 var life_start :float
@@ -19,5 +19,5 @@ func _process(_delta: float) -> void:
 	scale = Vector2( (1 + sin(dur*PI))/2 *SCALE , (1 + sin(dur*PI))/2 * SCALE )
 
 func _on_timer_timeout() -> void:
-	emit_signal("ended",team, position)
-	queue_free()
+	emit_signal("ended",self)
+#	queue_free()

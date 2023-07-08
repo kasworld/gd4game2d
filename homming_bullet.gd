@@ -1,6 +1,6 @@
 class_name HommingBullet extends Area2D
 
-signal ended(team : Team.Type, p :Vector2)
+signal ended(o :HommingBullet)
 signal inc_team_stat(team : Team.Type, statname: String)
 
 const SPEED_LIMIT :float = 300
@@ -44,7 +44,7 @@ func dest_ball_end(_t :Team.Type, _p :Vector2):
 func end():
 	if alive:
 		alive = false
-		emit_signal("ended",team, position)
+		emit_signal("ended",self)
 		queue_free()
 
 func _physics_process(delta: float) -> void:
