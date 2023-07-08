@@ -105,7 +105,6 @@ func homming_explode_effect(t :Team.Type, p :Vector2):
 	$EffectContainer.add_child(bee)
 	bee.spawn(t, p)
 
-
 func _on_stat_timer_timeout() -> void:
 	$UILayer/HUD.ball_count = $BallContainer.get_child_count()
 	$UILayer/HUD.bullet_count = $BulletContainer.get_child_count()

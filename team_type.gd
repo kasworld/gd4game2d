@@ -1,4 +1,4 @@
-class_name Team extends Object
+class_name Team
 
 enum Type {
 	NONE =-1,

@@ -21,7 +21,7 @@ var shield_count :int
 
 func _ready() -> void:
 	ai = AI.new()
-	add_child(ai)
+	ai.find_other_team_ball = get_tree().current_scene.find_other_team_ball
 
 func get_age_sec()->float:
 	return Time.get_unix_time_from_system() - life_start

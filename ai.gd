@@ -1,4 +1,7 @@
-class_name AI extends Node2D
+class_name AI #extends Node2D
+
+
+var find_other_team_ball :Callable #func(team:Team.type)->Ball
 
 func calc_aim_vector2(
 	src_pos :Vector2,
@@ -29,12 +32,6 @@ func do_accel(_team :Team.Type,delta :float,pos: Vector2, velocity :Vector2, o :
 func not_null_and_alive(o :Area2D)->bool:
 	return o != null and o.alive
 
-func find_other_team_ball(team :Team.Type) ->Ball:
-	var bl = get_tree().current_scene.find_other_team_ball(team)
-	if not not_null_and_alive(bl) or bl.team == team:
-		return null
-	return bl
-
 func do_fire_bullet(from_pos :Vector2, team :Team.Type,delta :float,o :Area2D)->Vector2:
 	if not rand_per_sec(delta, 5.0):
 		return Vector2.ZERO
@@ -42,7 +39,7 @@ func do_fire_bullet(from_pos :Vector2, team :Team.Type,delta :float,o :Area2D)->
 	if not_null_and_alive(o) and not(o is HommingBullet) :
 		dst = o
 	else:
-		var bl = find_other_team_ball(team)
+		var bl = find_other_team_ball.call(team)
 		if bl != null:
 			dst = bl
 	if dst == null:
@@ -56,7 +53,7 @@ func do_fire_homming(team :Team.Type,delta :float,o :Area2D)->Area2D:
 	if not_null_and_alive(o) and ((o is Ball) or (o is HommingBullet)):
 		return o
 	else:
-		return find_other_team_ball(team)
+		return find_other_team_ball.call(team)
 
 func do_add_shield(_team :Team.Type,delta :float,_pos: Vector2, _velocity :Vector2)->bool:
 	if not rand_per_sec(delta, 2.0):
