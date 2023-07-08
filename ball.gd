@@ -4,8 +4,8 @@ var shield_scene = preload("res://shield.tscn")
 
 signal fire_bullet(t :Team.Type, p :Vector2, v :Vector2)
 signal fire_homming(t :Team.Type, p :Vector2, dest :Ball)
-signal shield_ended(t :Team.Type, p :Vector2)
-signal ended(t :Team.Type, p :Vector2)
+signal shield_ended(o :Shield)
+signal ended(o :Ball)
 signal inc_team_stat(team : Team.Type, statname: String)
 
 const SPEED_LIMIT :float = 200
@@ -14,12 +14,14 @@ const INIT_SHIELD = 20
 
 var team :Team.Type = Team.Type.NONE
 var velocity :Vector2
-var alive := true
+var alive :bool
 var life_start :float
 var ai :AI
 var shield_count :int
+var shield_free_list :Node2DPool
 
 func _ready() -> void:
+	shield_free_list = Node2DPool.new(shield_scene.instantiate)
 	ai = AI.new()
 	ai.find_other_team_ball = get_tree().current_scene.find_other_team_ball
 
@@ -29,11 +31,13 @@ func get_age_sec()->float:
 func spawn(t :Team.Type, p :Vector2):
 	$ColorBallSprite.self_modulate = Team.TeamColor[t]
 	team = t
+	alive = true
 	position = p
 	velocity = Vector2.DOWN.rotated( randf() * 2 * PI )*SPEED_LIMIT
 	monitorable = true
 	monitoring = true
 	visible = true
+	shield_count = 0
 	life_start = Time.get_unix_time_from_system()
 	for i in INIT_SHIELD:
 		add_shield()
@@ -43,18 +47,32 @@ func add_shield():
 		return
 	shield_count +=1
 	emit_signal("inc_team_stat",team,"new_shield")
-	var sh = shield_scene.instantiate()
+	var sh = shield_free_list.get_node2d()
 	add_child(sh)
-	sh.ended.connect(shield_end)
-	sh.inc_team_stat.connect(
-		func(t : Team.Type, statname: String):
-			emit_signal("inc_team_stat",t,statname)
+	connect_if_not(sh.ended,shield_end)
+	connect_if_not(sh.inc_team_stat,
+		func(t : Team.Type, statname: String): emit_signal("inc_team_stat",t,statname)
 			)
 	sh.spawn(team)
 
-func shield_end(t :Team.Type, p :Vector2):
-	emit_signal("shield_ended",t, p)
+func connect_if_not(sg :Signal, fn :Callable):
+	if not sg.is_connected(fn):
+		sg.connect(fn)
+
+func shield_end(o :Shield):
+	emit_signal("shield_ended",o)
+#	shield_free_list.put_node2d(o)
+#	remove_child.call_deferred(o)
+	o.queue_free()
 	shield_count -=1
+
+func end():
+	if alive:
+		alive = false
+		for s in get_children():
+			if s is Shield:
+				shield_end(s)
+		emit_signal("ended", self)
 
 func _process(delta: float) -> void:
 	var v = ai.do_fire_bullet(position, team,delta,most_danger_area2d)
@@ -94,12 +112,6 @@ func _physics_process(delta: float) -> void:
 
 	most_danger_value = 0
 	most_danger_area2d = null
-
-func end():
-	if alive:
-		alive = false
-		emit_signal("ended", team, position)
-		queue_free()
 
 
 var most_danger_area2d :Area2D # ball , bullet, shield, homming

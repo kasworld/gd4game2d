@@ -8,16 +8,17 @@ const LIFE_SEC = 10
 
 var speed :float
 var team :Team.Type = Team.Type.NONE
-var alive := true
+var alive :bool
 var dest_ball :Ball
 var velocity :Vector2
 var accel :Vector2
 
 func spawn(t :Team.Type, p :Vector2, bl :Ball)->void:
 	team = t
+	alive = true
 	$Sprite2D.self_modulate = Team.TeamColor[t]
 	dest_ball = bl
-	dest_ball.ended.connect(dest_ball_end)
+	connect_if_not(dest_ball.ended,dest_ball_end)
 	position = p
 	speed = randfn(SPEED_LIMIT, SPEED_LIMIT/10.0)
 	if speed < SPEED_LIMIT/3 :
@@ -25,6 +26,9 @@ func spawn(t :Team.Type, p :Vector2, bl :Ball)->void:
 	$TimerLife.wait_time = LIFE_SEC
 	$TimerLife.start()
 
+func connect_if_not(sg :Signal, fn :Callable):
+	if not sg.is_connected(fn):
+		sg.connect(fn)
 
 func change_color():
 	if $Sprite2D.self_modulate == Team.TeamColor[team]:
@@ -38,14 +42,13 @@ func _process(_delta: float) -> void:
 	if frame % 15 == 0:
 		change_color()
 
-func dest_ball_end(_t :Team.Type, _p :Vector2):
+func dest_ball_end(_o :Ball):
 	end()
 
 func end():
 	if alive:
 		alive = false
 		emit_signal("ended",self)
-		queue_free()
 
 func _physics_process(delta: float) -> void:
 	velocity = velocity.limit_length(speed)

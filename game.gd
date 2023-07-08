@@ -45,7 +45,7 @@ func _ready():
 #		ball_spawn_effect(t)
 	add_full_team()
 
-var team_to_add = 10
+var team_to_add = 100
 func rand_per_sec(delta :float, per_sec :float)->bool:
 	return randf() < per_sec*delta
 func _process(delta: float) -> void:
@@ -60,8 +60,7 @@ func add_full_team():
 func ball_spawn_effect(t :Team.Type):
 	var obj = ball_spawn_free_list.get_node2d()
 	$EffectContainer.add_child(obj)
-	if not obj.ended.is_connected(new_ball):
-		obj.ended.connect(new_ball)
+	connect_if_not(obj.ended,new_ball)
 	var vp = get_viewport_rect().size
 	var p = Vector2(randf_range(0,vp.x),randf_range(0,vp.y))
 	obj.spawn(t,p)
@@ -73,26 +72,25 @@ func new_ball(o :BallSpawnSprite):
 
 func new_ball_defered(t :Team.Type, p :Vector2):
 	inc_team_stat(t,"new_ball")
-	var obj = ball_scene.instantiate()
+	var obj = ball_free_list.get_node2d()
 	$BallContainer.add_child(obj)
-	if not obj.fire_bullet.is_connected(fire_bullet):
-		obj.fire_bullet.connect(fire_bullet)
-	if not obj.fire_homming.is_connected(fire_homming):
-		obj.fire_homming.connect(fire_homming)
-	if not obj.shield_ended.is_connected(bullet_explode_effect):
-		obj.shield_ended.connect(bullet_explode_effect)
-	if not obj.ended.is_connected(ball_explode_effect):
-		obj.ended.connect(ball_explode_effect)
-	if not obj.inc_team_stat.is_connected(inc_team_stat):
-		obj.inc_team_stat.connect(inc_team_stat)
+	connect_if_not(obj.fire_bullet,fire_bullet)
+	connect_if_not(obj.fire_homming,fire_homming)
+	connect_if_not(obj.shield_ended,bullet_explode_effect)
+	connect_if_not(obj.ended,ball_end)
+	connect_if_not(obj.inc_team_stat,inc_team_stat)
 	obj.spawn(t,p)
 
-func ball_explode_effect(t :Team.Type, p :Vector2):
+func ball_end(o:Ball):
+	ball_free_list.put_node2d(o)
+	$BallContainer.remove_child.call_deferred(o)
+	ball_explode_effect(o)
+
+func ball_explode_effect(o :Ball):
 	var obj = ball_explode_free_list.get_node2d()
 	$EffectContainer.add_child(obj)
-	if not obj.ended.is_connected(ball_explode_effect_end):
-		obj.ended.connect(ball_explode_effect_end)
-	obj.spawn(t,p)
+	connect_if_not(obj.ended,ball_explode_effect_end)
+	obj.spawn(o.team,o.position)
 
 func ball_explode_effect_end(o :BallExplodeSprite):
 	ball_explode_free_list.put_node2d(o)
@@ -101,20 +99,23 @@ func ball_explode_effect_end(o :BallExplodeSprite):
 
 func fire_bullet(t :Team.Type, p :Vector2, v :Vector2):
 	inc_team_stat(t,"new_bullet")
-	var obj = bullet_scene.instantiate()
+	var obj = bullet_free_list.get_node2d()
 	$BulletContainer.add_child(obj)
-	if not obj.ended.is_connected(bullet_explode_effect):
-		obj.ended.connect(bullet_explode_effect)
-	if not obj.inc_team_stat.is_connected(inc_team_stat):
-		obj.inc_team_stat.connect(inc_team_stat)
+	connect_if_not(obj.ended,bullet_end)
+	connect_if_not(obj.inc_team_stat,inc_team_stat)
 	obj.spawn(t,p,v)
 
-func bullet_explode_effect(t :Team.Type, p :Vector2):
+func bullet_end(o :Bullet):
+	bullet_free_list.put_node2d(o)
+	$BulletContainer.remove_child.call_deferred(o)
+	bullet_explode_effect(o)
+
+# call from shield end , bullet end
+func bullet_explode_effect(o :Node2D):
 	var obj = bullet_explode_free_list.get_node2d()
 	$EffectContainer.add_child(obj)
-	if not obj.ended.is_connected(bullet_explode_effect_end):
-		obj.ended.connect(bullet_explode_effect_end)
-	obj.spawn(t, p)
+	connect_if_not(obj.ended,bullet_explode_effect_end)
+	obj.spawn(o.team,o.position)
 
 func bullet_explode_effect_end(o :BulletExplodeSprite):
 	bullet_explode_free_list.put_node2d(o)
@@ -122,24 +123,30 @@ func bullet_explode_effect_end(o :BulletExplodeSprite):
 
 func fire_homming(t :Team.Type, p :Vector2, dst :Ball):
 	inc_team_stat(t,"new_homming")
-	var obj = homming_scene.instantiate()
+	var obj = homming_free_list.get_node2d()
 	$HommingContainer.add_child(obj)
-	if not obj.ended.is_connected(homming_explode_effect):
-		obj.ended.connect(homming_explode_effect)
-	if not obj.inc_team_stat.is_connected(inc_team_stat):
-		obj.inc_team_stat.connect(inc_team_stat)
+	connect_if_not(obj.ended,homming_end)
+	connect_if_not(obj.inc_team_stat,inc_team_stat)
 	obj.spawn(t,p,dst)
+
+func homming_end(o:HommingBullet):
+	homming_free_list.put_node2d(o)
+	$HommingContainer.remove_child.call_deferred(o)
+	homming_explode_effect(o)
 
 func homming_explode_effect(o :HommingBullet):
 	var obj = homming_explode_free_list.get_node2d()
 	$EffectContainer.add_child(obj)
-	if not obj.ended.is_connected(homming_explode_effect_end):
-		obj.ended.connect(homming_explode_effect_end)
+	connect_if_not(obj.ended,homming_explode_effect_end)
 	obj.spawn(o.team,o.position)
 
 func homming_explode_effect_end(o :HommingExplodeSprite):
 	homming_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
+
+func connect_if_not(sg :Signal, fn :Callable):
+	if not sg.is_connected(fn):
+		sg.connect(fn)
 
 func find_other_team_ball(t :Team.Type)->Ball:
 	var ball_list = $BallContainer.get_children()

@@ -20,4 +20,3 @@ func _process(delta: float) -> void:
 
 func _on_timer_timeout() -> void:
 	emit_signal("ended",self)
-#	queue_free()

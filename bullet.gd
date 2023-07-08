@@ -1,6 +1,6 @@
 class_name Bullet extends Area2D
 
-signal ended(team : Team.Type, p :Vector2)
+signal ended(o :Bullet)
 signal inc_team_stat(team : Team.Type, statname: String)
 
 const SPEED_LIMIT :float = 500.0
@@ -8,11 +8,12 @@ const LIFE_SEC = 10
 
 var team :Team.Type = Team.Type.NONE
 var velocity :Vector2
-var alive := true
+var alive :bool
 
 func spawn(t :Team.Type,p :Vector2, v :Vector2)->void:
 	$Sprite2D.self_modulate = Team.TeamColor[t]
 	team = t
+	alive = true
 	position = p
 	velocity = v.normalized() * SPEED_LIMIT
 	$TimerLife.wait_time = LIFE_SEC
@@ -21,8 +22,7 @@ func spawn(t :Team.Type,p :Vector2, v :Vector2)->void:
 func end():
 	if alive:
 		alive = false
-		emit_signal("ended",team, position)
-		queue_free()
+		emit_signal("ended",self)
 
 func _physics_process(delta: float) -> void:
 	position += velocity * delta
