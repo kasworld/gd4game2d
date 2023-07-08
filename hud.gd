@@ -25,6 +25,7 @@ var ball_count :int
 var bullet_count :int
 var shield_count :int
 var homming_count :int
+var effect_count :int
 
 func init_stat():
 	add_label("TeamStat")
@@ -58,7 +59,7 @@ func _process(delta: float) -> void:
 
 func _on_timer_timeout() -> void:
 	var dur = Time.get_unix_time_from_system() - life_start
-	$GameInfo.text = "Run Time: %02d:%02d\nFPS: %04.2f\nBall: %d\nShield: %d\nBullet: %d\nHomming: %d" %[
+	$GameInfo.text = "Run Time: %02d:%02d\nFPS: %04.2f\nBall: %d\nShield: %d\nBullet: %d\nHomming: %d\nEffect: %d" %[
 		dur / 60,
 		fmod(dur,60),
 		fps,
@@ -66,5 +67,6 @@ func _on_timer_timeout() -> void:
 		shield_count,
 		bullet_count,
 		homming_count,
+		effect_count,
 		]
 	fps = 0

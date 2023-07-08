@@ -48,7 +48,7 @@ func _ready():
 #		ball_spawn_effect(t)
 	add_full_team()
 
-var team_to_add = 10
+var team_to_add = 50
 func rand_per_sec(delta :float, per_sec :float)->bool:
 	return randf() < per_sec*delta
 func _process(delta: float) -> void:
@@ -179,6 +179,7 @@ func _on_stat_timer_timeout() -> void:
 	$UILayer/HUD.ball_count = $BallContainer.get_child_count()
 	$UILayer/HUD.bullet_count = $BulletContainer.get_child_count()
 	$UILayer/HUD.homming_count = $HommingContainer.get_child_count()
+	$UILayer/HUD.effect_count = $EffectContainer.get_child_count()
 	var shield_count = 0
 	for b in $BallContainer.get_children():
 		shield_count += b.shield_count

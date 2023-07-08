@@ -9,8 +9,8 @@ signal ended(o :Ball)
 signal inc_team_stat(team : Team.Type, statname: String)
 
 const SPEED_LIMIT :float = 200
-const MAX_SHIELD = 36
-const INIT_SHIELD = 20
+const MAX_SHIELD = 12
+const INIT_SHIELD = 12
 
 var team :Team.Type = Team.Type.NONE
 var velocity :Vector2
