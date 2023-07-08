@@ -1,15 +1,5 @@
 extends Control
 
-const TeamName :Array[String] = [
-	"BLUE",
-	"GREEN",
-	"GREY",
-	"ORANGE",
-	"PURPLE",
-	"RED",
-	"WHITE",
-	"YELLOW",
-]
 
 const StatCulumnString :Array[String] = [
 	"accel",
@@ -41,7 +31,7 @@ func init_stat():
 	for s in StatCulumnString:
 		add_label(s)
 
-	for t in TeamName:
+	for t in Team.Name:
 		add_label(t)
 		team_stat[t] = {}
 		team_stat_label[t] = {}
@@ -58,7 +48,7 @@ func add_label(s :String)->Label:
 	return lb
 
 func inc_stat(team : Team.Type, statname: String)->void:
-	var teamname = TeamName[team]
+	var teamname = Team.Name[team]
 	team_stat[teamname][statname] += 1
 	team_stat_label[teamname][statname].text = str(team_stat[teamname][statname])
 

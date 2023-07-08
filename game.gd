@@ -19,6 +19,8 @@ var ball_explode_free_list :Node2DPool
 var bullet_free_list :Node2DPool
 var bullet_explode_free_list :Node2DPool
 
+var shield_explode_free_list :Node2DPool
+
 var homming_free_list :Node2DPool
 var homming_explode_free_list :Node2DPool
 
@@ -33,6 +35,7 @@ func _ready():
 	ball_explode_free_list = Node2DPool.new(ball_explode_sprite.instantiate)
 	bullet_free_list = Node2DPool.new(bullet_scene.instantiate)
 	bullet_explode_free_list = Node2DPool.new(bullet_explode_sprite.instantiate)
+	shield_explode_free_list = Node2DPool.new(bullet_explode_sprite.instantiate)
 	homming_free_list = Node2DPool.new(homming_scene.instantiate)
 	homming_explode_free_list = Node2DPool.new(homming_explode_sprite.instantiate)
 
@@ -45,7 +48,7 @@ func _ready():
 #		ball_spawn_effect(t)
 	add_full_team()
 
-var team_to_add = 100
+var team_to_add = 10
 func rand_per_sec(delta :float, per_sec :float)->bool:
 	return randf() < per_sec*delta
 func _process(delta: float) -> void:
@@ -76,7 +79,7 @@ func new_ball_defered(t :Team.Type, p :Vector2):
 	$BallContainer.add_child(obj)
 	connect_if_not(obj.fire_bullet,fire_bullet)
 	connect_if_not(obj.fire_homming,fire_homming)
-	connect_if_not(obj.shield_ended,bullet_explode_effect)
+	connect_if_not(obj.shield_ended,shield_explode_effect)
 	connect_if_not(obj.ended,ball_end)
 	connect_if_not(obj.inc_team_stat,inc_team_stat)
 	obj.spawn(t,p)
@@ -97,6 +100,16 @@ func ball_explode_effect_end(o :BallExplodeSprite):
 	$EffectContainer.remove_child(o)
 	ball_spawn_effect(o.team)
 
+func shield_explode_effect(o :Shield):
+	var obj = shield_explode_free_list.get_node2d()
+	$EffectContainer.add_child(obj)
+	connect_if_not(obj.ended,shield_explode_effect_end)
+	obj.spawn(o.team,o.global_position)
+
+func shield_explode_effect_end(o :BulletExplodeSprite):
+	shield_explode_free_list.put_node2d(o)
+	$EffectContainer.remove_child(o)
+
 func fire_bullet(t :Team.Type, p :Vector2, v :Vector2):
 	inc_team_stat(t,"new_bullet")
 	var obj = bullet_free_list.get_node2d()
@@ -110,8 +123,7 @@ func bullet_end(o :Bullet):
 	$BulletContainer.remove_child.call_deferred(o)
 	bullet_explode_effect(o)
 
-# call from shield end , bullet end
-func bullet_explode_effect(o :Node2D):
+func bullet_explode_effect(o :Bullet):
 	var obj = bullet_explode_free_list.get_node2d()
 	$EffectContainer.add_child(obj)
 	connect_if_not(obj.ended,bullet_explode_effect_end)
@@ -120,6 +132,8 @@ func bullet_explode_effect(o :Node2D):
 func bullet_explode_effect_end(o :BulletExplodeSprite):
 	bullet_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
+
+
 
 func fire_homming(t :Team.Type, p :Vector2, dst :Ball):
 	inc_team_stat(t,"new_homming")
