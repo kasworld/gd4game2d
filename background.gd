@@ -1,6 +1,6 @@
 class_name Background extends ParallaxBackground
 
-const SPEED_LIMIT :float = 100
+const SPEED_LIMIT :float = 20
 var velocity :Vector2
 var accel :Vector2
 var vp_size :Vector2
