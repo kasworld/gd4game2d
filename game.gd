@@ -31,10 +31,7 @@ var background :Background
 func inc_team_stat(team : Team.Type, statname: String)->void:
 	$UILayer/HUD.inc_stat(team,statname)
 
-func add_background():
-	background = background_scene.instantiate()
-	background.vp_size = get_viewport_rect().size
-	add_child(background)
+var vp_size :Vector2
 
 func _ready():
 	randomize()
@@ -47,9 +44,13 @@ func _ready():
 	homming_free_list = Node2DPool.new(homming_scene.instantiate)
 	homming_explode_free_list = Node2DPool.new(homming_explode_sprite.instantiate)
 
-	add_background()
+	vp_size = get_viewport_rect().size
 
-	$UILayer/HUD.init_stat()
+	background = background_scene.instantiate()
+	background.init_bg(vp_size)
+	add_child(background)
+
+	$UILayer/HUD.init_stat(vp_size)
 
 	for i in range(100):
 		$CloudContainer.add_child(cloud_scene.instantiate())
@@ -75,6 +76,8 @@ func handle_input():
 		background.visible = not background.visible
 	if Input.is_action_just_pressed("Cloud"):
 		$CloudContainer.visible = not $CloudContainer.visible
+	if Input.is_action_just_pressed("Quit"):
+		get_tree().quit()
 
 func add_full_team():
 	for t in range(Team.Type.LEN):

@@ -27,7 +27,13 @@ var shield_count :int
 var homming_count :int
 var effect_count :int
 
-func init_stat():
+var vp_size :Vector2
+
+func init_stat(vp :Vector2):
+	vp_size = vp
+
+	$Help.label_settings.font_size = vp_size.y / 32
+	$GameInfo.label_settings.font_size = vp_size.y / 32
 	add_label("TeamStat")
 	for s in StatCulumnString:
 		add_label(s)
@@ -46,6 +52,7 @@ func add_label(s :String)->Label:
 	var lb = Label.new()
 	lb.label_settings = preload("res://label_teamstat.tres")
 	lb.text = s
+	lb.label_settings.font_size = vp_size.y / 50
 	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	$TeamStatGrid.add_child(lb)
 	return lb
@@ -54,7 +61,6 @@ func inc_stat(team : Team.Type, statname: String)->void:
 	var teamname = Team.Name(team)
 	team_stat[teamname][statname] += 1
 	team_stat_label[teamname][statname].text = str(team_stat[teamname][statname])
-
 
 func _process(delta: float) -> void:
 	fps = (fps+1.0/delta)/2

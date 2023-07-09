@@ -5,6 +5,9 @@ var velocity :Vector2
 var accel :Vector2
 var vp_size :Vector2
 
+func init_bg(vp :Vector2) -> void:
+	vp_size = vp
+
 func _ready() -> void:
 	velocity = Vector2.ONE.rotated( randf() * 2 * PI ) * SPEED_LIMIT
 	var tilevt = Vector2(128.0, 128.0) # from image

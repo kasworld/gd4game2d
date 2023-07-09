@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://s5uj50u6rb05"]
+[gd_scene load_steps=4 format=3 uid="uid://s5uj50u6rb05"]
 
 [ext_resource type="Script" path="res://hud.gd" id="1_b1ff5"]
 [ext_resource type="LabelSettings" uid="uid://cc3lhwtpomfu2" path="res://label_gamestat.tres" id="2_j0hvk"]
+[ext_resource type="LabelSettings" uid="uid://0ootsxt7d3hr" path="res://label_help.tres" id="3_3jjdy"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -33,5 +34,19 @@ horizontal_alignment = 2
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
+
+[node name="Help" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -135.0
+offset_right = 315.0
+grow_vertical = 0
+text = "H : toggle HUD
+C : toggle Cloud
+B : toggle Background
+ESC : Quit"
+label_settings = ExtResource("3_3jjdy")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
