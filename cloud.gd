@@ -1,11 +1,12 @@
 extends Area2D
 
-const SPEED_LIMIT = 50.0
-const BOUNCE_RADIUS = 40.0
+const SPEED_LIMIT = 10.0
+const BOUNCE_RADIUS = 10.0
 var velocity :Vector2
 var vp :Vector2
 var rotate_rad :float
-
+var alpha_base :float
+var scale_base :float
 func _ready() -> void:
 	vp = get_viewport_rect().size
 	position = Vector2(randf_range(0,vp.x),randf_range(0,vp.y))
@@ -14,14 +15,19 @@ func _ready() -> void:
 		sp_abs = SPEED_LIMIT/10
 	velocity = Vector2.ONE.rotated( randf() * 2 * PI ) * sp_abs
 	rotate(randf()*2*PI)
-	rotate_rad = randfn(0, PI/20)
+	rotate_rad = randfn(0, PI/50)
+	alpha_base = randf()
+	scale_base = randf()
 
 	if randi_range(0,1) == 0 :
 		$Sprite2D.flip_h = true
 	if randi_range(0,1) == 0 :
 		$Sprite2D.flip_v = true
-	$Sprite2D.self_modulate.a = randf()
-	$Sprite2D.scale = Vector2.ONE * randf_range(0.3,0.7)
+
+func _process(delta: float) -> void:
+	var tm = Time.get_unix_time_from_system()
+	$Sprite2D.self_modulate.a = (sin(tm*PI/61+alpha_base*2*PI)+1)/2
+	$Sprite2D.scale = Vector2.ONE * (sin(tm*PI/59+scale_base*2*PI)/3+1)
 
 func _physics_process(delta: float) -> void:
 	if position.x < BOUNCE_RADIUS :
