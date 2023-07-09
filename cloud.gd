@@ -4,12 +4,18 @@ const SPEED_LIMIT = 50
 const BOUNCE_RADIUS = 40
 var velocity :Vector2
 var vp :Vector2
+var rotate_rad :float
 
 func _ready() -> void:
 	vp = get_viewport_rect().size
 	position = Vector2(randf_range(0,vp.x),randf_range(0,vp.y))
-	velocity = Vector2.ONE.rotated( randf() * 2 * PI ) * SPEED_LIMIT
+	var sp_abs = randfn(SPEED_LIMIT, SPEED_LIMIT/5)
+	if sp_abs < SPEED_LIMIT/10:
+		sp_abs = SPEED_LIMIT/10
+	velocity = Vector2.ONE.rotated( randf() * 2 * PI ) * sp_abs
 	rotate(randf()*2*PI)
+	rotate_rad = randfn(0, PI/20)
+
 	if randi_range(0,1) == 0 :
 		$Sprite2D.flip_h = true
 	if randi_range(0,1) == 0 :
@@ -33,4 +39,5 @@ func _physics_process(delta: float) -> void:
 
 	position += velocity * delta
 	velocity = velocity.limit_length(SPEED_LIMIT)
+	rotate(rotate_rad*delta)
 
