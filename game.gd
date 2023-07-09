@@ -12,6 +12,8 @@ var homming_explode_sprite = preload("res://homming_explode_effect.tscn")
 
 var cloud_scene = preload("res://cloud.tscn")
 
+var background_scene = preload("res://background.tscn")
+
 var ball_free_list :Node2DPool
 var ball_spawn_free_list :Node2DPool
 var ball_explode_free_list :Node2DPool
@@ -39,6 +41,9 @@ func _ready():
 	homming_free_list = Node2DPool.new(homming_scene.instantiate)
 	homming_explode_free_list = Node2DPool.new(homming_explode_sprite.instantiate)
 
+	var bg = background_scene.instantiate()
+	bg.vp_size = get_viewport_rect().size
+	add_child(bg)
 	$UILayer/HUD.init_stat()
 
 	for i in range(100):
@@ -46,14 +51,15 @@ func _ready():
 
 #	for t in range(2):
 #		ball_spawn_effect(t)
-	add_full_team()
+	for i in 1:
+		add_full_team()
 
-var team_to_add = 10
+var team_to_delay_add = 0
 func rand_per_sec(delta :float, per_sec :float)->bool:
 	return randf() < per_sec*delta
 func _process(delta: float) -> void:
-	if team_to_add > 0 and rand_per_sec(delta, 1):
-		team_to_add -= 1
+	if team_to_delay_add > 0 and rand_per_sec(delta, 1):
+		team_to_delay_add -= 1
 		add_full_team()
 
 func add_full_team():
@@ -132,8 +138,6 @@ func bullet_explode_effect(o :Bullet):
 func bullet_explode_effect_end(o :BulletExplodeSprite):
 	bullet_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
-
-
 
 func fire_homming(t :Team.Type, p :Vector2, dst :Ball):
 	inc_team_stat(t,"new_homming")

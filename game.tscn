@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://7u1t5lj73shm"]
+[gd_scene load_steps=3 format=3 uid="uid://7u1t5lj73shm"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_vjs00"]
-[ext_resource type="PackedScene" uid="uid://cocfmr8wyudsh" path="res://background.tscn" id="2_5tsxc"]
 [ext_resource type="PackedScene" uid="uid://s5uj50u6rb05" path="res://hud.tscn" id="2_fponq"]
 
 [node name="Game" type="Node2D"]
@@ -22,8 +21,6 @@ z_index = 50
 [node name="HommingContainer" type="Node2D" parent="."]
 
 [node name="EffectContainer" type="Node2D" parent="."]
-
-[node name="Background" parent="." instance=ExtResource("2_5tsxc")]
 
 [node name="StatTimer" type="Timer" parent="."]
 autostart = true
