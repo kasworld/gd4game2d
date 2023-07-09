@@ -32,3 +32,7 @@ window/stretch/mode="canvas_items"
 [physics]
 
 common/enable_pause_aware_picking=true
+
+[rendering]
+
+environment/defaults/default_clear_color=Color(0.160784, 0.372549, 1, 1)

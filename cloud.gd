@@ -9,6 +9,11 @@ var alpha_base :float
 var scale_base :float
 func _ready() -> void:
 	vp = get_viewport_rect().size
+	var tex_sizevt = Vector2(512,512)
+	var size_ratevt = tex_sizevt/vp*2.5
+	scale = Vector2(size_ratevt.x, size_ratevt.x)
+#	print_debug(vp, tex_sizevt, size_ratevt)
+
 	position = Vector2(randf_range(0,vp.x),randf_range(0,vp.y))
 	var sp_abs = randfn(SPEED_LIMIT, SPEED_LIMIT/5)
 	if sp_abs < SPEED_LIMIT/10:

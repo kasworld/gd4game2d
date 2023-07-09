@@ -30,6 +30,11 @@ var homming_explode_free_list :Node2DPool
 func inc_team_stat(team : Team.Type, statname: String)->void:
 	$UILayer/HUD.inc_stat(team,statname)
 
+func add_background():
+	var bg = background_scene.instantiate()
+	bg.vp_size = get_viewport_rect().size
+	add_child(bg)
+
 func _ready():
 	randomize()
 	ball_free_list = Node2DPool.new(ball_scene.instantiate)
@@ -41,9 +46,8 @@ func _ready():
 	homming_free_list = Node2DPool.new(homming_scene.instantiate)
 	homming_explode_free_list = Node2DPool.new(homming_explode_sprite.instantiate)
 
-	var bg = background_scene.instantiate()
-	bg.vp_size = get_viewport_rect().size
-	add_child(bg)
+	add_background()
+
 	$UILayer/HUD.init_stat()
 
 	for i in range(100):
@@ -51,7 +55,8 @@ func _ready():
 
 #	for t in range(2):
 #		ball_spawn_effect(t)
-	add_full_team()
+	for i in 1:
+		add_full_team()
 
 var team_to_delay_add = 0
 func rand_per_sec(delta :float, per_sec :float)->bool:
