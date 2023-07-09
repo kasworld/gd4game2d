@@ -14,13 +14,13 @@ const INIT_SHIELD = 12
 
 var team :Team.Type = Team.Type.NONE
 var velocity :Vector2
-var alive :bool
-var life_start :float
 var ai :AI
 var shield_count :int
 var shield_free_list :Node2DPool
 var vp_size :Vector2
 var bounce_radius :float
+var alive :bool
+var life_start :float
 
 func _ready() -> void:
 	shield_free_list = Node2DPool.new(shield_scene.instantiate)
@@ -36,13 +36,13 @@ func spawn(t :Team.Type, p :Vector2):
 	$ColorBallSprite.self_modulate = Team.TeamColor[t]
 	team = t
 	alive = true
+	life_start = Time.get_unix_time_from_system()
 	position = p
 	velocity = Vector2.DOWN.rotated( randf() * 2 * PI )*SPEED_LIMIT
 	monitorable = true
 	monitoring = true
 	visible = true
 	shield_count = 0
-	life_start = Time.get_unix_time_from_system()
 	for i in INIT_SHIELD:
 		add_shield()
 

@@ -8,14 +8,16 @@ const LIFE_SEC = 10.0
 var rotate_dir :float
 var team :Team.Type = Team.Type.NONE
 var alive :bool
+var life_start :float
+var life_limit_sec :float
 
 func spawn(t :Team.Type):
 	$Sprite2D.self_modulate = Team.TeamColor[t]
 	team = t
 	alive = true
+	life_start = Time.get_unix_time_from_system()
 	rotate_dir = randf_range(-5,5)
-	$TimerLife.wait_time = randfn(LIFE_SEC,LIFE_SEC/10)
-	$TimerLife.start()
+	life_limit_sec = randfn(LIFE_SEC,LIFE_SEC/10)
 
 func end():
 	if alive:
@@ -23,10 +25,11 @@ func end():
 		emit_signal("ended",self)
 
 func _process(delta: float) -> void:
+	var dur = Time.get_unix_time_from_system() - life_start
+	if dur > life_limit_sec:
+		end()
+		return
 	position = position.rotated(delta*rotate_dir)
-
-func _on_timer_life_timeout() -> void:
-	end()
 
 func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, _local_shape_index: int) -> void:
 	if area is Ball:

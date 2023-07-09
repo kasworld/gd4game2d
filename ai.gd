@@ -47,13 +47,13 @@ func do_fire_bullet(from_pos :Vector2, team :Team.Type,delta :float,o :Area2D)->
 	var v = calc_aim_vector2(from_pos, Bullet.SPEED_LIMIT, dst.global_position, dst.velocity )
 	return v
 
-func do_fire_homming(team :Team.Type,delta :float,o :Area2D)->Area2D:
+func do_fire_homming(myteam :Team.Type,delta :float,o :Area2D)->Area2D:
 	if not rand_per_sec(delta, 2.0):
 		return null
 	if not_null_and_alive(o) and ((o is Ball) or (o is HommingBullet)):
 		return o
 	else:
-		return find_other_team_ball.call(team)
+		return find_other_team_ball.call(myteam)
 
 func do_add_shield(_team :Team.Type,delta :float,_pos: Vector2, _velocity :Vector2)->bool:
 	if not rand_per_sec(delta, 2.0):

@@ -51,8 +51,7 @@ func _ready():
 
 #	for t in range(2):
 #		ball_spawn_effect(t)
-	for i in 5:
-		add_full_team()
+	add_full_team()
 
 var team_to_delay_add = 0
 func rand_per_sec(delta :float, per_sec :float)->bool:
@@ -175,9 +174,9 @@ func find_other_team_ball(t :Team.Type)->Ball:
 	while try > 0 :
 		dst = ball_list.pick_random()
 		if dst != null and dst.alive and dst.team != t:
-			break
+			return dst
 		try -= 1
-	return dst
+	return null
 
 func _on_stat_timer_timeout() -> void:
 	$UILayer/HUD.ball_count = $BallContainer.get_child_count()

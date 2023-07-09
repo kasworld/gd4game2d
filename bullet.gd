@@ -9,27 +9,30 @@ const LIFE_SEC = 10.0
 var team :Team.Type = Team.Type.NONE
 var velocity :Vector2
 var alive :bool
+var life_start :float
 
 func spawn(t :Team.Type,p :Vector2, v :Vector2)->void:
 	$Sprite2D.self_modulate = Team.TeamColor[t]
 	team = t
 	alive = true
+	life_start = Time.get_unix_time_from_system()
 	position = p
 	velocity = v.normalized() * SPEED_LIMIT
-	$TimerLife.wait_time = LIFE_SEC
-	$TimerLife.start()
 
 func end():
 	if alive:
 		alive = false
 		emit_signal("ended",self)
 
+func _process(_delta: float) -> void:
+	var dur = Time.get_unix_time_from_system() - life_start
+	if dur > LIFE_SEC:
+		end()
+		return
+
 func _physics_process(delta: float) -> void:
 	position += velocity * delta
 	velocity = velocity.limit_length(SPEED_LIMIT)
-
-func _on_timer_life_timeout() -> void:
-	end()
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	end()
