@@ -7,8 +7,8 @@ var vp_size :Vector2
 
 func _ready() -> void:
 	velocity = Vector2.ONE.rotated( randf() * 2 * PI ) * SPEED_LIMIT
-	var tilevt = Vector2(128.0, 128.0)
-	var sizevt = Vector2(256.0, 256.0)
+	var tilevt = Vector2(128.0, 128.0) # from image
+	var sizevt = Vector2( vp_size.y/4,vp_size.y/4)
 	var scalevt = Vector2(sizevt.x/tilevt.x, sizevt.y/tilevt.y)
 	var mirrorvt = Vector2(
 		(int(vp_size.x / sizevt.x) + 1) * sizevt.x,
