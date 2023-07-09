@@ -4,7 +4,7 @@ signal ended(o :HommingBullet)
 signal inc_team_stat(team : Team.Type, statname: String)
 
 const SPEED_LIMIT :float = 300
-const LIFE_SEC = 10
+const LIFE_SEC = 10.0
 
 var speed :float
 var team :Team.Type = Team.Type.NONE

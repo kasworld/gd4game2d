@@ -48,7 +48,7 @@ func _ready():
 #		ball_spawn_effect(t)
 	add_full_team()
 
-var team_to_add = 50
+var team_to_add = 10
 func rand_per_sec(delta :float, per_sec :float)->bool:
 	return randf() < per_sec*delta
 func _process(delta: float) -> void:
