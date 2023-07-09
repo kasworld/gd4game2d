@@ -1,7 +1,7 @@
 extends Area2D
 
-const SPEED_LIMIT = 50
-const BOUNCE_RADIUS = 40
+const SPEED_LIMIT = 50.0
+const BOUNCE_RADIUS = 40.0
 var velocity :Vector2
 var vp :Vector2
 var rotate_rad :float

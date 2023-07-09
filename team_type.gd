@@ -13,16 +13,8 @@ enum Type {
 	LEN,
 }
 
-const Name :Array[String] = [
-	"BLUE",
-	"GREEN",
-	"BLACK",
-	"ORANGE",
-	"PURPLE",
-	"RED",
-	"WHITE",
-	"YELLOW",
-]
+static func Name(t :Type) ->String:
+	return Type.keys()[t+1]
 
 const TeamColor = {
 	Type.BLUE : Color.BLUE,
@@ -35,7 +27,7 @@ const TeamColor = {
 	Type.YELLOW : Color.YELLOW,
 }
 
-enum GameObjectType {
+enum ObjectType {
 	BallSpawn,
 	Ball,
 	BallExplode,

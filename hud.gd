@@ -32,14 +32,15 @@ func init_stat():
 	for s in StatCulumnString:
 		add_label(s)
 
-	for t in Team.Name:
-		add_label(t)
-		team_stat[t] = {}
-		team_stat_label[t] = {}
+	for t in Team.Type.LEN:
+		var tn = Team.Name(t)
+		add_label(tn)
+		team_stat[tn] = {}
+		team_stat_label[tn] = {}
 		for c in StatCulumnString:
-			team_stat[t][c] = 0
-			var lb = add_label(str(team_stat[t][c]))
-			team_stat_label[t][c] = lb
+			team_stat[tn][c] = 0
+			var lb = add_label(str(team_stat[tn][c]))
+			team_stat_label[tn][c] = lb
 
 func add_label(s :String)->Label:
 	var lb = Label.new()
@@ -50,7 +51,7 @@ func add_label(s :String)->Label:
 	return lb
 
 func inc_stat(team : Team.Type, statname: String)->void:
-	var teamname = Team.Name[team]
+	var teamname = Team.Name(team)
 	team_stat[teamname][statname] += 1
 	team_stat_label[teamname][statname].text = str(team_stat[teamname][statname])
 
