@@ -26,14 +26,15 @@ var shield_explode_free_list :Node2DPool
 var homming_free_list :Node2DPool
 var homming_explode_free_list :Node2DPool
 
+var background :Background
 
 func inc_team_stat(team : Team.Type, statname: String)->void:
 	$UILayer/HUD.inc_stat(team,statname)
 
 func add_background():
-	var bg = background_scene.instantiate()
-	bg.vp_size = get_viewport_rect().size
-	add_child(bg)
+	background = background_scene.instantiate()
+	background.vp_size = get_viewport_rect().size
+	add_child(background)
 
 func _ready():
 	randomize()
@@ -65,6 +66,15 @@ func _process(delta: float) -> void:
 	if team_to_delay_add > 0 and rand_per_sec(delta, 1):
 		team_to_delay_add -= 1
 		add_full_team()
+	handle_input()
+
+func handle_input():
+	if Input.is_action_just_pressed("HUD"):
+		$UILayer.visible = not $UILayer.visible
+	if Input.is_action_just_pressed("Background"):
+		background.visible = not background.visible
+	if Input.is_action_just_pressed("Cloud"):
+		$CloudContainer.visible = not $CloudContainer.visible
 
 func add_full_team():
 	for t in range(Team.Type.LEN):
