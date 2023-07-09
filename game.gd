@@ -51,7 +51,7 @@ func _ready():
 
 #	for t in range(2):
 #		ball_spawn_effect(t)
-	for i in 1:
+	for i in 5:
 		add_full_team()
 
 var team_to_delay_add = 0

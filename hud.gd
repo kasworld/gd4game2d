@@ -43,6 +43,7 @@ func init_stat():
 
 func add_label(s :String)->Label:
 	var lb = Label.new()
+	lb.label_settings = preload("res://label_teamstat.tres")
 	lb.text = s
 	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	$TeamStatGrid.add_child(lb)

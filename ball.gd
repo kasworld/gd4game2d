@@ -19,11 +19,15 @@ var life_start :float
 var ai :AI
 var shield_count :int
 var shield_free_list :Node2DPool
+var vp_size :Vector2
+var bounce_radius :float
 
 func _ready() -> void:
 	shield_free_list = Node2DPool.new(shield_scene.instantiate)
 	ai = AI.new()
 	ai.find_other_team_ball = get_tree().current_scene.find_other_team_ball
+	vp_size = get_viewport_rect().size
+	bounce_radius = $CollisionShape2D.shape.radius
 
 func get_age_sec()->float:
 	return Time.get_unix_time_from_system() - life_start
@@ -93,26 +97,21 @@ func _physics_process(delta: float) -> void:
 		emit_signal("inc_team_stat",team,"accel")
 
 	position += velocity * delta
-
-	var r = $CollisionShape2D.shape.radius
-	var vp = get_viewport_rect().size
-
-	if position.x < r :
-		position.x = r
+	if position.x < bounce_radius :
+		position.x = bounce_radius
 		velocity.x = abs(velocity.x)
-	elif position.x > vp.x - r:
-		position.x = vp.x - r
+	elif position.x > vp_size.x - bounce_radius:
+		position.x = vp_size.x - bounce_radius
 		velocity.x = -abs(velocity.x)
-	if position.y < r :
-		position.y = r
+	if position.y < bounce_radius :
+		position.y = bounce_radius
 		velocity.y = abs(velocity.y)
-	elif position.y > vp.y - r:
-		position.y = vp.y - r
+	elif position.y > vp_size.y - bounce_radius:
+		position.y = vp_size.y - bounce_radius
 		velocity.y = -abs(velocity.y)
 
 	most_danger_value = 0
 	most_danger_area2d = null
-
 
 var most_danger_area2d :Area2D # ball , bullet, shield, homming
 var most_danger_value :float = 0
