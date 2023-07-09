@@ -20,5 +20,6 @@ func _process(_delta: float) -> void:
 	if dur > LIFE_SEC:
 		emit_signal("ended",self)
 		return
-	self_modulate.a = sin(dur*PI/2)
-	scale = Vector2( (1 + sin(dur*PI))/2 *SCALE , (1 + sin(dur*PI))/2 * SCALE )
+	var rate = dur / LIFE_SEC
+	self_modulate.a = sin(rate*PI/2)
+	scale = Vector2( (1 + sin(rate*PI))/2 *SCALE , (1 + sin(rate*PI))/2 * SCALE )
