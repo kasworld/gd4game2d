@@ -135,7 +135,7 @@ const color_list = [
 [Color.TEAL, "TEAL"],
 [Color.THISTLE, "THISTLE"],
 [Color.TOMATO, "TOMATO"],
-[Color.TRANSPARENT, "TRANSPARENT"],
+#[Color.TRANSPARENT, "TRANSPARENT"],
 [Color.TURQUOISE, "TURQUOISE"],
 [Color.VIOLET, "VIOLET"],
 [Color.WEB_GRAY, "WEB_GRAY"],
