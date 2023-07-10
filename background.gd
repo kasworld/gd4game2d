@@ -8,9 +8,27 @@ var vp_size :Vector2
 func init_bg(vp :Vector2) -> void:
 	vp_size = vp
 
+var bg_state :int
+var bg_colors = [
+	Color.DIM_GRAY,
+	Color.DARK_BLUE,
+	Color.DARK_GREEN,
+	Color.DARK_RED,
+	Color.ORANGE.darkened(0.5),
+	Color.PURPLE.darkened(0.5),
+	Color.YELLOW.darkened(0.5),
+]
 func toggle_bg():
-	$ParallaxLayer.visible = not $ParallaxLayer.visible
-	$ColorRect.visible = not $ColorRect.visible
+	bg_state += 1
+	bg_state %= bg_colors.size() + 1
+	match bg_state:
+		0:
+			$ParallaxLayer.visible = true
+			$ColorRect.visible = false
+		_:
+			$ParallaxLayer.visible = false
+			$ColorRect.visible = true
+			$ColorRect.color = bg_colors[bg_state-1]
 
 func _ready() -> void:
 	init_ani_tile()
