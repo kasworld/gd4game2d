@@ -26,5 +26,5 @@ static func make_color_teamlist(team_count :int)->Array[ColorTeam]:
 		ct.name = NamedColorList.get_colorname(ct.color_index)
 		ct.color = NamedColorList.get_color(ct.color_index)
 		rtn.append(ct)
-		print("%s %s %s %s" % [t, ct.color_index, ct.color, ct.name])
+#		print("%s %s %s %s" % [t, ct.color_index, ct.color, ct.name])
 	return rtn
