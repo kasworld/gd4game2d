@@ -1,18 +1,18 @@
 class_name Bullet extends Area2D
 
 signal ended(o :Bullet)
-signal inc_team_stat(team : Team.Type, statname: String)
+signal inc_team_stat(team : ColorTeam, statname: String)
 
 const SPEED_LIMIT :float = 500.0
 const LIFE_SEC = 10.0
 
-var team :Team.Type = Team.Type.NONE
+var team :ColorTeam
 var velocity :Vector2
 var alive :bool
 var life_start :float
 
-func spawn(t :Team.Type,p :Vector2, v :Vector2)->void:
-	$Sprite2D.self_modulate = Team.TeamColor[t]
+func spawn(t :ColorTeam,p :Vector2, v :Vector2)->void:
+	$Sprite2D.self_modulate = t.color
 	team = t
 	alive = true
 	life_start = Time.get_unix_time_from_system()

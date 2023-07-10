@@ -5,12 +5,12 @@ signal ended(o :HommingExplodeSprite)
 const LIFE_SEC = 1.0
 const SCALE = 1.0
 
-var team :Team.Type = Team.Type.NONE
+var team :ColorTeam
 var life_start :float
 
-func spawn(t :Team.Type, p :Vector2):
+func spawn(t :ColorTeam, p :Vector2):
 	team = t
-	self_modulate = Team.TeamColor[t]
+	self_modulate = t.color
 	position = p
 	life_start = Time.get_unix_time_from_system()
 

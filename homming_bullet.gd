@@ -1,24 +1,24 @@
 class_name HommingBullet extends Area2D
 
 signal ended(o :HommingBullet)
-signal inc_team_stat(team : Team.Type, statname: String)
+signal inc_team_stat(team : ColorTeam, statname: String)
 
 const SPEED_LIMIT :float = 300
 const LIFE_SEC = 10.0
 
 var speed :float
-var team :Team.Type = Team.Type.NONE
+var team :ColorTeam
 var dest_ball :Ball
 var velocity :Vector2
 var accel :Vector2
 var alive :bool
 var life_start :float
 
-func spawn(t :Team.Type, p :Vector2, bl :Ball)->void:
+func spawn(t :ColorTeam, p :Vector2, bl :Ball)->void:
 	team = t
 	alive = true
 	life_start = Time.get_unix_time_from_system()
-	$Sprite2D.self_modulate = Team.TeamColor[t]
+	$Sprite2D.self_modulate = t.color
 	dest_ball = bl
 	connect_if_not(dest_ball.ended,dest_ball_end)
 	position = p
@@ -31,10 +31,10 @@ func connect_if_not(sg :Signal, fn :Callable):
 		sg.connect(fn)
 
 func change_color():
-	if $Sprite2D.self_modulate == Team.TeamColor[team]:
-		$Sprite2D.self_modulate = Team.TeamColor[dest_ball.team]
+	if $Sprite2D.self_modulate == team.color:
+		$Sprite2D.self_modulate = dest_ball.team.color
 	else:
-		$Sprite2D.self_modulate = Team.TeamColor[team]
+		$Sprite2D.self_modulate = team.color
 
 func dest_ball_end(_o :Ball):
 	end()

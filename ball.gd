@@ -2,17 +2,17 @@ class_name Ball extends Area2D
 
 var shield_scene = preload("res://shield.tscn")
 
-signal fire_bullet(t :Team.Type, p :Vector2, v :Vector2)
-signal fire_homming(t :Team.Type, p :Vector2, dest :Ball)
+signal fire_bullet(t :ColorTeam, p :Vector2, v :Vector2)
+signal fire_homming(t :ColorTeam, p :Vector2, dest :Ball)
 signal shield_ended(o :Shield)
 signal ended(o :Ball)
-signal inc_team_stat(team : Team.Type, statname: String)
+signal inc_team_stat(team : ColorTeam, statname: String)
 
 const SPEED_LIMIT :float = 200
 const MAX_SHIELD = 12
 const INIT_SHIELD = 12
 
-var team :Team.Type = Team.Type.NONE
+var team :ColorTeam
 var velocity :Vector2
 var ai :AI
 var shield_count :int
@@ -32,8 +32,8 @@ func _ready() -> void:
 func get_age_sec()->float:
 	return Time.get_unix_time_from_system() - life_start
 
-func spawn(t :Team.Type, p :Vector2):
-	$ColorBallSprite.self_modulate = Team.TeamColor[t]
+func spawn(t :ColorTeam, p :Vector2):
+	$ColorBallSprite.self_modulate = t.color
 	team = t
 	alive = true
 	life_start = Time.get_unix_time_from_system()
@@ -55,7 +55,7 @@ func add_shield():
 	add_child(sh)
 	connect_if_not(sh.ended,shield_end)
 	connect_if_not(sh.inc_team_stat,
-		func(t : Team.Type, statname: String): emit_signal("inc_team_stat",t,statname)
+		func(t : ColorTeam, statname: String): emit_signal("inc_team_stat",t,statname)
 			)
 	sh.spawn(team)
 

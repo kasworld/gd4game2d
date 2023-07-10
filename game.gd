@@ -28,13 +28,16 @@ var homming_explode_free_list :Node2DPool
 
 var background :Background
 
-func inc_team_stat(team : Team.Type, statname: String)->void:
+func inc_team_stat(team : ColorTeam, statname: String)->void:
 	$UILayer/HUD.inc_stat(team,statname)
 
 var vp_size :Vector2
 
+var colorteam_list :Array[ColorTeam]
+
 func _ready():
 	randomize()
+	colorteam_list = ColorTeam.make_color_teamlist()
 	ball_free_list = Node2DPool.new(ball_scene.instantiate)
 	ball_spawn_free_list = Node2DPool.new(ball_spawn_sprite.instantiate)
 	ball_explode_free_list = Node2DPool.new(ball_explode_sprite.instantiate)
@@ -50,7 +53,7 @@ func _ready():
 	background.init_bg(vp_size)
 	add_child(background)
 
-	$UILayer/HUD.init_stat(vp_size)
+	$UILayer/HUD.init_stat(vp_size, colorteam_list)
 
 	for i in range(100):
 		$CloudContainer.add_child(cloud_scene.instantiate())
@@ -80,10 +83,10 @@ func handle_input():
 		get_tree().quit()
 
 func add_full_team():
-	for t in range(Team.Type.LEN):
+	for t in colorteam_list:
 		ball_spawn_effect(t)
 
-func ball_spawn_effect(t :Team.Type):
+func ball_spawn_effect(t :ColorTeam):
 	var obj = ball_spawn_free_list.get_node2d()
 	$EffectContainer.add_child(obj)
 	connect_if_not(obj.ended,new_ball)
@@ -96,7 +99,7 @@ func new_ball(o :BallSpawnSprite):
 	$EffectContainer.remove_child(o)
 	new_ball_defered.call_deferred(o.team,o.position)
 
-func new_ball_defered(t :Team.Type, p :Vector2):
+func new_ball_defered(t :ColorTeam, p :Vector2):
 	inc_team_stat(t,"new_ball")
 	var obj = ball_free_list.get_node2d()
 	$BallContainer.add_child(obj)
@@ -133,7 +136,7 @@ func shield_explode_effect_end(o :BulletExplodeSprite):
 	shield_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
 
-func fire_bullet(t :Team.Type, p :Vector2, v :Vector2):
+func fire_bullet(t :ColorTeam, p :Vector2, v :Vector2):
 	inc_team_stat(t,"new_bullet")
 	var obj = bullet_free_list.get_node2d()
 	$BulletContainer.add_child(obj)
@@ -156,7 +159,7 @@ func bullet_explode_effect_end(o :BulletExplodeSprite):
 	bullet_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
 
-func fire_homming(t :Team.Type, p :Vector2, dst :Ball):
+func fire_homming(t :ColorTeam, p :Vector2, dst :Ball):
 	inc_team_stat(t,"new_homming")
 	var obj = homming_free_list.get_node2d()
 	$HommingContainer.add_child(obj)
@@ -183,7 +186,7 @@ func connect_if_not(sg :Signal, fn :Callable):
 	if not sg.is_connected(fn):
 		sg.connect(fn)
 
-func find_other_team_ball(t :Team.Type)->Ball:
+func find_other_team_ball(t :ColorTeam)->Ball:
 	var ball_list = $BallContainer.get_children()
 	if ball_list.size() == 0:
 		return null

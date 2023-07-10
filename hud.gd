@@ -29,36 +29,39 @@ var effect_count :int
 
 var vp_size :Vector2
 
-func init_stat(vp :Vector2):
+func init_stat(vp :Vector2, colorteam_list :Array[ColorTeam]):
 	vp_size = vp
 
 	$Help.label_settings.font_size = vp_size.y / 32
 	$GameInfo.label_settings.font_size = vp_size.y / 32
-	add_label("TeamStat")
+	add_label("TeamStat",Color.WHITE)
 	for s in StatCulumnString:
-		add_label(s)
+		add_label(s,Color.WHITE)
 
-	for t in Team.Type.LEN:
-		var tn = Team.Name(t)
-		add_label(tn)
+	for t in colorteam_list:
+		var tn = t.name
+		var lb1 = add_label(tn, t.color)
 		team_stat[tn] = {}
 		team_stat_label[tn] = {}
 		for c in StatCulumnString:
 			team_stat[tn][c] = 0
-			var lb = add_label(str(team_stat[tn][c]))
+			var lb = add_label(str(team_stat[tn][c]) , t.color)
 			team_stat_label[tn][c] = lb
 
-func add_label(s :String)->Label:
+func add_label(s :String, c :Color)->Label:
 	var lb = Label.new()
-	lb.label_settings = preload("res://label_teamstat.tres")
+	lb.label_settings = LabelSettings.new()
 	lb.text = s
 	lb.label_settings.font_size = vp_size.y / 50
+	lb.label_settings.font_color = c
+	lb.label_settings.outline_size = 2
+	lb.label_settings.outline_color = c.inverted()
 	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	$TeamStatGrid.add_child(lb)
 	return lb
 
-func inc_stat(team : Team.Type, statname: String)->void:
-	var teamname = Team.Name(team)
+func inc_stat(team : ColorTeam, statname: String)->void:
+	var teamname = team.name
 	team_stat[teamname][statname] += 1
 	team_stat_label[teamname][statname].text = str(team_stat[teamname][statname])
 

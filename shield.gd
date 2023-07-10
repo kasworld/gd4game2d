@@ -1,18 +1,18 @@
 class_name Shield extends Area2D
 
 signal ended(o :Shield)
-signal inc_team_stat(team : Team.Type, statname: String)
+signal inc_team_stat(team : ColorTeam, statname: String)
 
 const LIFE_SEC = 10.0
 
 var rotate_dir :float
-var team :Team.Type = Team.Type.NONE
+var team :ColorTeam
 var alive :bool
 var life_start :float
 var life_limit_sec :float
 
-func spawn(t :Team.Type):
-	$Sprite2D.self_modulate = Team.TeamColor[t]
+func spawn(t :ColorTeam):
+	$Sprite2D.self_modulate = t.color
 	team = t
 	alive = true
 	life_start = Time.get_unix_time_from_system()
