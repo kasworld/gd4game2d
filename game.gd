@@ -37,7 +37,7 @@ var colorteam_list :Array[ColorTeam]
 
 func _ready():
 	randomize()
-	colorteam_list = ColorTeam.make_color_teamlist()
+	colorteam_list = ColorTeam.make_color_teamlist(8)
 	ball_free_list = Node2DPool.new(ball_scene.instantiate)
 	ball_spawn_free_list = Node2DPool.new(ball_spawn_sprite.instantiate)
 	ball_explode_free_list = Node2DPool.new(ball_explode_sprite.instantiate)
