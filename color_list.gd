@@ -1,5 +1,11 @@
 class_name NamedColorList
 
+static func get_color(i :int)->Color:
+	return color_list[i%color_list.size()][0]
+
+static func get_colorname(i :int)->String:
+	return color_list[i%color_list.size()][1]
+
 const color_list = [
 [Color.ALICE_BLUE, "ALICE_BLUE"],
 [Color.ANTIQUE_WHITE, "ANTIQUE_WHITE"],
@@ -149,8 +155,3 @@ const color_list = [
 [Color.YELLOW_GREEN, "YELLOW_GREEN"],
 ]
 
-static func get_color(i :int)->Color:
-	return color_list[i%color_list.size()][0]
-
-static func get_colorname(i :int)->String:
-	return color_list[i%color_list.size()][1]
