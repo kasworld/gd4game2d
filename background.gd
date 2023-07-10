@@ -4,11 +4,11 @@ const SPEED_LIMIT :float = 20
 var velocity :Vector2
 var accel :Vector2
 var vp_size :Vector2
+var bg_state :int
 
 func init_bg(vp :Vector2) -> void:
 	vp_size = vp
 
-var bg_state :int
 var bg_colors = [
 	Color.DIM_GRAY,
 	Color.DARK_BLUE,
@@ -18,6 +18,7 @@ var bg_colors = [
 	Color.PURPLE.darkened(0.5),
 	Color.YELLOW.darkened(0.5),
 ]
+
 func toggle_bg():
 	bg_state += 1
 	bg_state %= bg_colors.size() + 1
@@ -60,9 +61,10 @@ func init_ani_tile():
 			anisp.self_modulate = anisp.self_modulate.darkened(0.2)
 
 func _physics_process(delta: float) -> void:
-	if randf() < 1.0*delta:
-		accel = velocity.rotated( (randf()-0.5) * PI / 2)/4
-	velocity += accel
-	velocity = velocity.limit_length(SPEED_LIMIT)
-	scroll_offset += velocity * delta
+	if bg_state == 0:
+		if randf() < 1.0*delta:
+			accel = velocity.rotated( (randf()-0.5) * PI / 2)/4
+		velocity += accel
+		velocity = velocity.limit_length(SPEED_LIMIT)
+		scroll_offset += velocity * delta
 
