@@ -8,7 +8,15 @@ var vp_size :Vector2
 func init_bg(vp :Vector2) -> void:
 	vp_size = vp
 
+func toggle_bg():
+	$ParallaxLayer.visible = not $ParallaxLayer.visible
+	$ColorRect.visible = not $ColorRect.visible
+
 func _ready() -> void:
+	init_ani_tile()
+	$ColorRect.size = vp_size
+
+func init_ani_tile():
 	velocity = Vector2.ONE.rotated( randf() * 2 * PI ) * SPEED_LIMIT
 	var tilevt = Vector2(128.0, 128.0) # from image
 	var sizevt = Vector2( vp_size.y/4,vp_size.y/4)

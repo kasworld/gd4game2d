@@ -73,7 +73,7 @@ func handle_input():
 	if Input.is_action_just_pressed("HUD"):
 		$UILayer.visible = not $UILayer.visible
 	if Input.is_action_just_pressed("Background"):
-		background.visible = not background.visible
+		background.toggle_bg()
 	if Input.is_action_just_pressed("Cloud"):
 		$CloudContainer.visible = not $CloudContainer.visible
 	if Input.is_action_just_pressed("Quit"):
