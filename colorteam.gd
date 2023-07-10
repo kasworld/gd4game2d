@@ -6,7 +6,7 @@ var name :String
 
 static func make_color_teamlist(team_count :int)->Array[ColorTeam]:
 	var in_use_index = {}
-	var rtn :Array[ColorTeam]
+	var rtn :Array[ColorTeam] = []
 	var color_count = NamedColorList.color_list.size()
 	for t in team_count:
 		var ct = ColorTeam.new()
@@ -17,12 +17,14 @@ static func make_color_teamlist(team_count :int)->Array[ColorTeam]:
 			if in_use_index.get(try_color_index) == null :
 				break
 			try_count -= 1
+			assert(try_count>=0)
 			if try_count < 0:
-				print("too many retry")
+				print_debug("too many retry")
 				break
 		in_use_index[try_color_index] = true
 		ct.color_index = try_color_index
 		ct.name = NamedColorList.get_colorname(ct.color_index)
 		ct.color = NamedColorList.get_color(ct.color_index)
 		rtn.append(ct)
+		print("%s %s %s %s" % [t, ct.color_index, ct.color, ct.name])
 	return rtn

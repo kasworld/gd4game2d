@@ -39,14 +39,13 @@ func init_stat(vp :Vector2, colorteam_list :Array[ColorTeam]):
 		add_label(s,Color.WHITE)
 
 	for t in colorteam_list:
-		var tn = t.name
-		var lb1 = add_label(tn, t.color)
-		team_stat[tn] = {}
-		team_stat_label[tn] = {}
+		add_label(t.name, t.color)
+		team_stat[t.name] = {}
+		team_stat_label[t.name] = {}
 		for c in StatCulumnString:
-			team_stat[tn][c] = 0
-			var lb = add_label(str(team_stat[tn][c]) , t.color)
-			team_stat_label[tn][c] = lb
+			team_stat[t.name][c] = 0
+			var lb = add_label(str(team_stat[t.name][c]) , t.color)
+			team_stat_label[t.name][c] = lb
 
 func add_label(s :String, c :Color)->Label:
 	var lb = Label.new()
@@ -61,9 +60,8 @@ func add_label(s :String, c :Color)->Label:
 	return lb
 
 func inc_stat(team : ColorTeam, statname: String)->void:
-	var teamname = team.name
-	team_stat[teamname][statname] += 1
-	team_stat_label[teamname][statname].text = str(team_stat[teamname][statname])
+	team_stat[team.name][statname] += 1
+	team_stat_label[team.name][statname].text = str(team_stat[team.name][statname])
 
 func _process(delta: float) -> void:
 	fps = (fps+1.0/delta)/2
