@@ -22,6 +22,7 @@ window/size/viewport_width=3840
 window/size/viewport_height=2160
 window/size/mode=3
 window/stretch/mode="canvas_items"
+window/stretch/aspect="ignore"
 
 [input]
 
@@ -60,4 +61,3 @@ common/enable_pause_aware_picking=true
 [rendering]
 
 textures/vram_compression/import_etc2_astc=true
-environment/defaults/default_clear_color=Color(0.160784, 0.372549, 1, 1)

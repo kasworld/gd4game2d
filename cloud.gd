@@ -31,6 +31,9 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	var tm = Time.get_unix_time_from_system()
 	$Sprite2D.self_modulate.a = (sin(tm*PI/61+alpha_base*2*PI)+1)/2
+	$Sprite2D.self_modulate.r = 1-(sin(tm*PI/53+alpha_base*2*PI)+1)/20
+	$Sprite2D.self_modulate.g = 1-(sin(tm*PI/51+alpha_base*2*PI)+1)/20
+	$Sprite2D.self_modulate.b = 1-(sin(tm*PI/47+alpha_base*2*PI)+1)/20
 	$Sprite2D.scale = Vector2.ONE * (sin(tm*PI/59+scale_base*2*PI)/3+1)
 
 func _physics_process(delta: float) -> void:
