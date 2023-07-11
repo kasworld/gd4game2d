@@ -1,42 +1,37 @@
 extends Node2D
 
 var ball_scene = preload("res://ball.tscn")
+var ball_free_list :Node2DPool
 var ball_spawn_sprite = preload("res://ball_spawn_sprite.tscn")
+var ball_spawn_free_list :Node2DPool
 var ball_explode_sprite = preload("res://ball_explode_effect.tscn")
+var ball_explode_free_list :Node2DPool
 
 var shield_scene = preload("res://shield.tscn")
+var shield_free_list :Node2DPool
+
+var shield_explode_free_list :Node2DPool
 
 var bullet_scene = preload("res://bullet.tscn")
+var bullet_free_list :Node2DPool
 var bullet_explode_sprite = preload("res://bullet_explode_effect.tscn")
+var bullet_explode_free_list :Node2DPool
 
 var homming_scene = preload("res://homming_bullet.tscn")
+var homming_free_list :Node2DPool
 var homming_explode_sprite = preload("res://homming_explode_effect.tscn")
+var homming_explode_free_list :Node2DPool
 
 var cloud_scene = preload("res://cloud.tscn")
 
 var background_scene = preload("res://background.tscn")
-
-var ball_free_list :Node2DPool
-var ball_spawn_free_list :Node2DPool
-var ball_explode_free_list :Node2DPool
-
-var bullet_free_list :Node2DPool
-var bullet_explode_free_list :Node2DPool
-
-var shield_free_list :Node2DPool
-var shield_explode_free_list :Node2DPool
-
-var homming_free_list :Node2DPool
-var homming_explode_free_list :Node2DPool
-
 var background :Background
+
+var vp_size :Vector2
+var colorteam_list :Array[ColorTeam]
 
 func inc_team_stat(team : ColorTeam, statname: String)->void:
 	$UILayer/HUD.inc_stat(team,statname)
-
-var vp_size :Vector2
-
-var colorteam_list :Array[ColorTeam]
 
 func _ready():
 	randomize()
@@ -60,8 +55,8 @@ func _ready():
 	for i in range(100):
 		$CloudContainer.add_child(cloud_scene.instantiate())
 
-	colorteam_list = ColorTeam.make_color_teamlist(30)
-	for i in 10:
+	colorteam_list = ColorTeam.make_color_teamlist(8)
+	for i in 1:
 		add_full_team()
 
 	$UILayer/HUD.init_stat(vp_size, colorteam_list)
