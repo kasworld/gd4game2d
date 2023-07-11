@@ -40,7 +40,7 @@ var colorteam_list :Array[ColorTeam]
 
 func _ready():
 	randomize()
-	colorteam_list = ColorTeam.make_color_teamlist(30)
+
 	ball_free_list = Node2DPool.new(ball_scene.instantiate)
 	ball_spawn_free_list = Node2DPool.new(ball_spawn_sprite.instantiate)
 	ball_explode_free_list = Node2DPool.new(ball_explode_sprite.instantiate)
@@ -57,23 +57,16 @@ func _ready():
 	background.init_bg(vp_size)
 	add_child(background)
 
-	$UILayer/HUD.init_stat(vp_size, colorteam_list)
-
 	for i in range(100):
 		$CloudContainer.add_child(cloud_scene.instantiate())
 
-#	for t in range(2):
-#		ball_spawn_effect(t)
-	for i in 1:
+	colorteam_list = ColorTeam.make_color_teamlist(30)
+	for i in 10:
 		add_full_team()
 
-var team_to_delay_add = 0
-func rand_per_sec(delta :float, per_sec :float)->bool:
-	return randf() < per_sec*delta
-func _process(delta: float) -> void:
-	if team_to_delay_add > 0 and rand_per_sec(delta, 1):
-		team_to_delay_add -= 1
-		add_full_team()
+	$UILayer/HUD.init_stat(vp_size, colorteam_list)
+
+func _process(_delta: float) -> void:
 	handle_input()
 
 func handle_input():
@@ -112,8 +105,7 @@ func new_ball_defered(t :ColorTeam, p :Vector2):
 	connect_if_not(obj.shield_add,add_shield)
 	connect_if_not(obj.shield_ended_from_ball,shield_ended_from_ball)
 	connect_if_not(obj.ended,ball_end)
-	connect_if_not(obj.inc_team_stat,inc_team_stat)
-	obj.spawn(t,p)
+	obj.spawn(t,p, inc_team_stat)
 
 func ball_end(o:Ball):
 	ball_free_list.put_node2d(o)
@@ -136,10 +128,9 @@ func add_shield(b:Ball):
 	var sh = shield_free_list.get_node2d()
 	b.add_child(sh)
 	connect_if_not(sh.ended,b.shield_end)
-	connect_if_not(sh.inc_team_stat,inc_team_stat)
-	sh.spawn(b.team)
+	sh.spawn(b.team, inc_team_stat)
 
-func shield_ended_from_ball(b :Ball, o :Shield):
+func shield_ended_from_ball(_b :Ball, o :Shield):
 #	shield_free_list.put_node2d(o)
 #	b.remove_child(o)
 	o.queue_free()
@@ -160,8 +151,7 @@ func fire_bullet(t :ColorTeam, p :Vector2, v :Vector2):
 	var obj = bullet_free_list.get_node2d()
 	$BulletContainer.add_child(obj)
 	connect_if_not(obj.ended,bullet_end)
-	connect_if_not(obj.inc_team_stat,inc_team_stat)
-	obj.spawn(t,p,v)
+	obj.spawn(t,p,v, inc_team_stat)
 
 func bullet_end(o :Bullet):
 	bullet_free_list.put_node2d(o)
@@ -183,8 +173,7 @@ func fire_homming(t :ColorTeam, p :Vector2, dst :Ball):
 	var obj = homming_free_list.get_node2d()
 	$HommingContainer.add_child(obj)
 	connect_if_not(obj.ended,homming_end)
-	connect_if_not(obj.inc_team_stat,inc_team_stat)
-	obj.spawn(t,p,dst)
+	obj.spawn(t,p,dst,inc_team_stat)
 
 func homming_end(o:HommingBullet):
 	homming_free_list.put_node2d(o)

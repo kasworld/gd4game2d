@@ -13,13 +13,14 @@ config_version=5
 config/name="gd4game2d"
 run/main_scene="res://game.tscn"
 config/features=PackedStringArray("4.1")
-boot_splash/image="res://resource/ball.png"
+boot_splash/image="res://resource/Cloud.png"
 boot_splash/fullsize=false
+config/icon="res://resource/ball.png"
 
 [display]
 
-window/size/viewport_width=2000
-window/size/viewport_height=1000
+window/size/viewport_width=3840
+window/size/viewport_height=2160
 window/stretch/mode="canvas_items"
 window/stretch/aspect="ignore"
 

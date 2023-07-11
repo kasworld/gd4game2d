@@ -6,12 +6,12 @@ signal fire_homming(t :ColorTeam, p :Vector2, dest :Ball)
 signal shield_add(b:Ball)
 signal shield_ended_from_ball(b :Ball, o :Shield)
 signal ended(o :Ball)
-signal inc_team_stat(team : ColorTeam, statname: String)
 
 const SPEED_LIMIT :float = 200
 const MAX_SHIELD = 12
 const INIT_SHIELD = 12
 
+var inc_team_stat :Callable # func(team : ColorTeam, statname: String)
 var team :ColorTeam
 var velocity :Vector2
 var ai :AI
@@ -30,7 +30,8 @@ func _ready() -> void:
 func get_age_sec()->float:
 	return Time.get_unix_time_from_system() - life_start
 
-func spawn(t :ColorTeam, p :Vector2):
+func spawn(t :ColorTeam, p :Vector2, inc_team_stat_arg :Callable):
+	inc_team_stat = inc_team_stat_arg
 	$ColorBallSprite.self_modulate = t.color
 	team = t
 	alive = true
@@ -82,7 +83,7 @@ func _physics_process(delta: float) -> void:
 	var oldv = velocity
 	velocity = ai.do_accel(team,delta,position,velocity, most_danger_area2d)
 	if oldv != velocity:
-		emit_signal("inc_team_stat",team,"accel")
+		inc_team_stat.call(team,"accel")
 
 	position += velocity * delta
 	if position.x < bounce_radius :
@@ -110,19 +111,19 @@ func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int,
 	if local_shape_node == $CollisionShape2D:
 		if area is Ball:
 			if area.team != team and area_shape_index == 0:
-				emit_signal("inc_team_stat",area.team,"kill_ball")
+				inc_team_stat.call(area.team,"kill_ball")
 				end()
 		elif area is Bullet:
 			if area.team != team:
-				emit_signal("inc_team_stat",area.team,"kill_bullet")
+				inc_team_stat.call(area.team,"kill_bullet")
 				end()
 		elif area is Shield:
 			if area.team != team:
-				emit_signal("inc_team_stat",area.team,"kill_shield")
+				inc_team_stat.call(area.team,"kill_shield")
 				end()
 		elif area is HommingBullet:
 			if area.team != team:
-				emit_signal("inc_team_stat",area.team,"kill_homming")
+				inc_team_stat.call(area.team,"kill_homming")
 				end()
 		else:
 			print_debug("unknown Area2 ", area)

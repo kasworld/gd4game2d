@@ -1,10 +1,11 @@
 class_name HommingBullet extends Area2D
 
 signal ended(o :HommingBullet)
-signal inc_team_stat(team : ColorTeam, statname: String)
 
 const SPEED_LIMIT :float = 300
 const LIFE_SEC = 10.0
+
+var inc_team_stat :Callable # func(team : ColorTeam, statname: String)
 
 var speed :float
 var team :ColorTeam
@@ -14,7 +15,8 @@ var accel :Vector2
 var alive :bool
 var life_start :float
 
-func spawn(t :ColorTeam, p :Vector2, bl :Ball)->void:
+func spawn(t :ColorTeam, p :Vector2, bl :Ball, inc_team_stat_arg :Callable)->void:
+	inc_team_stat = inc_team_stat_arg
 	team = t
 	alive = true
 	life_start = Time.get_unix_time_from_system()
@@ -67,19 +69,19 @@ func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int,
 		if area_shape_index != 0: # ball kill area
 			return
 		if area.team != team:
-			emit_signal("inc_team_stat",area.team,"kill_ball")
+			inc_team_stat.call(area.team,"kill_ball")
 			end()
 	elif area is Bullet:
 		if area.team != team:
-			emit_signal("inc_team_stat",area.team,"kill_bullet")
+			inc_team_stat.call(area.team,"kill_bullet")
 			end()
 	elif area is Shield:
 		if area.team != team:
-			emit_signal("inc_team_stat",area.team,"kill_shield")
+			inc_team_stat.call(area.team,"kill_shield")
 			end()
 	elif area is HommingBullet:
 		if area.team != team:
-			emit_signal("inc_team_stat",area.team,"kill_homming")
+			inc_team_stat.call(area.team,"kill_homming")
 			end()
 	else:
 		print_debug("unknown Area2D ", area)

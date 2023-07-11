@@ -1,17 +1,18 @@
 class_name Shield extends Area2D
 
 signal ended(o :Shield)
-signal inc_team_stat(team : ColorTeam, statname: String)
 
 const LIFE_SEC = 10.0
 
+var inc_team_stat :Callable # func(team : ColorTeam, statname: String)
 var rotate_dir :float
 var team :ColorTeam
 var alive :bool
 var life_start :float
 var life_limit_sec :float
 
-func spawn(t :ColorTeam):
+func spawn(t :ColorTeam, inc_team_stat_arg :Callable):
+	inc_team_stat = inc_team_stat_arg
 	$Sprite2D.self_modulate = t.color
 	team = t
 	alive = true
@@ -36,19 +37,19 @@ func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int,
 		if area_shape_index != 0: # ball kill area
 			return
 		if area.team != team:
-			emit_signal("inc_team_stat",area.team,"kill_ball")
+			inc_team_stat.call(area.team,"kill_ball")
 			end()
 	elif area is Bullet:
 		if area.team != team:
-			emit_signal("inc_team_stat",area.team,"kill_bullet")
+			inc_team_stat.call(area.team,"kill_bullet")
 			end()
 	elif area is Shield:
 		if area.team != team:
-			emit_signal("inc_team_stat",area.team,"kill_shield")
+			inc_team_stat.call(area.team,"kill_shield")
 			end()
 	elif area is HommingBullet:
 		if area.team != team:
-			emit_signal("inc_team_stat",area.team,"kill_homming")
+			inc_team_stat.call(area.team,"kill_homming")
 			end()
 	else:
 		print_debug("unknown Area2D ", area)
