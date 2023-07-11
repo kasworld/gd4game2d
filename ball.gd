@@ -1,6 +1,5 @@
 class_name Ball extends Area2D
 
-
 signal fire_bullet(t :ColorTeam, p :Vector2, v :Vector2)
 signal fire_homming(t :ColorTeam, p :Vector2, dest :Ball)
 signal shield_add(b:Ball)
@@ -11,9 +10,7 @@ const SPEED_LIMIT :float = 200
 const MAX_SHIELD = 12
 const INIT_SHIELD = 12
 
-var shield_scene = preload("res://shield.tscn")
-var shield_free_list :Node2DPool
-
+var shield_free_list = Node2DPool.new(preload("res://shield.tscn").instantiate)
 var inc_team_stat :Callable # func(team : ColorTeam, statname: String)
 var team :ColorTeam
 var velocity :Vector2
@@ -24,12 +21,9 @@ var bounce_radius :float
 var alive :bool
 var life_start :float
 
-func _init()->void:
-	shield_free_list = Node2DPool.new(shield_scene.instantiate)
-	ai = AI.new()
-
 func _ready() -> void:
 	vp_size = get_viewport_rect().size
+	ai = AI.new()
 	ai.find_other_team_ball = get_tree().current_scene.find_other_team_ball
 	bounce_radius = $CollisionShape2D.shape.radius
 
