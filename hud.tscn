@@ -15,8 +15,6 @@ script = ExtResource("1_b1ff5")
 
 [node name="TeamStatGrid" type="GridContainer" parent="."]
 layout_mode = 1
-offset_right = 1000.0
-offset_bottom = 500.0
 columns = 10
 
 [node name="GameInfo" type="Label" parent="."]
@@ -37,16 +35,20 @@ autostart = true
 
 [node name="Help" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 2
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -135.0
-offset_right = 315.0
+offset_left = -315.0
+offset_top = -180.0
+grow_horizontal = 0
 grow_vertical = 0
-text = "H : toggle HUD
+text = "ESC : Quit
+H : toggle HUD
 C : toggle Cloud
-B : toggle Background
-ESC : Quit"
+B : toggle Background"
 label_settings = ExtResource("3_3jjdy")
+horizontal_alignment = 2
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

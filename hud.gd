@@ -34,7 +34,7 @@ func init_stat(vp :Vector2, colorteam_list :Array[ColorTeam]):
 
 	$Help.label_settings.font_size = vp_size.y / 32
 	$GameInfo.label_settings.font_size = vp_size.y / 32
-	add_label("TeamStat",Color.WHITE)
+	add_label("Team",Color.WHITE)
 	for s in StatCulumnString:
 		add_label(s,Color.WHITE)
 
@@ -46,6 +46,10 @@ func init_stat(vp :Vector2, colorteam_list :Array[ColorTeam]):
 			team_stat[t.name][c] = 0
 			var lb = add_label(str(team_stat[t.name][c]) , t.color)
 			team_stat_label[t.name][c] = lb
+
+	add_label("Team",Color.WHITE)
+	for s in StatCulumnString:
+		add_label(s,Color.WHITE)
 
 func add_label(s :String, c :Color)->Label:
 	var lb = Label.new()
