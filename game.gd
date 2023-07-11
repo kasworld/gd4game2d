@@ -28,8 +28,8 @@ func _ready():
 	for i in range(100):
 		$CloudContainer.add_child(preload("res://cloud.tscn").instantiate())
 
-	colorteam_list = ColorTeam.make_color_teamlist(4)
-	for i in 10:
+	colorteam_list = ColorTeam.make_color_teamlist(30)
+	for i in 1:
 		add_full_team()
 
 	$UILayer/HUD.init_stat(vp_size, colorteam_list)
@@ -46,6 +46,8 @@ func handle_input():
 		$CloudContainer.visible = not $CloudContainer.visible
 	if Input.is_action_just_pressed("Quit"):
 		get_tree().quit()
+	if Input.is_action_just_pressed("Restart"):
+		get_tree().reload_current_scene()
 
 func add_full_team():
 	for t in colorteam_list:
