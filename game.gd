@@ -7,8 +7,6 @@ var ball_spawn_free_list :Node2DPool
 var ball_explode_sprite = preload("res://ball_explode_effect.tscn")
 var ball_explode_free_list :Node2DPool
 
-var shield_scene = preload("res://shield.tscn")
-var shield_free_list :Node2DPool
 
 var shield_explode_free_list :Node2DPool
 
@@ -41,7 +39,6 @@ func _ready():
 	ball_explode_free_list = Node2DPool.new(ball_explode_sprite.instantiate)
 	bullet_free_list = Node2DPool.new(bullet_scene.instantiate)
 	bullet_explode_free_list = Node2DPool.new(bullet_explode_sprite.instantiate)
-	shield_free_list = Node2DPool.new(shield_scene.instantiate)
 	shield_explode_free_list = Node2DPool.new(bullet_explode_sprite.instantiate)
 	homming_free_list = Node2DPool.new(homming_scene.instantiate)
 	homming_explode_free_list = Node2DPool.new(homming_explode_sprite.instantiate)
@@ -55,7 +52,7 @@ func _ready():
 	for i in range(100):
 		$CloudContainer.add_child(cloud_scene.instantiate())
 
-	colorteam_list = ColorTeam.make_color_teamlist(8)
+	colorteam_list = ColorTeam.make_color_teamlist(3)
 	for i in 1:
 		add_full_team()
 
@@ -97,8 +94,7 @@ func new_ball_defered(t :ColorTeam, p :Vector2):
 	$BallContainer.add_child(obj)
 	connect_if_not(obj.fire_bullet,fire_bullet)
 	connect_if_not(obj.fire_homming,fire_homming)
-	connect_if_not(obj.shield_add,add_shield)
-	connect_if_not(obj.shield_ended_from_ball,shield_ended_from_ball)
+	connect_if_not(obj.shield_ended_from_ball,shield_explode_effect)
 	connect_if_not(obj.ended,ball_end)
 	obj.spawn(t,p, inc_team_stat)
 
@@ -117,19 +113,6 @@ func ball_explode_effect_end(o :BallExplodeSprite):
 	ball_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
 	ball_spawn_effect(o.team)
-
-func add_shield(b:Ball):
-	inc_team_stat(b.team,"new_shield")
-	var sh = shield_free_list.get_node2d()
-	b.add_child(sh)
-	connect_if_not(sh.ended,b.shield_end)
-	sh.spawn(b.team, inc_team_stat)
-
-func shield_ended_from_ball(_b :Ball, o :Shield):
-#	shield_free_list.put_node2d(o)
-#	b.remove_child(o)
-	o.queue_free()
-	shield_explode_effect(o)
 
 func shield_explode_effect(o :Shield):
 	var obj = shield_explode_free_list.get_node2d()

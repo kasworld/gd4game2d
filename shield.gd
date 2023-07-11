@@ -1,18 +1,18 @@
 class_name Shield extends Area2D
 
-signal ended(o :Shield)
-
 const LIFE_SEC = 10.0
 
 var inc_team_stat :Callable # func(team : ColorTeam, statname: String)
+var shield_end_in_ball :Callable
 var rotate_dir :float
 var team :ColorTeam
 var alive :bool
 var life_start :float
 var life_limit_sec :float
 
-func spawn(t :ColorTeam, inc_team_stat_arg :Callable):
+func spawn(t :ColorTeam, inc_team_stat_arg :Callable, shieldendfn :Callable):
 	inc_team_stat = inc_team_stat_arg
+	shield_end_in_ball = shieldendfn
 	$Sprite2D.self_modulate = t.color
 	team = t
 	alive = true
@@ -23,7 +23,7 @@ func spawn(t :ColorTeam, inc_team_stat_arg :Callable):
 func end():
 	if alive:
 		alive = false
-		emit_signal("ended",self)
+		shield_end_in_ball.call(self)
 
 func _process(delta: float) -> void:
 	var dur = Time.get_unix_time_from_system() - life_start

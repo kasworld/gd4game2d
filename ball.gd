@@ -4,12 +4,15 @@ class_name Ball extends Area2D
 signal fire_bullet(t :ColorTeam, p :Vector2, v :Vector2)
 signal fire_homming(t :ColorTeam, p :Vector2, dest :Ball)
 signal shield_add(b:Ball)
-signal shield_ended_from_ball(b :Ball, o :Shield)
+signal shield_ended_from_ball(o :Shield)
 signal ended(o :Ball)
 
 const SPEED_LIMIT :float = 200
 const MAX_SHIELD = 12
 const INIT_SHIELD = 12
+
+var shield_scene = preload("res://shield.tscn")
+var shield_free_list :Node2DPool
 
 var inc_team_stat :Callable # func(team : ColorTeam, statname: String)
 var team :ColorTeam
@@ -21,10 +24,13 @@ var bounce_radius :float
 var alive :bool
 var life_start :float
 
-func _ready() -> void:
+func _init()->void:
+	shield_free_list = Node2DPool.new(shield_scene.instantiate)
 	ai = AI.new()
-	ai.find_other_team_ball = get_tree().current_scene.find_other_team_ball
+
+func _ready() -> void:
 	vp_size = get_viewport_rect().size
+	ai.find_other_team_ball = get_tree().current_scene.find_other_team_ball
 	bounce_radius = $CollisionShape2D.shape.radius
 
 func get_age_sec()->float:
@@ -49,22 +55,24 @@ func add_shield():
 	if shield_count >= MAX_SHIELD:
 		return
 	shield_count +=1
-	emit_signal("shield_add",self)
+	inc_team_stat.call(team,"new_shield")
+	var sh = shield_free_list.get_node2d()
+	add_child(sh)
+	sh.spawn(team, inc_team_stat, shield_end)
 
 func connect_if_not(sg :Signal, fn :Callable):
 	if not sg.is_connected(fn):
 		sg.connect(fn)
 
-func shield_end(o :Shield):
-	emit_signal("shield_ended_from_ball",self,o)
+func shield_end(sh :Shield):
 	shield_count -=1
+	emit_signal("shield_ended_from_ball",sh)
+	shield_free_list.put_node2d(sh)
+	remove_child.call_deferred(sh)
 
 func end():
 	if alive:
 		alive = false
-		for s in get_children():
-			if s is Shield:
-				shield_end(s)
 		emit_signal("ended", self)
 
 func _process(delta: float) -> void:
