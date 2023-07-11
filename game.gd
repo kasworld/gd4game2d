@@ -40,7 +40,7 @@ var colorteam_list :Array[ColorTeam]
 
 func _ready():
 	randomize()
-	colorteam_list = ColorTeam.make_color_teamlist(24)
+	colorteam_list = ColorTeam.make_color_teamlist(30)
 	ball_free_list = Node2DPool.new(ball_scene.instantiate)
 	ball_spawn_free_list = Node2DPool.new(ball_spawn_sprite.instantiate)
 	ball_explode_free_list = Node2DPool.new(ball_explode_sprite.instantiate)
@@ -64,7 +64,7 @@ func _ready():
 
 #	for t in range(2):
 #		ball_spawn_effect(t)
-	for i in 2:
+	for i in 1:
 		add_full_team()
 
 var team_to_delay_add = 0
@@ -109,7 +109,8 @@ func new_ball_defered(t :ColorTeam, p :Vector2):
 	$BallContainer.add_child(obj)
 	connect_if_not(obj.fire_bullet,fire_bullet)
 	connect_if_not(obj.fire_homming,fire_homming)
-	connect_if_not(obj.shield_ended,shield_explode_effect)
+	connect_if_not(obj.shield_add,add_shield)
+	connect_if_not(obj.shield_ended_from_ball,shield_ended_from_ball)
 	connect_if_not(obj.ended,ball_end)
 	connect_if_not(obj.inc_team_stat,inc_team_stat)
 	obj.spawn(t,p)
@@ -134,13 +135,14 @@ func add_shield(b:Ball):
 	inc_team_stat(b.team,"new_shield")
 	var sh = shield_free_list.get_node2d()
 	b.add_child(sh)
-	connect_if_not(sh.ended,shield_end)
+	connect_if_not(sh.ended,b.shield_end)
 	connect_if_not(sh.inc_team_stat,inc_team_stat)
 	sh.spawn(b.team)
 
-func shield_end(b :Ball, o :Shield):
-	shield_free_list.put_node2d(o)
-	b.remove_child.call_deferred(o)
+func shield_ended_from_ball(b :Ball, o :Shield):
+#	shield_free_list.put_node2d(o)
+#	b.remove_child(o)
+	o.queue_free()
 	shield_explode_effect(o)
 
 func shield_explode_effect(o :Shield):

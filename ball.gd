@@ -4,7 +4,7 @@ class_name Ball extends Area2D
 signal fire_bullet(t :ColorTeam, p :Vector2, v :Vector2)
 signal fire_homming(t :ColorTeam, p :Vector2, dest :Ball)
 signal shield_add(b:Ball)
-signal shield_ended(o :Shield)
+signal shield_ended_from_ball(b :Ball, o :Shield)
 signal ended(o :Ball)
 signal inc_team_stat(team : ColorTeam, statname: String)
 
@@ -55,7 +55,7 @@ func connect_if_not(sg :Signal, fn :Callable):
 		sg.connect(fn)
 
 func shield_end(o :Shield):
-	emit_signal("shield_ended",self,o)
+	emit_signal("shield_ended_from_ball",self,o)
 	shield_count -=1
 
 func end():
