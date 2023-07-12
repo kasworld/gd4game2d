@@ -32,10 +32,7 @@ func init(vp :Vector2, colorteam_list :Array[ColorTeam], cloud_count :int,team_c
 
 	$Help.label_settings.font_size = vp_size.y / 32
 
-	for s in GameStatName.keys():
-		game_stat_label[s] = add_label_to_gamestat(s, Color.WHITE)
-		set_game_stat(s,0)
-
+	init_game_stat()
 	init_teamstats(colorteam_list)
 
 func init_teamstats(colorteam_list :Array[ColorTeam]):
@@ -65,6 +62,19 @@ func add_label_to_teamstat(s :String, c :Color)->Label:
 	$TeamStatGrid.add_child(lb)
 	return lb
 
+func init_game_stat():
+	for s in GameStatName.keys():
+		var lb = Label.new()
+		lb.label_settings = LabelSettings.new()
+		lb.label_settings.font_size = vp_size.y / 30
+		lb.label_settings.font_color = Color.WHITE
+		lb.label_settings.outline_size = 2
+		lb.label_settings.outline_color = Color.BLACK
+		lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		game_stat_label[s] = lb
+		$GameStats.add_child(lb)
+		set_game_stat(s,0)
+
 const GameStatName = {
 	"GameSec" :"%04.2f",
 	"FPS" :"%04.2f",
@@ -75,17 +85,6 @@ const GameStatName = {
 	"Explosion" :"%d",
 }
 var game_stat_label :Dictionary
-func add_label_to_gamestat(s :String, c :Color)->Label:
-	var lb = Label.new()
-	lb.text = s
-	lb.label_settings = LabelSettings.new()
-	lb.label_settings.font_size = vp_size.y / 30
-	lb.label_settings.font_color = c
-	lb.label_settings.outline_size = 2
-	lb.label_settings.outline_color = c.inverted()
-	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	$GameStats.add_child(lb)
-	return lb
 
 func set_game_stat(n :String, v):
 	game_stat_label[n].text = "{0} : {1}".format( [n , GameStatName[n] % v ] )
