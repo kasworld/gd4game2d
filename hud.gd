@@ -19,6 +19,14 @@ var team_stat_label := {}
 
 var vp_size :Vector2
 
+func _ready() -> void:
+	var cloud_count = get_tree().current_scene.cloud_count
+	$CloudCount.init("Cloud count", cloud_count, 0, 1000)
+	var team_count = get_tree().current_scene.team_count
+	$TeamCount.init("Team count", team_count, 1, 100)
+	var ball_per_team = get_tree().current_scene.ball_per_team
+	$BallPerTeam.init("Balls per team", ball_per_team, 1, 100)
+
 func init_stat(vp :Vector2, colorteam_list :Array[ColorTeam]):
 	vp_size = vp
 

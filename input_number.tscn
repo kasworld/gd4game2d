@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://nw137vk0gcgq"]
+
+[ext_resource type="Script" path="res://input_number.gd" id="1_68mee"]
+
+[sub_resource type="SystemFont" id="SystemFont_iaqm1"]
+
+[sub_resource type="Theme" id="Theme_xdwha"]
+default_font = SubResource("SystemFont_iaqm1")
+default_font_size = 40
+
+[node name="InputNumber" type="HBoxContainer"]
+theme = SubResource("Theme_xdwha")
+script = ExtResource("1_68mee")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Input Number
+"
+
+[node name="Dec" type="Button" parent="."]
+layout_mode = 2
+text = "<"
+
+[node name="Number" type="SpinBox" parent="."]
+layout_mode = 2
+min_value = 1.0
+value = 8.0
+alignment = 2
+
+[node name="Inc" type="Button" parent="."]
+layout_mode = 2
+text = ">"
+
+[connection signal="pressed" from="Dec" to="." method="_on_dec_pressed"]
+[connection signal="pressed" from="Inc" to="." method="_on_inc_pressed"]

@@ -14,6 +14,12 @@ var vp_size :Vector2
 var colorteam_list :Array[ColorTeam]
 var life_start :float
 
+# game argument
+var cloud_count :int = 100
+var team_count :int = 30
+var ball_per_team :int = 1
+
+
 func inc_team_stat(team : ColorTeam, statname: String)->void:
 	$UILayer/HUD.inc_team_stat(team,statname)
 
@@ -27,11 +33,11 @@ func _ready():
 	background.init_bg(vp_size)
 	add_child(background)
 
-	for i in range(100):
+	for i in range(cloud_count):
 		$CloudContainer.add_child(preload("res://cloud.tscn").instantiate())
 
-	colorteam_list = ColorTeam.make_color_teamlist(30)
-	for i in 1:
+	colorteam_list = ColorTeam.make_color_teamlist(team_count)
+	for i in ball_per_team:
 		add_full_team()
 
 	$UILayer/HUD.init_stat(vp_size, colorteam_list)
