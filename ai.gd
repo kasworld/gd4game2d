@@ -30,9 +30,7 @@ static func calc_danger_level(me :Ball, dst :Area2D)->float:
 	return 1000.0/l
 
 
-var find_other_team_ball :Callable #func(team:Team.type)->Ball
-
-func do_accel(_team :ColorTeam,delta :float,pos: Vector2, velocity :Vector2, o :Area2D)->Vector2:
+static func do_accel(delta :float, pos: Vector2, velocity :Vector2, o :Area2D)->Vector2:
 	if not AI.rand_per_sec(delta, 30.0):
 		return velocity
 	if AI.not_null_and_alive(o):
@@ -41,7 +39,7 @@ func do_accel(_team :ColorTeam,delta :float,pos: Vector2, velocity :Vector2, o :
 		velocity = velocity.limit_length(Ball.SPEED_LIMIT)
 	return velocity
 
-func do_fire_bullet(from_pos :Vector2, team :ColorTeam,delta :float,o :Area2D)->Vector2:
+static func do_fire_bullet(from_pos :Vector2, team :ColorTeam, delta :float, o :Area2D, find_other_team_ball :Callable)->Vector2:
 	if not AI.rand_per_sec(delta, 5.0):
 		return Vector2.ZERO
 	var dst :Area2D
@@ -56,7 +54,7 @@ func do_fire_bullet(from_pos :Vector2, team :ColorTeam,delta :float,o :Area2D)->
 	var v = AI.calc_aim_vector2(from_pos, Bullet.SPEED_LIMIT, dst.global_position, dst.velocity )
 	return v
 
-func do_fire_homming(myteam :ColorTeam,delta :float,o :Area2D)->Area2D:
+static func do_fire_homming(myteam :ColorTeam, delta :float, o :Area2D, find_other_team_ball :Callable)->Area2D:
 	if not AI.rand_per_sec(delta, 2.0):
 		return null
 	if AI.not_null_and_alive(o) and ((o is Ball) or (o is HommingBullet)):
@@ -64,7 +62,7 @@ func do_fire_homming(myteam :ColorTeam,delta :float,o :Area2D)->Area2D:
 	else:
 		return find_other_team_ball.call(myteam)
 
-func do_add_shield(_team :ColorTeam,delta :float,_pos: Vector2, _velocity :Vector2)->bool:
+static func do_add_shield(delta :float)->bool:
 	if not AI.rand_per_sec(delta, 2.0):
 		return false
 	return true

@@ -12,18 +12,17 @@ const INIT_SHIELD = 12
 
 var shield_free_list = Node2DPool.new(preload("res://shield.tscn").instantiate)
 var inc_team_stat :Callable # func(team : ColorTeam, statname: String)
+var find_other_team_ball :Callable
 var team :ColorTeam
 var velocity :Vector2
-var ai :AI
 var vp_size :Vector2
 var bounce_radius :float
 var alive :bool
 var life_start :float
 
 func _ready() -> void:
+	find_other_team_ball = get_tree().current_scene.find_other_team_ball
 	vp_size = get_viewport_rect().size
-	ai = AI.new()
-	ai.find_other_team_ball = get_tree().current_scene.find_other_team_ball
 	bounce_radius = $CollisionShape2D.shape.radius
 
 func spawn(t :ColorTeam, p :Vector2, inc_team_stat_arg :Callable):
@@ -66,20 +65,20 @@ func end():
 		emit_signal("ended", self)
 
 func _process(delta: float) -> void:
-	var v = ai.do_fire_bullet(position, team,delta,most_danger_area2d)
+	var v = AI.do_fire_bullet(position, team,delta,most_danger_area2d,find_other_team_ball)
 	if v != Vector2.ZERO:
 		emit_signal("fire_bullet",team, position, v)
 
-	var dst = ai.do_fire_homming(team,delta,most_danger_area2d)
+	var dst = AI.do_fire_homming(team,delta,most_danger_area2d,find_other_team_ball)
 	if dst != null:
 		emit_signal("fire_homming",team, position, dst)
 
-	if ai.do_add_shield(team,delta,position,velocity):
+	if AI.do_add_shield(delta):
 		add_shield()
 
 func _physics_process(delta: float) -> void:
 	var oldv = velocity
-	velocity = ai.do_accel(team,delta,position,velocity, most_danger_area2d)
+	velocity = AI.do_accel(delta,position,velocity, most_danger_area2d)
 	if oldv != velocity:
 		inc_team_stat.call(team,"accel")
 
