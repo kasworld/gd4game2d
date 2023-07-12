@@ -31,6 +31,8 @@ func spawn(t :ColorTeam, p :Vector2):
 	monitorable = true
 	monitoring = true
 	visible = true
+	for o in $ShieldContainer.get_children():
+		o.spawn(team, shield_end)
 	for i in INIT_SHIELD:
 		add_shield()
 
