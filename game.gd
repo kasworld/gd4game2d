@@ -15,7 +15,6 @@ var colorteam_list :Array[ColorTeam]
 var life_start :float
 
 # game argument
-var cloud_count :int = 100
 var team_count :int = 30
 var ball_per_team :int = 1
 
@@ -50,19 +49,32 @@ func init_game():
 	background.init_bg(vp_size)
 	add_child(background)
 
-
 	colorteam_list = ColorTeam.make_color_teamlist(team_count)
 	for i in ball_per_team:
 		add_full_team()
 
-	$UILayer/HUD.init_stat(vp_size, colorteam_list)
+	$UILayer/HUD.init(vp_size, colorteam_list, cloud_count, team_count, ball_per_team)
 
+var cloud_count :int = 100
 func init_cloud():
-	for o in $CloudContainer.get_children():
-		o.queue_free()
-	for i in range(cloud_count):
-		$CloudContainer.add_child(preload("res://cloud.tscn").instantiate())
+	var tomake = cloud_count - $CloudContainer.get_child_count()
+	if tomake == 0 :
+		return
+	elif tomake > 0:
+		for i in tomake:
+			$CloudContainer.add_child(preload("res://cloud.tscn").instantiate())
+	elif tomake < 0:
+		for o in $CloudContainer.get_children():
+			o.queue_free()
+			tomake +=1
+			if tomake >=0:
+				break
+	else:
+		assert(tomake)
 
+func _on_hud_cloud_count_changed(v) -> void:
+	cloud_count = v
+	init_cloud()
 
 func _ready():
 	randomize()
@@ -80,8 +92,6 @@ func handle_input():
 	if Input.is_action_just_pressed("Background"):
 		background.toggle_bg()
 	if Input.is_action_just_pressed("Cloud"):
-		if not $CloudContainer.visible and $CloudContainer.get_child_count() != cloud_count:
-			init_cloud()
 		$CloudContainer.visible = not $CloudContainer.visible
 	if Input.is_action_just_pressed("Quit"):
 		get_tree().quit()
@@ -210,3 +220,5 @@ func _on_stat_timer_timeout() -> void:
 	$UILayer/HUD.set_game_stat("GameSec", Time.get_unix_time_from_system() - life_start)
 	$UILayer/HUD.set_game_stat("FPS", fps)
 	update_game_stat()
+
+

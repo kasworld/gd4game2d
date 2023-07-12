@@ -23,6 +23,7 @@ text = "<"
 
 [node name="Number" type="SpinBox" parent="."]
 layout_mode = 2
+focus_mode = 2
 min_value = 1.0
 value = 8.0
 alignment = 2

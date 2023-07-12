@@ -26,4 +26,5 @@ z_index = 50
 wait_time = 0.3
 autostart = true
 
+[connection signal="cloud_count_changed" from="UILayer/HUD" to="." method="_on_hud_cloud_count_changed"]
 [connection signal="timeout" from="StatTimer" to="." method="_on_stat_timer_timeout"]

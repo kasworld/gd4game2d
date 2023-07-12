@@ -1,5 +1,8 @@
 extends Control
 
+signal cloud_count_changed(v :int)
+signal team_count_changed(v :int)
+signal ball_per_team_changed(v :int)
 
 const TeamStatName :Array[String] = [
 	"accel",
@@ -19,28 +22,16 @@ var team_stat_label :Dictionary
 
 var vp_size :Vector2
 
-func _ready() -> void:
-	var cloud_count = get_tree().current_scene.cloud_count
-	$CloudCount.init("Cloud count", cloud_count, 0, 1000)
-
-	var team_count = get_tree().current_scene.team_count
-	$TeamCount.init("Team count", team_count, 1, 100)
-
-	var ball_per_team = get_tree().current_scene.ball_per_team
-	$BallPerTeam.init("Balls per team", ball_per_team, 1, 100)
-
 func _on_cloud_count_value_changed(v) -> void:
-	get_tree().current_scene.cloud_count = v
+	emit_signal("cloud_count_changed",v)
 
 func _on_team_count_value_changed(v) -> void:
-	get_tree().current_scene.team_count = v
+	emit_signal("team_count_changed",v)
 
 func _on_ball_per_team_value_changed(v) -> void:
-	get_tree().current_scene.ball_per_team = v
+	emit_signal("ball_per_team_changed",v)
 
 func clear():
-	get_tree().current_scene.cloud_count = $CloudCount.get_value()
-
 	game_stat_label = {}
 	for o in $GameStats.get_children():
 		o.queue_free()
@@ -49,11 +40,21 @@ func clear():
 	team_stat_label = {}
 	for o in $TeamStatGrid.get_children():
 		o.queue_free()
-	get_tree().current_scene.team_count = $TeamCount.get_value()
-	get_tree().current_scene.ball_per_team = $BallPerTeam.get_value()
 
-func init_stat(vp :Vector2, colorteam_list :Array[ColorTeam]):
+func init(vp :Vector2, colorteam_list :Array[ColorTeam], cloud_count :int,team_count :int, ball_per_team:int):
 	vp_size = vp
+
+	$CloudCount.init("Cloud count", cloud_count, 0, 1000)
+	$CloudCount.position.x = vp_size.x - $CloudCount.size.x
+	$CloudCount.position.y = vp_size.y/2 - $CloudCount.size.y
+
+	$TeamCount.init("Team count", team_count, 1, 100)
+	$TeamCount.position.x = vp_size.x - $TeamCount.size.x
+	$TeamCount.position.y = vp_size.y/2
+
+	$BallPerTeam.init("Balls per team", ball_per_team, 1, 100)
+	$BallPerTeam.position.x = vp_size.x - $BallPerTeam.size.x
+	$BallPerTeam.position.y = vp_size.y/2 + $BallPerTeam.size.y
 
 	$Help.label_settings.font_size = vp_size.y / 32
 

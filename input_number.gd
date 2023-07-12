@@ -11,9 +11,6 @@ func init(s :String, v :int, minv :int, maxv :int)->void:
 func get_value()->int:
 	return $Number.value
 
-func _on_number_value_changed(value: float) -> void:
-	emit_signal("value_changed",$Number.value)
-
 var val_diff :float
 var delay_sec :float = 0.3
 var click_start :float
@@ -40,3 +37,6 @@ func _on_dec_button_up() -> void:
 func _on_inc_button_up() -> void:
 	val_diff = 0
 	emit_signal("value_changed",$Number.value)
+
+func _on_number_value_changed(value: float) -> void:
+	emit_signal("value_changed",value)
