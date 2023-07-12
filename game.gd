@@ -80,10 +80,10 @@ func handle_input():
 	if Input.is_action_just_pressed("Quit"):
 		get_tree().quit()
 	if Input.is_action_just_pressed("Restart"):
-#		get_tree().reload_current_scene()
+		get_tree().reload_current_scene()
 #		get_tree().paused = true
-		clear_game()
-		init_game()
+#		clear_game()
+#		init_game()
 #		get_tree().paused = false
 
 func add_full_team():
