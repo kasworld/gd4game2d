@@ -20,7 +20,6 @@ var ball_per_team_tomake :Dictionary # ball_incdec[team] = tomake , + make, - de
 
 func _on_hud_ball_per_team_changed(v) -> void:
 	var tomake = v - ball_per_team
-	print("ball/team %s %s %s" % [ball_per_team, v, tomake])
 	ball_per_team = v
 	for t in ball_per_team_tomake:
 		ball_per_team_tomake[t] += tomake
@@ -30,19 +29,14 @@ func _on_hud_team_count_changed(v) -> void:
 	pass # Replace with function body.
 
 func init_game():
-	colorteam_list = ColorTeam.make_color_teamlist(team_count)
-	for i in ball_per_team:
-		add_full_team()
+	colorteam_list = ColorTeam.make_colorteam_list(team_count)
+	for t in colorteam_list:
+		ball_per_team_tomake[t] = ball_per_team
 
 	$UILayer/HUD.init(vp_size, colorteam_list, cloud_count, team_count, ball_per_team)
 
-func add_full_team():
-	for t in colorteam_list:
-		ball_spawn_effect(t)
-		ball_per_team_tomake[t] = 0
-
 var cloud_count :int = 100
-func init_cloud():
+func make_clouds():
 	var tomake = cloud_count - $CloudContainer.get_child_count()
 	if tomake > 0:
 		for i in tomake:
@@ -58,14 +52,14 @@ func init_cloud():
 
 func _on_hud_cloud_count_changed(v) -> void:
 	cloud_count = v
-	init_cloud()
+	make_clouds()
 
 func _ready():
 	randomize()
 	life_start = Time.get_unix_time_from_system()
 	vp_size = get_viewport_rect().size
 	$Background.init_bg(vp_size)
-	init_cloud()
+	make_clouds()
 	init_game()
 
 var fps :float
@@ -76,7 +70,7 @@ func _process(delta: float) -> void:
 		var tomake = ball_per_team_tomake[t]
 		if tomake > 0:
 			ball_per_team_tomake[t] = 0
-			for i in tomake: # make ball
+			for i in tomake:
 				ball_spawn_effect(t) # make ball by spawn
 
 func handle_input():

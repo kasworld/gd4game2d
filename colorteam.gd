@@ -33,7 +33,7 @@ func _init(ci :int):
 	for k in Stat.keys():
 		stats[k] = 0
 
-static func make_color_teamlist(team_count :int)->Array[ColorTeam]:
+static func make_colorteam_list(team_count :int)->Array[ColorTeam]:
 	var in_use_index = {}
 	var rtn :Array[ColorTeam] = []
 	var color_count = NamedColorList.color_list.size()
