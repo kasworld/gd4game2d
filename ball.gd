@@ -84,18 +84,9 @@ func _physics_process(delta: float) -> void:
 		inc_team_stat.call(team,"accel")
 
 	position += velocity * delta
-	if position.x < bounce_radius :
-		position.x = bounce_radius
-		velocity.x = abs(velocity.x)
-	elif position.x > vp_size.x - bounce_radius:
-		position.x = vp_size.x - bounce_radius
-		velocity.x = -abs(velocity.x)
-	if position.y < bounce_radius :
-		position.y = bounce_radius
-		velocity.y = abs(velocity.y)
-	elif position.y > vp_size.y - bounce_radius:
-		position.y = vp_size.y - bounce_radius
-		velocity.y = -abs(velocity.y)
+	var bn = Bounce.new(position,velocity,vp_size,bounce_radius)
+	position = bn.position
+	velocity = bn.velocity
 
 	most_danger_value = 0
 	most_danger_area2d = null
@@ -127,7 +118,7 @@ func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int,
 			print_debug("unknown Area2 ", area)
 
 	elif local_shape_node == $Scan1:
-		var dval = ai.calc_danger_level(self, area)
+		var dval = AI.calc_danger_level(self, area)
 		if dval > most_danger_value:
 			most_danger_value = dval
 			most_danger_area2d = area

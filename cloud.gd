@@ -37,18 +37,9 @@ func _process(_delta: float) -> void:
 	$Sprite2D.scale = Vector2.ONE * (sin(tm*PI/59+scale_base*2*PI)/3+1)
 
 func _physics_process(delta: float) -> void:
-	if position.x < BOUNCE_RADIUS :
-		position.x = BOUNCE_RADIUS
-		velocity.x = abs(velocity.x)
-	elif position.x > vp_size.x - BOUNCE_RADIUS:
-		position.x = vp_size.x - BOUNCE_RADIUS
-		velocity.x = -abs(velocity.x)
-	if position.y < BOUNCE_RADIUS :
-		position.y = BOUNCE_RADIUS
-		velocity.y = abs(velocity.y)
-	elif position.y > vp_size.y - BOUNCE_RADIUS:
-		position.y = vp_size.y - BOUNCE_RADIUS
-		velocity.y = -abs(velocity.y)
+	var bn = Bounce.new(position,velocity,vp_size,BOUNCE_RADIUS)
+	position = bn.position
+	velocity = bn.velocity
 
 	position += velocity * delta
 	velocity = velocity.limit_length(SPEED_LIMIT)
