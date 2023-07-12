@@ -41,18 +41,17 @@ func init(vp :Vector2, colorteam_list :Array[ColorTeam], cloud_count :int,team_c
 func init_teamstats(colorteam_list :Array[ColorTeam]):
 	add_label_to_teamstat("Team",Color.WHITE)
 	for s in ColorTeam.Stat.keys():
-		add_label_to_teamstat(s,Color.WHITE)
+		add_label_to_teamstat(s.to_lower()+" ",Color.WHITE)
 
 	for t in colorteam_list:
-		add_label_to_teamstat(t.name, t.color)
+		add_label_to_teamstat(t.name.to_snake_case(), t.color)
 		for c in ColorTeam.Stat.keys():
-			t.stats[c] = 0
 			var lb = add_label_to_teamstat(str(t.stats[c]) , t.color)
 			t.labels[c] = lb
 
 	add_label_to_teamstat("Team",Color.WHITE)
 	for s in ColorTeam.Stat.keys():
-		add_label_to_teamstat(s,Color.WHITE)
+		add_label_to_teamstat(s.to_lower()+" ",Color.WHITE)
 
 func add_label_to_teamstat(s :String, c :Color)->Label:
 	var lb = Label.new()
