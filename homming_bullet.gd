@@ -15,8 +15,10 @@ var accel :Vector2
 var alive :bool
 var life_start :float
 
-func spawn(t :ColorTeam, p :Vector2, bl :Ball, inc_team_stat_arg :Callable)->void:
-	inc_team_stat = inc_team_stat_arg
+func _ready()->void:
+	inc_team_stat = get_tree().current_scene.inc_team_stat
+
+func spawn(t :ColorTeam, p :Vector2, bl :Ball)->void:
 	team = t
 	alive = true
 	life_start = Time.get_unix_time_from_system()

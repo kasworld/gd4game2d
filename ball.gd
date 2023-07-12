@@ -22,11 +22,11 @@ var life_start :float
 
 func _ready() -> void:
 	find_other_team_ball = get_tree().current_scene.find_other_team_ball
+	inc_team_stat = get_tree().current_scene.inc_team_stat
 	vp_size = get_viewport_rect().size
 	bounce_radius = $CollisionShape2D.shape.radius
 
-func spawn(t :ColorTeam, p :Vector2, inc_team_stat_arg :Callable):
-	inc_team_stat = inc_team_stat_arg
+func spawn(t :ColorTeam, p :Vector2):
 	$ColorBallSprite.self_modulate = t.color
 	team = t
 	alive = true
@@ -48,7 +48,7 @@ func add_shield():
 	inc_team_stat.call(team,"new_shield")
 	var sh = shield_free_list.get_node2d()
 	$ShieldContainer.add_child(sh)
-	sh.spawn(team, inc_team_stat, shield_end)
+	sh.spawn(team, shield_end)
 
 func connect_if_not(sg :Signal, fn :Callable):
 	if not sg.is_connected(fn):

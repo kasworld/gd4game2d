@@ -78,7 +78,7 @@ func new_ball_defered(t :ColorTeam, p :Vector2):
 	connect_if_not(obj.fire_homming,fire_homming)
 	connect_if_not(obj.shield_ended_from_ball,shield_explode_effect)
 	connect_if_not(obj.ended,ball_end)
-	obj.spawn(t,p, inc_team_stat)
+	obj.spawn(t,p)
 
 func ball_end(o:Ball):
 	ball_free_list.put_node2d(o)
@@ -111,7 +111,7 @@ func fire_bullet(t :ColorTeam, p :Vector2, v :Vector2):
 	var obj = bullet_free_list.get_node2d()
 	$BulletContainer.add_child(obj)
 	connect_if_not(obj.ended,bullet_end)
-	obj.spawn(t,p,v, inc_team_stat)
+	obj.spawn(t,p,v)
 
 func bullet_end(o :Bullet):
 	bullet_free_list.put_node2d(o)
@@ -133,7 +133,7 @@ func fire_homming(t :ColorTeam, p :Vector2, dst :Ball):
 	var obj = homming_free_list.get_node2d()
 	$HommingContainer.add_child(obj)
 	connect_if_not(obj.ended,homming_end)
-	obj.spawn(t,p,dst,inc_team_stat)
+	obj.spawn(t,p,dst)
 
 func homming_end(o:HommingBullet):
 	homming_free_list.put_node2d(o)

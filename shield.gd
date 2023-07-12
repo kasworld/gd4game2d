@@ -4,14 +4,17 @@ const LIFE_SEC = 10.0
 
 var inc_team_stat :Callable # func(team : ColorTeam, statname: String)
 var shield_end_in_ball :Callable
+
 var rotate_dir :float
 var team :ColorTeam
 var alive :bool
 var life_start :float
 var life_limit_sec :float
 
-func spawn(t :ColorTeam, inc_team_stat_arg :Callable, shieldendfn :Callable):
-	inc_team_stat = inc_team_stat_arg
+func _ready()->void:
+	inc_team_stat = get_tree().current_scene.inc_team_stat
+
+func spawn(t :ColorTeam, shieldendfn :Callable):
 	shield_end_in_ball = shieldendfn
 	$Sprite2D.self_modulate = t.color
 	team = t

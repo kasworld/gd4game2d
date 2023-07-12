@@ -11,8 +11,10 @@ var velocity :Vector2
 var alive :bool
 var life_start :float
 
-func spawn(t :ColorTeam,p :Vector2, v :Vector2, inc_team_stat_arg :Callable):
-	inc_team_stat = inc_team_stat_arg
+func _ready()->void:
+	inc_team_stat = get_tree().current_scene.inc_team_stat
+
+func spawn(t :ColorTeam,p :Vector2, v :Vector2):
 	$Sprite2D.self_modulate = t.color
 	team = t
 	alive = true
