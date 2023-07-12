@@ -1,15 +1,14 @@
 extends Node2D
 
-var ball_free_list :Node2DPool
-var ball_spawn_free_list :Node2DPool
-var ball_explode_free_list :Node2DPool
-var shield_explode_free_list :Node2DPool
-var bullet_free_list :Node2DPool
-var bullet_explode_free_list :Node2DPool
-var homming_free_list :Node2DPool
-var homming_explode_free_list :Node2DPool
+var ball_free_list = Node2DPool.new(preload("res://ball.tscn").instantiate)
+var ball_spawn_free_list = Node2DPool.new(preload("res://ball_spawn_sprite.tscn").instantiate)
+var ball_explode_free_list = Node2DPool.new(preload("res://ball_explode_effect.tscn").instantiate)
+var shield_explode_free_list = Node2DPool.new(preload("res://shield_explode_effect.tscn").instantiate)
+var bullet_free_list = Node2DPool.new(preload("res://bullet.tscn").instantiate)
+var bullet_explode_free_list = Node2DPool.new(preload("res://bullet_explode_effect.tscn").instantiate)
+var homming_free_list = Node2DPool.new(preload("res://homming_bullet.tscn").instantiate)
+var homming_explode_free_list = Node2DPool.new(preload("res://homming_explode_effect.tscn").instantiate)
 
-var background :Background
 var vp_size :Vector2
 var colorteam_list :Array[ColorTeam]
 var life_start :float
@@ -19,25 +18,11 @@ var team_count :int = 30
 var ball_per_team :int = 1
 
 func init_game():
-	ball_free_list = Node2DPool.new(preload("res://ball.tscn").instantiate)
-	ball_spawn_free_list = Node2DPool.new(preload("res://ball_spawn_sprite.tscn").instantiate)
-	ball_explode_free_list = Node2DPool.new(preload("res://ball_explode_effect.tscn").instantiate)
-	shield_explode_free_list = Node2DPool.new(preload("res://shield_explode_effect.tscn").instantiate)
-	bullet_free_list = Node2DPool.new(preload("res://bullet.tscn").instantiate)
-	bullet_explode_free_list = Node2DPool.new(preload("res://bullet_explode_effect.tscn").instantiate)
-	homming_free_list = Node2DPool.new(preload("res://homming_bullet.tscn").instantiate)
-	homming_explode_free_list = Node2DPool.new(preload("res://homming_explode_effect.tscn").instantiate)
-
 	colorteam_list = ColorTeam.make_color_teamlist(team_count)
 	for i in ball_per_team:
 		add_full_team()
 
 	$UILayer/HUD.init(vp_size, colorteam_list, cloud_count, team_count, ball_per_team)
-
-func init_background():
-	background = preload("res://background.tscn").instantiate()
-	background.init_bg(vp_size)
-	add_child(background)
 
 var cloud_count :int = 100
 func init_cloud():
@@ -64,7 +49,7 @@ func _ready():
 	randomize()
 	life_start = Time.get_unix_time_from_system()
 	vp_size = get_viewport_rect().size
-	init_background()
+	$Background.init_bg(vp_size)
 	init_cloud()
 	init_game()
 
@@ -77,7 +62,7 @@ func handle_input():
 	if Input.is_action_just_pressed("HUD"):
 		$UILayer.visible = not $UILayer.visible
 	if Input.is_action_just_pressed("Background"):
-		background.toggle_bg()
+		$Background.toggle_bg()
 	if Input.is_action_just_pressed("Cloud"):
 		$CloudContainer.visible = not $CloudContainer.visible
 	if Input.is_action_just_pressed("Quit"):

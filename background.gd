@@ -8,6 +8,8 @@ var bg_state :int
 
 func init_bg(vp :Vector2) -> void:
 	vp_size = vp
+	init_ani_tile()
+	$ColorRect.size = vp_size
 
 var bg_colors = [
 	Color.DIM_GRAY,
@@ -30,10 +32,6 @@ func toggle_bg():
 			$ParallaxLayer.visible = false
 			$ColorRect.visible = true
 			$ColorRect.color = bg_colors[bg_state-1]
-
-func _ready() -> void:
-	init_ani_tile()
-	$ColorRect.size = vp_size
 
 func init_ani_tile():
 	velocity = Vector2.ONE.rotated( randf() * 2 * PI ) * SPEED_LIMIT

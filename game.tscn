@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://7u1t5lj73shm"]
+[gd_scene load_steps=4 format=3 uid="uid://7u1t5lj73shm"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_vjs00"]
 [ext_resource type="PackedScene" uid="uid://s5uj50u6rb05" path="res://hud.tscn" id="2_fponq"]
+[ext_resource type="PackedScene" uid="uid://cocfmr8wyudsh" path="res://background.tscn" id="3_mj7ta"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_vjs00")
@@ -25,6 +26,8 @@ z_index = 50
 [node name="StatTimer" type="Timer" parent="."]
 wait_time = 0.3
 autostart = true
+
+[node name="Background" parent="." instance=ExtResource("3_mj7ta")]
 
 [connection signal="cloud_count_changed" from="UILayer/HUD" to="." method="_on_hud_cloud_count_changed"]
 [connection signal="timeout" from="StatTimer" to="." method="_on_stat_timer_timeout"]
