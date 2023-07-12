@@ -1,9 +1,6 @@
 class_name Ball extends Area2D
 
-signal fire_bullet(t :ColorTeam, p :Vector2, v :Vector2)
-signal fire_homming(t :ColorTeam, p :Vector2, dest :Ball)
 signal shield_add(b:Ball)
-signal shield_ended_from_ball(o :Shield)
 signal ended(o :Ball)
 
 const SPEED_LIMIT :float = 200
@@ -55,9 +52,9 @@ func connect_if_not(sg :Signal, fn :Callable):
 		sg.connect(fn)
 
 func shield_end(sh :Shield):
-	emit_signal("shield_ended_from_ball",sh)
 	shield_free_list.put_node2d(sh)
 	$ShieldContainer.remove_child.call_deferred(sh)
+	get_tree().current_scene.shield_explode_effect(sh)
 
 func end():
 	if alive:
@@ -67,11 +64,11 @@ func end():
 func _process(delta: float) -> void:
 	var v = AI.do_fire_bullet(position, team,delta,most_danger_area2d,find_other_team_ball)
 	if v != Vector2.ZERO:
-		emit_signal("fire_bullet",team, position, v)
+		get_tree().current_scene.fire_bullet(team, position, v)
 
 	var dst = AI.do_fire_homming(team,delta,most_danger_area2d,find_other_team_ball)
 	if dst != null:
-		emit_signal("fire_homming",team, position, dst)
+		get_tree().current_scene.fire_homming(team, position, dst)
 
 	if AI.do_add_shield(delta):
 		add_shield()

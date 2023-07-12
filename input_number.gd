@@ -1,10 +1,10 @@
 extends HBoxContainer
 
-func init(s :String, v :int, min :int, max :int)->void:
+func init(s :String, v :int, minv :int, maxv :int)->void:
 	$Label.text = s
 	$Number.value = v
-	$Number.min_value = min
-	$Number.max_value = max
+	$Number.min_value = minv
+	$Number.max_value = maxv
 
 func get_value()->int:
 	return $Number.value

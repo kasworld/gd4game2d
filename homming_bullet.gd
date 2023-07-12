@@ -1,7 +1,5 @@
 class_name HommingBullet extends Area2D
 
-signal ended(o :HommingBullet)
-
 const SPEED_LIMIT :float = 300
 const LIFE_SEC = 10.0
 
@@ -46,7 +44,7 @@ func dest_ball_end(_o :Ball):
 func end():
 	if alive:
 		alive = false
-		emit_signal("ended",self)
+		get_tree().current_scene.homming_end(self)
 
 var frame := 0
 func _process(_delta: float) -> void:
@@ -60,6 +58,9 @@ func _process(_delta: float) -> void:
 		change_color()
 
 func _physics_process(delta: float) -> void:
+	if dest_ball == null or not dest_ball.alive:
+		end()
+		return
 	velocity = velocity.limit_length(speed)
 	position += velocity * delta
 	velocity +=accel

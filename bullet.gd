@@ -1,7 +1,5 @@
 class_name Bullet extends Area2D
 
-signal ended(o :Bullet)
-
 const SPEED_LIMIT :float = 500.0
 const LIFE_SEC = 10.0
 
@@ -25,7 +23,7 @@ func spawn(t :ColorTeam,p :Vector2, v :Vector2):
 func end():
 	if alive:
 		alive = false
-		emit_signal("ended",self)
+		get_tree().current_scene.bullet_end(self)
 
 func _process(_delta: float) -> void:
 	var dur = Time.get_unix_time_from_system() - life_start

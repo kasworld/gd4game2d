@@ -1,7 +1,5 @@
 class_name BallSpawnSprite extends Sprite2D
 
-signal ended(o :BallSpawnSprite)
-
 const LIFE_SEC = 1.0
 const SCALE = 1.0
 
@@ -18,7 +16,7 @@ func spawn(t :ColorTeam, p :Vector2):
 func _process(_delta: float) -> void:
 	var dur = Time.get_unix_time_from_system() - life_start
 	if dur > LIFE_SEC:
-		emit_signal("ended",self)
+		get_tree().current_scene.ball_spawn_effect_end(self)
 		return
 	var rate = dur / LIFE_SEC
 	self_modulate.a = sin(rate*PI/2)

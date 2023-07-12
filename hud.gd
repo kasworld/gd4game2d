@@ -13,9 +13,9 @@ const TeamStatName :Array[String] = [
 	"kill_homming",
 ]
 # team_stat[team_name][stat_culumn] :int
-var team_stat := {}
+var team_stat :Dictionary
 # team_stat_label[team_name][stat_culumn] :Label
-var team_stat_label := {}
+var team_stat_label :Dictionary
 
 var vp_size :Vector2
 
@@ -26,6 +26,19 @@ func _ready() -> void:
 	$TeamCount.init("Team count", team_count, 1, 100)
 	var ball_per_team = get_tree().current_scene.ball_per_team
 	$BallPerTeam.init("Balls per team", ball_per_team, 1, 100)
+
+func clear():
+	get_tree().current_scene.cloud_count = $CloudCount.get_value()
+	get_tree().current_scene.team_count = $TeamCount.get_value()
+	get_tree().current_scene.ball_per_team = $BallPerTeam.get_value()
+	for o in $TeamStatGrid.get_children():
+		o.queue_free()
+	for o in $GameStats.get_children():
+		o.queue_free()
+	game_stat_label = {}
+	team_stat = {}
+	team_stat_label = {}
+
 
 func init_stat(vp :Vector2, colorteam_list :Array[ColorTeam]):
 	vp_size = vp
@@ -66,6 +79,8 @@ func add_label_to_teamstat(s :String, c :Color)->Label:
 	return lb
 
 func inc_team_stat(team : ColorTeam, statname: String)->void:
+	if team_stat.get(team.name, null) == null :
+		return
 	team_stat[team.name][statname] += 1
 	team_stat_label[team.name][statname].text = str(team_stat[team.name][statname])
 
@@ -78,7 +93,7 @@ const GameStatName = {
 	"Homming" :"%d",
 	"Explosion" :"%d",
 }
-var game_stat_label := {}
+var game_stat_label :Dictionary
 func add_label_to_gamestat(s :String, c :Color)->Label:
 	var lb = Label.new()
 	lb.text = s

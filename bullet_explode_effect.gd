@@ -1,7 +1,5 @@
 class_name BulletExplodeSprite extends Sprite2D
 
-signal ended(o :BulletExplodeSprite)
-
 const LIFE_SEC = 1.0
 const SCALE = 0.5
 
@@ -17,7 +15,7 @@ func spawn(t :ColorTeam, p :Vector2):
 func _process(delta: float) -> void:
 	var dur = Time.get_unix_time_from_system() - life_start
 	if dur > LIFE_SEC:
-		emit_signal("ended",self)
+		get_tree().current_scene.bullet_explode_effect_end(self)
 		return
 	var rate = dur / LIFE_SEC
 	self_modulate.a = cos(rate*PI/2)
