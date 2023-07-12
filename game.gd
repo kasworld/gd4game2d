@@ -176,5 +176,5 @@ func _on_stat_timer_timeout() -> void:
 	$UILayer/HUD.set_game_stat("Explosion", $EffectContainer.get_child_count())
 	var shield_count = 0
 	for b in $BallContainer.get_children():
-		shield_count += b.shield_count
+		shield_count += b.get_shield_count()
 	$UILayer/HUD.set_game_stat("Shield", shield_count )

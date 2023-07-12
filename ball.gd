@@ -15,7 +15,6 @@ var inc_team_stat :Callable # func(team : ColorTeam, statname: String)
 var team :ColorTeam
 var velocity :Vector2
 var ai :AI
-var shield_count :int
 var vp_size :Vector2
 var bounce_radius :float
 var alive :bool
@@ -41,17 +40,18 @@ func spawn(t :ColorTeam, p :Vector2, inc_team_stat_arg :Callable):
 	monitorable = true
 	monitoring = true
 	visible = true
-	shield_count = 0
 	for i in INIT_SHIELD:
 		add_shield()
 
+func get_shield_count()->int:
+	return $ShieldContainer.get_child_count()
+
 func add_shield():
-	if shield_count >= MAX_SHIELD:
+	if get_shield_count() >= MAX_SHIELD:
 		return
-	shield_count +=1
 	inc_team_stat.call(team,"new_shield")
 	var sh = shield_free_list.get_node2d()
-	add_child(sh)
+	$ShieldContainer.add_child(sh)
 	sh.spawn(team, inc_team_stat, shield_end)
 
 func connect_if_not(sg :Signal, fn :Callable):
@@ -59,10 +59,9 @@ func connect_if_not(sg :Signal, fn :Callable):
 		sg.connect(fn)
 
 func shield_end(sh :Shield):
-	shield_count -=1
 	emit_signal("shield_ended_from_ball",sh)
 	shield_free_list.put_node2d(sh)
-	remove_child.call_deferred(sh)
+	$ShieldContainer.remove_child.call_deferred(sh)
 
 func end():
 	if alive:
