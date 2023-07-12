@@ -1,18 +1,5 @@
 class_name ColorTeam
 
-
-#const TeamStatName :Array[String] = [
-#	"accel",
-#	"new_ball",
-#	"new_shield",
-#	"new_bullet",
-#	"new_homming",
-#	"kill_ball",
-#	"kill_shield",
-#	"kill_bullet",
-#	"kill_homming",
-#]
-
 enum Stat {
 	ACCEL,
 	NEW_BALL,

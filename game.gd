@@ -14,8 +14,20 @@ var colorteam_list :Array[ColorTeam]
 var life_start :float
 
 # game argument
-var team_count :int = 30
-var ball_per_team :int = 1
+var team_count :int = 8
+var ball_per_team :int = 2
+var ball_per_team_tomake :Dictionary # ball_incdec[team] = tomake , + make, - del
+
+func _on_hud_ball_per_team_changed(v) -> void:
+	var tomake = v - ball_per_team
+	print("ball/team %s %s %s" % [ball_per_team, v, tomake])
+	ball_per_team = v
+	for t in ball_per_team_tomake:
+		ball_per_team_tomake[t] += tomake
+
+# pretty much difficult
+func _on_hud_team_count_changed(v) -> void:
+	pass # Replace with function body.
 
 func init_game():
 	colorteam_list = ColorTeam.make_color_teamlist(team_count)
@@ -27,13 +39,12 @@ func init_game():
 func add_full_team():
 	for t in colorteam_list:
 		ball_spawn_effect(t)
+		ball_per_team_tomake[t] = 0
 
 var cloud_count :int = 100
 func init_cloud():
 	var tomake = cloud_count - $CloudContainer.get_child_count()
-	if tomake == 0 :
-		return
-	elif tomake > 0:
+	if tomake > 0:
 		for i in tomake:
 			$CloudContainer.add_child(preload("res://cloud.tscn").instantiate())
 	elif tomake < 0:
@@ -42,8 +53,8 @@ func init_cloud():
 			tomake +=1
 			if tomake >=0:
 				break
-	else:
-		assert(tomake)
+	else: # tomake == 0
+		pass
 
 func _on_hud_cloud_count_changed(v) -> void:
 	cloud_count = v
@@ -61,6 +72,12 @@ var fps :float
 func _process(delta: float) -> void:
 	handle_input()
 	fps = (fps+1.0/delta)/2
+	for t in ball_per_team_tomake:
+		var tomake = ball_per_team_tomake[t]
+		if tomake > 0:
+			ball_per_team_tomake[t] = 0
+			for i in tomake: # make ball
+				ball_spawn_effect(t) # make ball by spawn
 
 func handle_input():
 	if Input.is_action_just_pressed("HUD"):
@@ -103,7 +120,7 @@ func ball_end(o:Ball):
 func ball_explode_effect_end(o :BallExplodeSprite):
 	ball_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
-	ball_spawn_effect.call_deferred(o.team)
+	ball_per_team_tomake[o.team] +=1 # make next ball
 
 func shield_explode_effect(o :Shield):
 	var obj = shield_explode_free_list.get_node2d()
@@ -180,9 +197,3 @@ func _on_stat_timer_timeout() -> void:
 	$UILayer/HUD.set_game_stat("FPS", fps)
 	update_game_stat()
 
-func _on_hud_ball_per_team_changed(v) -> void:
-	pass # Replace with function body.
-
-# pretty much difficult
-func _on_hud_team_count_changed(v) -> void:
-	pass # Replace with function body.
