@@ -3,8 +3,6 @@ class_name HommingBullet extends Area2D
 const SPEED_LIMIT :float = 300
 const LIFE_SEC = 10.0
 
-var inc_team_stat :Callable # func(team : ColorTeam, statname: String)
-
 var speed :float
 var team :ColorTeam
 var dest_ball :Ball
@@ -12,9 +10,6 @@ var velocity :Vector2
 var accel :Vector2
 var alive :bool
 var life_start :float
-
-func _ready()->void:
-	inc_team_stat = get_tree().current_scene.inc_team_stat
 
 func spawn(t :ColorTeam, p :Vector2, bl :Ball)->void:
 	team = t
@@ -72,19 +67,19 @@ func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int,
 		if area_shape_index != 0: # ball kill area
 			return
 		if area.team != team:
-			inc_team_stat.call(area.team,"kill_ball")
+			area.team.inc_stat(ColorTeam.Stat.KILL_BALL)
 			end()
 	elif area is Bullet:
 		if area.team != team:
-			inc_team_stat.call(area.team,"kill_bullet")
+			area.team.inc_stat(ColorTeam.Stat.KILL_BULLET)
 			end()
 	elif area is Shield:
 		if area.team != team:
-			inc_team_stat.call(area.team,"kill_shield")
+			area.team.inc_stat(ColorTeam.Stat.KILL_SHIELD)
 			end()
 	elif area is HommingBullet:
 		if area.team != team:
-			inc_team_stat.call(area.team,"kill_homming")
+			area.team.inc_stat(ColorTeam.Stat.KILL_HOMMING)
 			end()
 	else:
 		print_debug("unknown Area2D ", area)

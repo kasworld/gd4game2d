@@ -18,9 +18,6 @@ var life_start :float
 var team_count :int = 30
 var ball_per_team :int = 1
 
-func inc_team_stat(team : ColorTeam, statname: String)->void:
-	$UILayer/HUD.inc_team_stat(team,statname)
-
 func init_game():
 	ball_free_list = Node2DPool.new(preload("res://ball.tscn").instantiate)
 	ball_spawn_free_list = Node2DPool.new(preload("res://ball_spawn_sprite.tscn").instantiate)
@@ -105,7 +102,7 @@ func ball_spawn_effect_end(o :BallSpawnSprite):
 	new_ball.call_deferred(o.team,o.position)
 
 func new_ball(t :ColorTeam, p :Vector2):
-	inc_team_stat(t,"new_ball")
+	t.inc_stat(ColorTeam.Stat.NEW_BALL)
 	var obj = ball_free_list.get_node2d()
 	$BallContainer.add_child(obj)
 	connect_if_not(obj.ended,ball_end)
@@ -136,7 +133,7 @@ func shield_explode_effect_end(o :ShieldExplodeSprite):
 	$EffectContainer.remove_child(o)
 
 func fire_bullet(t :ColorTeam, p :Vector2, v :Vector2):
-	inc_team_stat(t,"new_bullet")
+	t.inc_stat(ColorTeam.Stat.NEW_BULLET)
 	var obj = bullet_free_list.get_node2d()
 	$BulletContainer.add_child(obj)
 	obj.spawn(t,p,v)
@@ -156,7 +153,7 @@ func bullet_explode_effect_end(o :BulletExplodeSprite):
 	$EffectContainer.remove_child(o)
 
 func fire_homming(t :ColorTeam, p :Vector2, dst :Ball):
-	inc_team_stat(t,"new_homming")
+	t.inc_stat(ColorTeam.Stat.NEW_HOMMING)
 	var obj = homming_free_list.get_node2d()
 	$HommingContainer.add_child(obj)
 	obj.spawn(t,p,dst)

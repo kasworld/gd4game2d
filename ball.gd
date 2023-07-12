@@ -8,7 +8,6 @@ const MAX_SHIELD = 12
 const INIT_SHIELD = 12
 
 var shield_free_list = Node2DPool.new(preload("res://shield.tscn").instantiate)
-var inc_team_stat :Callable # func(team : ColorTeam, statname: String)
 var find_other_team_ball :Callable
 var team :ColorTeam
 var velocity :Vector2
@@ -19,7 +18,6 @@ var life_start :float
 
 func _ready() -> void:
 	find_other_team_ball = get_tree().current_scene.find_other_team_ball
-	inc_team_stat = get_tree().current_scene.inc_team_stat
 	vp_size = get_viewport_rect().size
 	bounce_radius = $CollisionShape2D.shape.radius
 
@@ -42,7 +40,7 @@ func get_shield_count()->int:
 func add_shield():
 	if get_shield_count() >= MAX_SHIELD:
 		return
-	inc_team_stat.call(team,"new_shield")
+	team.inc_stat(ColorTeam.Stat.NEW_SHIELD)
 	var sh = shield_free_list.get_node2d()
 	$ShieldContainer.add_child(sh)
 	sh.spawn(team, shield_end)
@@ -77,7 +75,7 @@ func _physics_process(delta: float) -> void:
 	var oldv = velocity
 	velocity = AI.do_accel(delta,position,velocity, most_danger_area2d)
 	if oldv != velocity:
-		inc_team_stat.call(team,"accel")
+		team.inc_stat(ColorTeam.Stat.ACCEL)
 
 	position += velocity * delta
 	var bn = Bounce.new(position,velocity,vp_size,bounce_radius)
@@ -96,19 +94,19 @@ func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int,
 	if local_shape_node == $CollisionShape2D:
 		if area is Ball:
 			if area.team != team and area_shape_index == 0:
-				inc_team_stat.call(area.team,"kill_ball")
+				area.team.inc_stat(ColorTeam.Stat.KILL_BALL)
 				end()
 		elif area is Bullet:
 			if area.team != team:
-				inc_team_stat.call(area.team,"kill_bullet")
+				area.team.inc_stat(ColorTeam.Stat.KILL_BULLET)
 				end()
 		elif area is Shield:
 			if area.team != team:
-				inc_team_stat.call(area.team,"kill_shield")
+				area.team.inc_stat(ColorTeam.Stat.KILL_SHIELD)
 				end()
 		elif area is HommingBullet:
 			if area.team != team:
-				inc_team_stat.call(area.team,"kill_homming")
+				area.team.inc_stat(ColorTeam.Stat.KILL_HOMMING)
 				end()
 		else:
 			print_debug("unknown Area2 ", area)

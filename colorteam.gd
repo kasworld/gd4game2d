@@ -1,13 +1,50 @@
 class_name ColorTeam
 
+
+#const TeamStatName :Array[String] = [
+#	"accel",
+#	"new_ball",
+#	"new_shield",
+#	"new_bullet",
+#	"new_homming",
+#	"kill_ball",
+#	"kill_shield",
+#	"kill_bullet",
+#	"kill_homming",
+#]
+
+enum Stat {
+	ACCEL,
+	NEW_BALL,
+	NEW_SHIELD,
+	NEW_BULLET,
+	NEW_HOMMING,
+	KILL_BALL,
+	KILL_SHIELD,
+	KILL_BULLET,
+	KILL_HOMMING,
+}
+
+static func stat_string(k :Stat)->String:
+	return Stat.keys()[k]
+
 var color_index :int
 var color :Color
 var name :String
+var stats :Dictionary # key string -> int
+var labels :Dictionary # key string -> Label at HUD
+
+func inc_stat(k :Stat):
+	var ks = ColorTeam.stat_string(k)
+	stats[ks] +=  1
+	labels[ks].text = str(stats[ks])
 
 func _init(ci :int):
 	color_index = ci
 	color = NamedColorList.get_color(color_index)
 	name = NamedColorList.get_colorname(color_index)
+	for k in Stat.keys():
+		stats[k] = 0
 
 static func make_color_teamlist(team_count :int)->Array[ColorTeam]:
 	var in_use_index = {}
