@@ -24,6 +24,10 @@ func init_game():
 
 	$UILayer/HUD.init(vp_size, colorteam_list, cloud_count, team_count, ball_per_team)
 
+func add_full_team():
+	for t in colorteam_list:
+		ball_spawn_effect(t)
+
 var cloud_count :int = 100
 func init_cloud():
 	var tomake = cloud_count - $CloudContainer.get_child_count()
@@ -69,10 +73,6 @@ func handle_input():
 		get_tree().quit()
 	if Input.is_action_just_pressed("Restart"):
 		get_tree().reload_current_scene()
-
-func add_full_team():
-	for t in colorteam_list:
-		ball_spawn_effect(t)
 
 func ball_spawn_effect(t :ColorTeam):
 	var obj = ball_spawn_free_list.get_node2d()
