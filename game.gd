@@ -12,12 +12,14 @@ var homming_explode_free_list = Node2DPool.new(preload("res://homming_explode_ef
 var background :Background
 var vp_size :Vector2
 var colorteam_list :Array[ColorTeam]
+var life_start :float
 
 func inc_team_stat(team : ColorTeam, statname: String)->void:
-	$UILayer/HUD.inc_stat(team,statname)
+	$UILayer/HUD.inc_team_stat(team,statname)
 
 func _ready():
 	randomize()
+	life_start = Time.get_unix_time_from_system()
 
 	vp_size = get_viewport_rect().size
 
@@ -34,8 +36,10 @@ func _ready():
 
 	$UILayer/HUD.init_stat(vp_size, colorteam_list)
 
-func _process(_delta: float) -> void:
+var fps :float
+func _process(delta: float) -> void:
 	handle_input()
+	fps = (fps+1.0/delta)/2
 
 func handle_input():
 	if Input.is_action_just_pressed("HUD"):
@@ -164,11 +168,13 @@ func find_other_team_ball(t :ColorTeam)->Ball:
 	return null
 
 func _on_stat_timer_timeout() -> void:
-	$UILayer/HUD.ball_count = $BallContainer.get_child_count()
-	$UILayer/HUD.bullet_count = $BulletContainer.get_child_count()
-	$UILayer/HUD.homming_count = $HommingContainer.get_child_count()
-	$UILayer/HUD.effect_count = $EffectContainer.get_child_count()
+	$UILayer/HUD.set_game_stat("GameSec", Time.get_unix_time_from_system() - life_start)
+	$UILayer/HUD.set_game_stat("FPS", fps)
+	$UILayer/HUD.set_game_stat("Ball", $BallContainer.get_child_count())
+	$UILayer/HUD.set_game_stat("Bullet", $BulletContainer.get_child_count())
+	$UILayer/HUD.set_game_stat("Homming", $HommingContainer.get_child_count())
+	$UILayer/HUD.set_game_stat("Explosion", $EffectContainer.get_child_count())
 	var shield_count = 0
 	for b in $BallContainer.get_children():
 		shield_count += b.shield_count
-	$UILayer/HUD.shield_count = shield_count
+	$UILayer/HUD.set_game_stat("Shield", shield_count )
