@@ -21,21 +21,7 @@ var ball_per_team :int = 1
 func inc_team_stat(team : ColorTeam, statname: String)->void:
 	$UILayer/HUD.inc_team_stat(team,statname)
 
-func clear_game():
-	for o in $BallContainer.get_children():
-		o.queue_free()
-	for o in $BulletContainer.get_children():
-		o.queue_free()
-	for o in $HommingContainer.get_children():
-		o.queue_free()
-	for o in $EffectContainer.get_children():
-		o.queue_free()
-	$UILayer/HUD.clear()
-
 func init_game():
-	life_start = Time.get_unix_time_from_system()
-	vp_size = get_viewport_rect().size
-
 	ball_free_list = Node2DPool.new(preload("res://ball.tscn").instantiate)
 	ball_spawn_free_list = Node2DPool.new(preload("res://ball_spawn_sprite.tscn").instantiate)
 	ball_explode_free_list = Node2DPool.new(preload("res://ball_explode_effect.tscn").instantiate)
@@ -45,15 +31,16 @@ func init_game():
 	homming_free_list = Node2DPool.new(preload("res://homming_bullet.tscn").instantiate)
 	homming_explode_free_list = Node2DPool.new(preload("res://homming_explode_effect.tscn").instantiate)
 
-	background = preload("res://background.tscn").instantiate()
-	background.init_bg(vp_size)
-	add_child(background)
-
 	colorteam_list = ColorTeam.make_color_teamlist(team_count)
 	for i in ball_per_team:
 		add_full_team()
 
 	$UILayer/HUD.init(vp_size, colorteam_list, cloud_count, team_count, ball_per_team)
+
+func init_background():
+	background = preload("res://background.tscn").instantiate()
+	background.init_bg(vp_size)
+	add_child(background)
 
 var cloud_count :int = 100
 func init_cloud():
@@ -78,6 +65,9 @@ func _on_hud_cloud_count_changed(v) -> void:
 
 func _ready():
 	randomize()
+	life_start = Time.get_unix_time_from_system()
+	vp_size = get_viewport_rect().size
+	init_background()
 	init_cloud()
 	init_game()
 
@@ -97,10 +87,6 @@ func handle_input():
 		get_tree().quit()
 	if Input.is_action_just_pressed("Restart"):
 		get_tree().reload_current_scene()
-#		get_tree().paused = true
-#		clear_game()
-#		init_game()
-#		get_tree().paused = false
 
 func add_full_team():
 	for t in colorteam_list:

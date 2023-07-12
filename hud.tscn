@@ -49,26 +49,14 @@ horizontal_alignment = 2
 
 [node name="CloudCount" parent="." instance=ExtResource("3_l3yib")]
 layout_mode = 0
-offset_left = 3312.0
-offset_top = 910.0
-offset_right = 3830.0
-offset_bottom = 973.0
 alignment = 2
 
 [node name="TeamCount" parent="." instance=ExtResource("3_l3yib")]
 layout_mode = 0
-offset_left = 3312.0
-offset_top = 1001.0
-offset_right = 3830.0
-offset_bottom = 1064.0
 alignment = 2
 
 [node name="BallPerTeam" parent="." instance=ExtResource("3_l3yib")]
 layout_mode = 0
-offset_left = 3312.0
-offset_top = 1083.0
-offset_right = 3830.0
-offset_bottom = 1146.0
 alignment = 2
 
 [connection signal="value_changed" from="CloudCount" to="." method="_on_cloud_count_value_changed"]

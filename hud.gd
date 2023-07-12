@@ -31,16 +31,6 @@ func _on_team_count_value_changed(v) -> void:
 func _on_ball_per_team_value_changed(v) -> void:
 	emit_signal("ball_per_team_changed",v)
 
-func clear():
-	game_stat_label = {}
-	for o in $GameStats.get_children():
-		o.queue_free()
-
-	team_stat = {}
-	team_stat_label = {}
-	for o in $TeamStatGrid.get_children():
-		o.queue_free()
-
 func init(vp :Vector2, colorteam_list :Array[ColorTeam], cloud_count :int,team_count :int, ball_per_team:int):
 	vp_size = vp
 
@@ -52,7 +42,7 @@ func init(vp :Vector2, colorteam_list :Array[ColorTeam], cloud_count :int,team_c
 	$TeamCount.position.x = vp_size.x - $TeamCount.size.x
 	$TeamCount.position.y = vp_size.y/2
 
-	$BallPerTeam.init("Balls per team", ball_per_team, 1, 100)
+	$BallPerTeam.init("Balls / team", ball_per_team, 1, 100)
 	$BallPerTeam.position.x = vp_size.x - $BallPerTeam.size.x
 	$BallPerTeam.position.y = vp_size.y/2 + $BallPerTeam.size.y
 
