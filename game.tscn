@@ -29,5 +29,7 @@ autostart = true
 
 [node name="Background" parent="." instance=ExtResource("3_mj7ta")]
 
+[connection signal="ball_per_team_changed" from="UILayer/HUD" to="." method="_on_hud_ball_per_team_changed"]
 [connection signal="cloud_count_changed" from="UILayer/HUD" to="." method="_on_hud_cloud_count_changed"]
+[connection signal="team_count_changed" from="UILayer/HUD" to="." method="_on_hud_team_count_changed"]
 [connection signal="timeout" from="StatTimer" to="." method="_on_stat_timer_timeout"]

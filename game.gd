@@ -77,8 +77,7 @@ func handle_input():
 func ball_spawn_effect(t :ColorTeam):
 	var obj = ball_spawn_free_list.get_node2d()
 	$EffectContainer.add_child(obj)
-	var vp = get_viewport_rect().size
-	var p = Vector2(randf_range(0,vp.x),randf_range(0,vp.y))
+	var p = Vector2(randf_range(0,vp_size.x),randf_range(0,vp_size.y))
 	obj.spawn(t,p)
 
 func ball_spawn_effect_end(o :BallSpawnSprite):
@@ -181,4 +180,9 @@ func _on_stat_timer_timeout() -> void:
 	$UILayer/HUD.set_game_stat("FPS", fps)
 	update_game_stat()
 
+func _on_hud_ball_per_team_changed(v) -> void:
+	pass # Replace with function body.
 
+# pretty much difficult
+func _on_hud_team_count_changed(v) -> void:
+	pass # Replace with function body.
