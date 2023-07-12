@@ -26,9 +26,6 @@ func _ready() -> void:
 	ai.find_other_team_ball = get_tree().current_scene.find_other_team_ball
 	bounce_radius = $CollisionShape2D.shape.radius
 
-func get_age_sec()->float:
-	return Time.get_unix_time_from_system() - life_start
-
 func spawn(t :ColorTeam, p :Vector2, inc_team_stat_arg :Callable):
 	inc_team_stat = inc_team_stat_arg
 	$ColorBallSprite.self_modulate = t.color

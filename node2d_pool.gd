@@ -6,9 +6,6 @@ var total_count :int
 var reuse_count :int
 var make_count :int
 
-func hit_rate()->float:
-	return float(reuse_count)/float(total_count)
-
 func _init(newfn :Callable) -> void:
 	instantiatefn = newfn
 

@@ -173,27 +173,11 @@ func update_game_stat():
 	$UILayer/HUD.set_game_stat("Homming", $HommingContainer.get_child_count())
 	$UILayer/HUD.set_game_stat("Explosion", $EffectContainer.get_child_count())
 	var shield_count = 0
-#	var shield_make_count = 0
 	for b in $BallContainer.get_children():
 		shield_count += b.get_shield_count()
-#		shield_make_count += b.shield_free_list.make_count
 	$UILayer/HUD.set_game_stat("Shield", shield_count )
-#	print(shield_make_count)
 
 func _on_stat_timer_timeout() -> void:
 	$UILayer/HUD.set_game_stat("GameSec", Time.get_unix_time_from_system() - life_start)
 	$UILayer/HUD.set_game_stat("FPS", fps)
 	update_game_stat()
-#	print_freelist_hitrate()
-
-func print_freelist_hitrate():
-	print(
-		ball_free_list.make_count," ",
-		ball_spawn_free_list.make_count," ",
-		ball_explode_free_list.make_count," ",
-		shield_explode_free_list.make_count," ",
-		bullet_free_list.make_count," ",
-		bullet_explode_free_list.make_count," ",
-		homming_free_list.make_count," ",
-		homming_explode_free_list.make_count," ",
-		)
