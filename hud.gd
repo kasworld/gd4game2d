@@ -52,6 +52,9 @@ func init(vp :Vector2, colorteam_list :Array[ColorTeam], cloud_count :int,team_c
 		game_stat_label[s] = add_label_to_gamestat(s, Color.WHITE)
 		set_game_stat(s,0)
 
+	init_teamstats(colorteam_list)
+
+func init_teamstats(colorteam_list :Array[ColorTeam]):
 	add_label_to_teamstat("Team",Color.WHITE)
 	for s in TeamStatName:
 		add_label_to_teamstat(s,Color.WHITE)
