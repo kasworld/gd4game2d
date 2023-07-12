@@ -23,8 +23,6 @@ func inc_team_stat(team : ColorTeam, statname: String)->void:
 	$UILayer/HUD.inc_team_stat(team,statname)
 
 func clear_game():
-	for o in $CloudContainer.get_children():
-		o.queue_free()
 	for o in $BallContainer.get_children():
 		o.queue_free()
 	for o in $BulletContainer.get_children():
@@ -52,8 +50,6 @@ func init_game():
 	background.init_bg(vp_size)
 	add_child(background)
 
-	for i in range(cloud_count):
-		$CloudContainer.add_child(preload("res://cloud.tscn").instantiate())
 
 	colorteam_list = ColorTeam.make_color_teamlist(team_count)
 	for i in ball_per_team:
@@ -61,8 +57,16 @@ func init_game():
 
 	$UILayer/HUD.init_stat(vp_size, colorteam_list)
 
+func init_cloud():
+	for o in $CloudContainer.get_children():
+		o.queue_free()
+	for i in range(cloud_count):
+		$CloudContainer.add_child(preload("res://cloud.tscn").instantiate())
+
+
 func _ready():
 	randomize()
+	init_cloud()
 	init_game()
 
 var fps :float
@@ -76,6 +80,8 @@ func handle_input():
 	if Input.is_action_just_pressed("Background"):
 		background.toggle_bg()
 	if Input.is_action_just_pressed("Cloud"):
+		if not $CloudContainer.visible and $CloudContainer.get_child_count() != cloud_count:
+			init_cloud()
 		$CloudContainer.visible = not $CloudContainer.visible
 	if Input.is_action_just_pressed("Quit"):
 		get_tree().quit()

@@ -69,3 +69,7 @@ offset_top = 1083.0
 offset_right = 3830.0
 offset_bottom = 1146.0
 alignment = 2
+
+[connection signal="value_changed" from="CloudCount" to="." method="_on_cloud_count_value_changed"]
+[connection signal="value_changed" from="TeamCount" to="." method="_on_team_count_value_changed"]
+[connection signal="value_changed" from="BallPerTeam" to="." method="_on_ball_per_team_value_changed"]

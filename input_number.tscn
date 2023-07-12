@@ -31,5 +31,8 @@ alignment = 2
 layout_mode = 2
 text = ">"
 
-[connection signal="pressed" from="Dec" to="." method="_on_dec_pressed"]
-[connection signal="pressed" from="Inc" to="." method="_on_inc_pressed"]
+[connection signal="button_down" from="Dec" to="." method="_on_dec_button_down"]
+[connection signal="button_up" from="Dec" to="." method="_on_dec_button_up"]
+[connection signal="value_changed" from="Number" to="." method="_on_number_value_changed"]
+[connection signal="button_down" from="Inc" to="." method="_on_inc_button_down"]
+[connection signal="button_up" from="Inc" to="." method="_on_inc_button_up"]

@@ -22,23 +22,35 @@ var vp_size :Vector2
 func _ready() -> void:
 	var cloud_count = get_tree().current_scene.cloud_count
 	$CloudCount.init("Cloud count", cloud_count, 0, 1000)
+
 	var team_count = get_tree().current_scene.team_count
 	$TeamCount.init("Team count", team_count, 1, 100)
+
 	var ball_per_team = get_tree().current_scene.ball_per_team
 	$BallPerTeam.init("Balls per team", ball_per_team, 1, 100)
 
+func _on_cloud_count_value_changed(v) -> void:
+	get_tree().current_scene.cloud_count = v
+
+func _on_team_count_value_changed(v) -> void:
+	get_tree().current_scene.team_count = v
+
+func _on_ball_per_team_value_changed(v) -> void:
+	get_tree().current_scene.ball_per_team = v
+
 func clear():
 	get_tree().current_scene.cloud_count = $CloudCount.get_value()
-	get_tree().current_scene.team_count = $TeamCount.get_value()
-	get_tree().current_scene.ball_per_team = $BallPerTeam.get_value()
-	for o in $TeamStatGrid.get_children():
-		o.queue_free()
+
+	game_stat_label = {}
 	for o in $GameStats.get_children():
 		o.queue_free()
-	game_stat_label = {}
+
 	team_stat = {}
 	team_stat_label = {}
-
+	for o in $TeamStatGrid.get_children():
+		o.queue_free()
+	get_tree().current_scene.team_count = $TeamCount.get_value()
+	get_tree().current_scene.ball_per_team = $BallPerTeam.get_value()
 
 func init_stat(vp :Vector2, colorteam_list :Array[ColorTeam]):
 	vp_size = vp
@@ -108,3 +120,5 @@ func add_label_to_gamestat(s :String, c :Color)->Label:
 
 func set_game_stat(n :String, v):
 	game_stat_label[n].text = "{0} : {1}".format( [n , GameStatName[n] % v ] )
+
+
