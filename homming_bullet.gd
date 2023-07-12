@@ -17,15 +17,11 @@ func spawn(t :ColorTeam, p :Vector2, bl :Ball)->void:
 	life_start = Time.get_unix_time_from_system()
 	$Sprite2D.self_modulate = t.color
 	dest_ball = bl
-	connect_if_not(dest_ball.ended,dest_ball_end)
+	AI.connect_if_not(dest_ball.ended,dest_ball_end)
 	position = p
 	speed = randfn(SPEED_LIMIT, SPEED_LIMIT/10.0)
 	if speed < SPEED_LIMIT/3 :
 		speed = SPEED_LIMIT/3
-
-func connect_if_not(sg :Signal, fn :Callable):
-	if not sg.is_connected(fn):
-		sg.connect(fn)
 
 func change_color():
 	if $Sprite2D.self_modulate == team.color:

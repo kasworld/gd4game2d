@@ -45,10 +45,6 @@ func add_shield():
 	$ShieldContainer.add_child(sh)
 	sh.spawn(team, shield_end)
 
-func connect_if_not(sg :Signal, fn :Callable):
-	if not sg.is_connected(fn):
-		sg.connect(fn)
-
 func shield_end(sh :Shield):
 	shield_free_list.put_node2d(sh)
 	$ShieldContainer.remove_child.call_deferred(sh)

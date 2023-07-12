@@ -1,5 +1,9 @@
 class_name AI #extends Node2D
 
+static func connect_if_not(sg :Signal, fn :Callable):
+	if not sg.is_connected(fn):
+		sg.connect(fn)
+
 static func calc_aim_vector2(
 	src_pos :Vector2,
 	src_speed :float,
