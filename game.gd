@@ -40,7 +40,14 @@ func apply_ball_per_team_count():
 func _on_hud_team_count_changed(v) -> void:
 #	var ctlist = ColorTeam.make_colorteam_list(v)
 #	$UILayer/HUD.init_teamstats(ctlist)
+#	make_no_gameobject()
 	pass # Replace with function body.
+
+func make_no_gameobject():
+	for t in colorteam_list:
+		t.set_ball_count_limit(0)
+	for b in $BallContainer.get_children():
+		b.end.call_deferred()
 
 func check_no_gameobject()->bool:
 	return $BallContainer.get_child_count() == 0 and \
