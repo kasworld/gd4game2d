@@ -41,11 +41,9 @@ func check_no_gameobject()->bool:
 
 
 func _on_hud_cloud_count_changed(v) -> void:
-	cloud_count = v
-	make_clouds()
+	make_clouds(v)
 
-var cloud_count :int = 100
-func make_clouds():
+func make_clouds(cloud_count :int):
 	var tomake = cloud_count - $CloudContainer.get_child_count()
 	if tomake > 0:
 		for i in tomake:
@@ -57,7 +55,7 @@ func make_clouds():
 			if tomake >=0:
 				break
 
-func init_game(team_count:int, ball_per_team :int):
+func init_game(cloud_count :int, team_count:int, ball_per_team :int):
 	colorteam_list = ColorTeam.make_colorteam_list(team_count)
 	$UILayer/HUD.init(vp_size, colorteam_list, cloud_count, team_count, ball_per_team)
 	for t in colorteam_list:
@@ -68,8 +66,9 @@ func _ready():
 	life_start = Time.get_unix_time_from_system()
 	vp_size = get_viewport_rect().size
 	$Background.init_bg(vp_size)
-	make_clouds()
-	init_game(30, 1)
+	var cloud_count :int = 100
+	make_clouds(cloud_count)
+	init_game(cloud_count, 30, 1)
 
 var fps :float
 func _process(delta: float) -> void:
