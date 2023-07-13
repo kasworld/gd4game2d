@@ -125,6 +125,7 @@ func ball_explode_effect_end(o :BallExplodeSprite):
 	ball_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
 	o.team.dec_ball_count()
+	flag_apply_ball_per_team_count = true
 
 func shield_explode_effect(o :Shield):
 	var obj = shield_explode_free_list.get_node2d()
