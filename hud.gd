@@ -24,11 +24,11 @@ func init(vp :Vector2, colorteam_list :Array[ColorTeam], cloud_count :int,team_c
 	$CloudCount.position.x = vp_size.x - $CloudCount.size.x
 	$CloudCount.position.y = vp_size.y/2 - $CloudCount.size.y
 
-	$TeamCount.init("Team count", team_count, 1, 100)
+	$TeamCount.init("Team count", team_count, 0, 100)
 	$TeamCount.position.x = vp_size.x - $TeamCount.size.x
 	$TeamCount.position.y = vp_size.y/2
 
-	$BallPerTeam.init("Balls / team", ball_per_team, 1, 100)
+	$BallPerTeam.init("Balls / team", ball_per_team, 0, 100)
 	$BallPerTeam.position.x = vp_size.x - $BallPerTeam.size.x
 	$BallPerTeam.position.y = vp_size.y/2 + $BallPerTeam.size.y
 
@@ -36,6 +36,10 @@ func init(vp :Vector2, colorteam_list :Array[ColorTeam], cloud_count :int,team_c
 
 
 func init_teamstats(colorteam_list :Array[ColorTeam]):
+	# clear
+	for o in $TeamStatGrid.get_children():
+		$TeamStatGrid.remove_child(o)
+
 	add_label_to_teamstat("Team",Color.WHITE)
 	for s in ColorTeam.Stat.keys():
 		add_label_to_teamstat(s.to_lower()+" ",Color.WHITE)

@@ -19,6 +19,8 @@ func _on_hud_ball_per_team_changed(v) -> void:
 
 # pretty much difficult
 func _on_hud_team_count_changed(v) -> void:
+#	var ctlist = ColorTeam.make_colorteam_list(v)
+#	$UILayer/HUD.init_teamstats(ctlist)
 	pass # Replace with function body.
 
 func init_game(team_count:int, ball_per_team :int):
