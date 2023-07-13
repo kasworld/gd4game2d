@@ -56,11 +56,9 @@ func check_no_gameobject()->bool:
 
 func do_change_team_count():
 	var team_count = $UILayer/HUD.get_team_count()
-	colorteam_list = ColorTeam.make_colorteam_list(team_count)
-	$UILayer/HUD.init_teamstats(colorteam_list)
 	var ball_per_team = $UILayer/HUD.get_ball_per_team()
-	for t in colorteam_list:
-		t.set_ball_count_limit(ball_per_team)
+	colorteam_list = ColorTeam.make_colorteam_list(team_count,ball_per_team)
+	$UILayer/HUD.init_teamstats(colorteam_list)
 	flag_apply_ball_per_team_count = true
 	flag_team_count_change = false
 	$UILayer/HUD.enable_team_ball_input(true)

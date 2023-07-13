@@ -51,14 +51,15 @@ func inc_stat(k :Stat):
 	stats[ks] +=  1
 	labels[ks].text = str(stats[ks])
 
-func _init(ci :int):
+func _init(ci :int, ball_per_team :int):
 	color_index = ci
+	ball_count_limit = ball_per_team
 	color = NamedColorList.get_color(color_index)
 	name = NamedColorList.get_colorname(color_index)
 	for k in Stat.keys():
 		stats[k] = 0
 
-static func make_colorteam_list(team_count :int)->Array[ColorTeam]:
+static func make_colorteam_list(team_count :int, ball_per_team :int)->Array[ColorTeam]:
 	var in_use_index = {}
 	var rtn :Array[ColorTeam] = []
 	var color_count = NamedColorList.color_list.size()
@@ -75,7 +76,7 @@ static func make_colorteam_list(team_count :int)->Array[ColorTeam]:
 				print_debug("too many retry")
 				break
 		in_use_index[try_color_index] = true
-		var ct = ColorTeam.new(try_color_index)
+		var ct = ColorTeam.new(try_color_index, ball_per_team)
 		rtn.append(ct)
 #		print("%s %s %s %s" % [t, ct.color_index, ct.color, ct.name])
 	return rtn
