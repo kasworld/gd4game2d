@@ -9,6 +9,7 @@ var alive :bool
 var life_start :float
 
 func spawn(t :ColorTeam,p :Vector2, v :Vector2):
+	t.inc_stat(ColorTeam.Stat.NEW_BULLET)
 	$Sprite2D.self_modulate = t.color
 	team = t
 	alive = true

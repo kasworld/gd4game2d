@@ -99,9 +99,7 @@ func ball_spawn_effect(t :ColorTeam):
 func ball_spawn_effect_end(o :BallSpawnSprite):
 	ball_spawn_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
-#	new_ball(o.team,o.position)
-#func new_ball(t :ColorTeam, p :Vector2):
-	o.team.inc_stat(ColorTeam.Stat.NEW_BALL)
+
 	var obj = ball_free_list.get_node2d()
 	$BallContainer.add_child(obj)
 	AI.connect_if_not(obj.ended,ball_end)
@@ -110,8 +108,7 @@ func ball_spawn_effect_end(o :BallSpawnSprite):
 func ball_end(o:Ball):
 	ball_free_list.put_node2d(o)
 	$BallContainer.remove_child.call_deferred(o)
-#	ball_explode_effect(o)
-#func ball_explode_effect(o :Ball):
+
 	var obj = ball_explode_free_list.get_node2d()
 	$EffectContainer.add_child(obj)
 	obj.spawn(o.team,o.position)
@@ -131,7 +128,6 @@ func shield_explode_effect_end(o :ShieldExplodeSprite):
 	$EffectContainer.remove_child(o)
 
 func fire_bullet(t :ColorTeam, p :Vector2, v :Vector2):
-	t.inc_stat(ColorTeam.Stat.NEW_BULLET)
 	var obj = bullet_free_list.get_node2d()
 	$BulletContainer.add_child(obj)
 	obj.spawn(t,p,v)
@@ -139,8 +135,7 @@ func fire_bullet(t :ColorTeam, p :Vector2, v :Vector2):
 func bullet_end(o :Bullet):
 	bullet_free_list.put_node2d(o)
 	$BulletContainer.remove_child.call_deferred(o)
-#	bullet_explode_effect(o)
-#func bullet_explode_effect(o :Bullet):
+
 	var obj = bullet_explode_free_list.get_node2d()
 	$EffectContainer.add_child(obj)
 	obj.spawn(o.team,o.position)
@@ -150,7 +145,6 @@ func bullet_explode_effect_end(o :BulletExplodeSprite):
 	$EffectContainer.remove_child(o)
 
 func fire_homming(t :ColorTeam, p :Vector2, dst :Ball):
-	t.inc_stat(ColorTeam.Stat.NEW_HOMMING)
 	var obj = homming_free_list.get_node2d()
 	$HommingContainer.add_child(obj)
 	obj.spawn(t,p,dst)
@@ -158,8 +152,7 @@ func fire_homming(t :ColorTeam, p :Vector2, dst :Ball):
 func homming_end(o:HommingBullet):
 	homming_free_list.put_node2d(o)
 	$HommingContainer.remove_child.call_deferred(o)
-#	homming_explode_effect(o)
-#func homming_explode_effect(o :HommingBullet):
+
 	var obj = homming_explode_free_list.get_node2d()
 	$EffectContainer.add_child(obj)
 	obj.spawn(o.team,o.position)

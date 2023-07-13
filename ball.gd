@@ -22,6 +22,7 @@ func _ready() -> void:
 	bounce_radius = $CollisionShape2D.shape.radius
 
 func spawn(t :ColorTeam, p :Vector2):
+	t.inc_stat(ColorTeam.Stat.NEW_BALL)
 	$ColorBallSprite.self_modulate = t.color
 	team = t
 	alive = true

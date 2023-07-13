@@ -12,6 +12,7 @@ var alive :bool
 var life_start :float
 
 func spawn(t :ColorTeam, p :Vector2, bl :Ball)->void:
+	t.inc_stat(ColorTeam.Stat.NEW_HOMMING)
 	team = t
 	alive = true
 	life_start = Time.get_unix_time_from_system()
