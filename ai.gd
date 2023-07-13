@@ -33,18 +33,17 @@ static func calc_danger_level(me :Ball, dst :Area2D)->float:
 #	var vl = (dst.velocity-me.velocity).length()
 	return 1000.0/l
 
-func find_other_team_ball(ball_list :Array, t :ColorTeam)->Ball:
+static func find_other_team_ball(ball_list :Array, t :ColorTeam)->Ball:
 	if ball_list.size() == 0:
 		return null
 	var dst :Ball
 	var try = 10
 	while try > 0 :
 		dst = ball_list.pick_random()
-		if dst != null and dst.alive and dst.team != t:
+		if dst != null and dst is Ball and dst.alive and dst.team != t:
 			return dst
 		try -= 1
 	return null
-
 
 static func do_accel(delta :float, pos: Vector2, velocity :Vector2, o :Area2D)->Vector2:
 	if not AI.rand_per_sec(delta, 30.0):
@@ -55,14 +54,14 @@ static func do_accel(delta :float, pos: Vector2, velocity :Vector2, o :Area2D)->
 		velocity = velocity.limit_length(Ball.SPEED_LIMIT)
 	return velocity
 
-static func do_fire_bullet(from_pos :Vector2, team :ColorTeam, delta :float, o :Area2D, find_other_team_ball :Callable)->Vector2:
+static func do_fire_bullet(from_pos :Vector2, team :ColorTeam, delta :float, o :Area2D, ball_list :Array)->Vector2:
 	if not AI.rand_per_sec(delta, 5.0):
 		return Vector2.ZERO
 	var dst :Area2D
 	if AI.not_null_and_alive(o) and not(o is HommingBullet) :
 		dst = o
 	else:
-		var bl = find_other_team_ball.call(team)
+		var bl = find_other_team_ball(ball_list, team)
 		if bl != null:
 			dst = bl
 	if dst == null:
@@ -70,13 +69,13 @@ static func do_fire_bullet(from_pos :Vector2, team :ColorTeam, delta :float, o :
 	var v = AI.calc_aim_vector2(from_pos, Bullet.SPEED_LIMIT, dst.global_position, dst.velocity )
 	return v
 
-static func do_fire_homming(myteam :ColorTeam, delta :float, o :Area2D, find_other_team_ball :Callable)->Area2D:
+static func do_fire_homming(myteam :ColorTeam, delta :float, o :Area2D, ball_list :Array)->Area2D:
 	if not AI.rand_per_sec(delta, 2.0):
 		return null
 	if AI.not_null_and_alive(o) and ((o is Ball) or (o is HommingBullet)):
 		return o
 	else:
-		return find_other_team_ball.call(myteam)
+		return find_other_team_ball(ball_list, myteam)
 
 static func do_add_shield(delta :float)->bool:
 	if not AI.rand_per_sec(delta, 2.0):

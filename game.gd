@@ -168,18 +168,8 @@ func homming_explode_effect_end(o :HommingExplodeSprite):
 	homming_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
 
-func find_other_team_ball(t :ColorTeam)->Ball:
-	var ball_list = $BallContainer.get_children()
-	if ball_list.size() == 0:
-		return null
-	var dst :Ball
-	var try = 10
-	while try > 0 :
-		dst = ball_list.pick_random()
-		if dst != null and dst.alive and dst.team != t:
-			return dst
-		try -= 1
-	return null
+func get_ball_list()->Array:
+	return $BallContainer.get_children()
 
 func update_game_stat():
 	$UILayer/HUD.set_game_stat("Ball", $BallContainer.get_child_count())

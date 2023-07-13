@@ -8,7 +8,7 @@ const MAX_SHIELD = 12
 const INIT_SHIELD = 12
 
 var shield_free_list = Node2DPool.new(preload("res://shield.tscn").instantiate)
-var find_other_team_ball :Callable
+var get_ball_list :Callable
 var team :ColorTeam
 var velocity :Vector2
 var vp_size :Vector2
@@ -17,7 +17,7 @@ var alive :bool
 var life_start :float
 
 func _ready() -> void:
-	find_other_team_ball = get_tree().current_scene.find_other_team_ball
+	get_ball_list = get_tree().current_scene.get_ball_list
 	vp_size = get_viewport_rect().size
 	bounce_radius = $CollisionShape2D.shape.radius
 
@@ -59,11 +59,11 @@ func end():
 		emit_signal("ended", self)
 
 func _process(delta: float) -> void:
-	var v = AI.do_fire_bullet(position, team,delta,most_danger_area2d,find_other_team_ball)
+	var v = AI.do_fire_bullet(position, team,delta,most_danger_area2d,get_ball_list.call())
 	if v != Vector2.ZERO:
 		get_tree().current_scene.fire_bullet(team, position, v)
 
-	var dst = AI.do_fire_homming(team,delta,most_danger_area2d,find_other_team_ball)
+	var dst = AI.do_fire_homming(team,delta,most_danger_area2d,get_ball_list.call())
 	if dst != null:
 		get_tree().current_scene.fire_homming(team, position, dst)
 
