@@ -38,12 +38,9 @@ func apply_ball_per_team_count():
 
 var flag_team_count_change :bool
 func _on_hud_team_count_changed(v) -> void:
-#	var ctlist = ColorTeam.make_colorteam_list(v)
-#	$UILayer/HUD.init_teamstats(ctlist)
 	make_no_gameobject()
 	flag_team_count_change = true
 	$UILayer/HUD.enable_team_ball_input(false)
-	pass # Replace with function body.
 
 func make_no_gameobject():
 	for t in colorteam_list:
@@ -57,6 +54,16 @@ func check_no_gameobject()->bool:
 		$HommingContainer.get_child_count() == 0 and \
 		$EffectContainer.get_child_count() == 0
 
+func do_change_team_count():
+	flag_team_count_change = false
+	$UILayer/HUD.enable_team_ball_input(true)
+	var team_count = $UILayer/HUD.get_team_count()
+	colorteam_list = ColorTeam.make_colorteam_list(team_count)
+	$UILayer/HUD.init_teamstats(colorteam_list)
+	var ball_per_team = $UILayer/HUD.get_ball_per_team()
+	for t in colorteam_list:
+		t.set_ball_count_limit(ball_per_team)
+	flag_apply_ball_per_team_count = true
 
 func _on_hud_cloud_count_changed(v) -> void:
 	make_clouds(v)
@@ -94,9 +101,7 @@ func _process(delta: float) -> void:
 	fps = (fps+1.0/delta)/2
 	if flag_team_count_change:
 		if check_no_gameobject():
-			flag_team_count_change = false
-			$UILayer/HUD.enable_team_ball_input(true)
-			# do change team count
+			do_change_team_count()
 	apply_ball_per_team_count()
 
 func handle_input():

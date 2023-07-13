@@ -15,6 +15,15 @@ func _on_team_count_value_changed(v) -> void:
 func _on_ball_per_team_value_changed(v) -> void:
 	emit_signal("ball_per_team_changed",v)
 
+func get_cloud_count()->int:
+	return $CloudCount.get_value()
+
+func get_team_count()->int:
+	return $TeamCount.get_value()
+
+func get_ball_per_team()->int:
+	return $BallPerTeam.get_value()
+
 func init(vp :Vector2, colorteam_list :Array[ColorTeam], cloud_count :int,team_count :int, ball_per_team:int):
 	vp_size = vp
 	init_game_stat()
