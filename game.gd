@@ -23,6 +23,12 @@ func _on_hud_team_count_changed(v) -> void:
 #	$UILayer/HUD.init_teamstats(ctlist)
 	pass # Replace with function body.
 
+func check_no_gameobject()->bool:
+	return $BallContainer.get_child_count() == 0 and \
+		$BulletContainer.get_child_count() == 0 and \
+		$HommingContainer.get_child_count() == 0 and \
+		$EffectContainer.get_child_count() == 0
+
 func init_game(team_count:int, ball_per_team :int):
 	colorteam_list = ColorTeam.make_colorteam_list(team_count)
 	$UILayer/HUD.init(vp_size, colorteam_list, cloud_count, team_count, ball_per_team)
