@@ -16,16 +16,25 @@ var life_start :float
 func _on_hud_ball_per_team_changed(v) -> void:
 	for t in colorteam_list:
 		t.set_ball_count_limit(v)
+	flag_apply_ball_per_team_count = true
 
+var flag_apply_ball_per_team_count :bool
 func apply_ball_per_team_count():
+	if flag_apply_ball_per_team_count == false:
+		return
 	for t in colorteam_list:
 		var tomake = t.calc_tomake_ball()
 		if tomake > 0:
-			ball_spawn_effect(t) # make ball by spawn
+			for i in tomake:
+				ball_spawn_effect(t) # make ball by spawn
 		elif tomake < 0:
 			for b in $BallContainer.get_children():
 				if b.team == t:
 					b.end.call_deferred()
+					tomake +=1
+					if tomake >=0:
+						break
+	flag_apply_ball_per_team_count = false
 
 # pretty much difficult
 func _on_hud_team_count_changed(v) -> void:
@@ -68,7 +77,7 @@ func _ready():
 	$Background.init_bg(vp_size)
 	var cloud_count :int = 100
 	make_clouds(cloud_count)
-	init_game(cloud_count, 30, 1)
+	init_game(cloud_count, 3, 10)
 
 var fps :float
 func _process(delta: float) -> void:
