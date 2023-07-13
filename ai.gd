@@ -33,6 +33,18 @@ static func calc_danger_level(me :Ball, dst :Area2D)->float:
 #	var vl = (dst.velocity-me.velocity).length()
 	return 1000.0/l
 
+func find_other_team_ball(ball_list :Array, t :ColorTeam)->Ball:
+	if ball_list.size() == 0:
+		return null
+	var dst :Ball
+	var try = 10
+	while try > 0 :
+		dst = ball_list.pick_random()
+		if dst != null and dst.alive and dst.team != t:
+			return dst
+		try -= 1
+	return null
+
 
 static func do_accel(delta :float, pos: Vector2, velocity :Vector2, o :Area2D)->Vector2:
 	if not AI.rand_per_sec(delta, 30.0):

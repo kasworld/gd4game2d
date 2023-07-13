@@ -17,6 +17,16 @@ func _on_hud_ball_per_team_changed(v) -> void:
 	for t in colorteam_list:
 		t.set_ball_count_limit(v)
 
+func apply_ball_per_team_count():
+	for t in colorteam_list:
+		var tomake = t.calc_tomake_ball()
+		if tomake > 0:
+			ball_spawn_effect(t) # make ball by spawn
+		elif tomake < 0:
+			for b in $BallContainer.get_children():
+				if b.team == t:
+					b.end.call_deferred()
+
 # pretty much difficult
 func _on_hud_team_count_changed(v) -> void:
 #	var ctlist = ColorTeam.make_colorteam_list(v)
@@ -29,11 +39,10 @@ func check_no_gameobject()->bool:
 		$HommingContainer.get_child_count() == 0 and \
 		$EffectContainer.get_child_count() == 0
 
-func init_game(team_count:int, ball_per_team :int):
-	colorteam_list = ColorTeam.make_colorteam_list(team_count)
-	$UILayer/HUD.init(vp_size, colorteam_list, cloud_count, team_count, ball_per_team)
-	for t in colorteam_list:
-		t.set_ball_count_limit(ball_per_team)
+
+func _on_hud_cloud_count_changed(v) -> void:
+	cloud_count = v
+	make_clouds()
 
 var cloud_count :int = 100
 func make_clouds():
@@ -48,9 +57,11 @@ func make_clouds():
 			if tomake >=0:
 				break
 
-func _on_hud_cloud_count_changed(v) -> void:
-	cloud_count = v
-	make_clouds()
+func init_game(team_count:int, ball_per_team :int):
+	colorteam_list = ColorTeam.make_colorteam_list(team_count)
+	$UILayer/HUD.init(vp_size, colorteam_list, cloud_count, team_count, ball_per_team)
+	for t in colorteam_list:
+		t.set_ball_count_limit(ball_per_team)
 
 func _ready():
 	randomize()
@@ -58,20 +69,13 @@ func _ready():
 	vp_size = get_viewport_rect().size
 	$Background.init_bg(vp_size)
 	make_clouds()
-	init_game(8, 2)
+	init_game(30, 1)
 
 var fps :float
 func _process(delta: float) -> void:
 	handle_input()
 	fps = (fps+1.0/delta)/2
-	for t in colorteam_list:
-		var tomake = t.calc_tomake_ball()
-		if tomake > 0:
-			ball_spawn_effect(t) # make ball by spawn
-		elif tomake < 0:
-			for b in $BallContainer.get_children():
-				if b.team == t:
-					b.end.call_deferred()
+	apply_ball_per_team_count()
 
 func handle_input():
 	if Input.is_action_just_pressed("HUD"):
