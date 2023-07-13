@@ -1,6 +1,8 @@
 class_name ColorTeam
 
 enum Stat {
+	BALL_NOW,
+	BALL_MAX,
 	ACCEL,
 	NEW_BALL,
 	NEW_SHIELD,
@@ -29,18 +31,20 @@ func calc_tomake_ball()->int:
 
 func inc_ball_count():
 	ball_count +=1
-	update_name_label()
+	set_stat(Stat.BALL_NOW, ball_count)
 
 func dec_ball_count():
 	ball_count -=1
-	update_name_label()
+	set_stat(Stat.BALL_NOW, ball_count)
 
 func set_ball_count_limit(v :int):
 	ball_count_limit = v
-	update_name_label()
+	set_stat(Stat.BALL_MAX, ball_count_limit)
 
-func update_name_label():
-	name_label.text = "%s(%d/%d)" % [name.to_snake_case(),ball_count,ball_count_limit]
+func set_stat(k :Stat, v :int):
+	var ks = ColorTeam.stat_string(k)
+	stats[ks] =  v
+	labels[ks].text = str(stats[ks])
 
 func inc_stat(k :Stat):
 	var ks = ColorTeam.stat_string(k)

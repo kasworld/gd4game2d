@@ -40,6 +40,8 @@ func init_teamstats(colorteam_list :Array[ColorTeam]):
 	for o in $TeamStatGrid.get_children():
 		$TeamStatGrid.remove_child(o)
 
+	$TeamStatGrid.columns = ColorTeam.Stat.keys().size() + 1
+
 	add_label_to_teamstat("Team",Color.WHITE)
 	for s in ColorTeam.Stat.keys():
 		add_label_to_teamstat(s.to_lower()+" ",Color.WHITE)
