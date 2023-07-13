@@ -17,6 +17,8 @@ func _on_ball_per_team_value_changed(v) -> void:
 
 func init(vp :Vector2, colorteam_list :Array[ColorTeam], cloud_count :int,team_count :int, ball_per_team:int):
 	vp_size = vp
+	init_game_stat()
+	init_teamstats(colorteam_list)
 
 	$CloudCount.init("Cloud count", cloud_count, 0, 1000)
 	$CloudCount.position.x = vp_size.x - $CloudCount.size.x
@@ -32,8 +34,6 @@ func init(vp :Vector2, colorteam_list :Array[ColorTeam], cloud_count :int,team_c
 
 	$Help.label_settings.font_size = vp_size.y / 32
 
-	init_game_stat()
-	init_teamstats(colorteam_list)
 
 func init_teamstats(colorteam_list :Array[ColorTeam]):
 	add_label_to_teamstat("Team",Color.WHITE)
@@ -41,7 +41,7 @@ func init_teamstats(colorteam_list :Array[ColorTeam]):
 		add_label_to_teamstat(s.to_lower()+" ",Color.WHITE)
 
 	for t in colorteam_list:
-		add_label_to_teamstat(t.name.to_snake_case(), t.color)
+		t.name_label = add_label_to_teamstat(t.name.to_snake_case(), t.color)
 		for c in ColorTeam.Stat.keys():
 			var lb = add_label_to_teamstat(str(t.stats[c]) , t.color)
 			t.labels[c] = lb

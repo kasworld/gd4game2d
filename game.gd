@@ -13,27 +13,19 @@ var vp_size :Vector2
 var colorteam_list :Array[ColorTeam]
 var life_start :float
 
-# game argument
-var team_count :int = 8
-var ball_per_team :int = 2
-var ball_per_team_tomake :Dictionary # ball_incdec[team] = tomake , + make, - del
-
 func _on_hud_ball_per_team_changed(v) -> void:
-	var tomake = v - ball_per_team
-	ball_per_team = v
-	for t in ball_per_team_tomake:
-		ball_per_team_tomake[t] += tomake
+	for t in colorteam_list:
+		t.set_ball_count_limit(v)
 
 # pretty much difficult
 func _on_hud_team_count_changed(v) -> void:
 	pass # Replace with function body.
 
-func init_game():
+func init_game(team_count:int, ball_per_team :int):
 	colorteam_list = ColorTeam.make_colorteam_list(team_count)
-	for t in colorteam_list:
-		ball_per_team_tomake[t] = ball_per_team
-
 	$UILayer/HUD.init(vp_size, colorteam_list, cloud_count, team_count, ball_per_team)
+	for t in colorteam_list:
+		t.set_ball_count_limit(ball_per_team)
 
 var cloud_count :int = 100
 func make_clouds():
@@ -47,8 +39,6 @@ func make_clouds():
 			tomake +=1
 			if tomake >=0:
 				break
-	else: # tomake == 0
-		pass
 
 func _on_hud_cloud_count_changed(v) -> void:
 	cloud_count = v
@@ -60,18 +50,20 @@ func _ready():
 	vp_size = get_viewport_rect().size
 	$Background.init_bg(vp_size)
 	make_clouds()
-	init_game()
+	init_game(8, 2)
 
 var fps :float
 func _process(delta: float) -> void:
 	handle_input()
 	fps = (fps+1.0/delta)/2
-	for t in ball_per_team_tomake:
-		var tomake = ball_per_team_tomake[t]
+	for t in colorteam_list:
+		var tomake = t.calc_tomake_ball()
 		if tomake > 0:
-			ball_per_team_tomake[t] = 0
-			for i in tomake:
-				ball_spawn_effect(t) # make ball by spawn
+			ball_spawn_effect(t) # make ball by spawn
+		elif tomake < 0:
+			for b in $BallContainer.get_children():
+				if b.team == t:
+					b.end.call_deferred()
 
 func handle_input():
 	if Input.is_action_just_pressed("HUD"):
@@ -88,6 +80,7 @@ func handle_input():
 func ball_spawn_effect(t :ColorTeam):
 	var obj = ball_spawn_free_list.get_node2d()
 	$EffectContainer.add_child(obj)
+	t.inc_ball_count()
 	var p = Vector2(randf_range(0,vp_size.x),randf_range(0,vp_size.y))
 	obj.spawn(t,p)
 
@@ -114,7 +107,7 @@ func ball_end(o:Ball):
 func ball_explode_effect_end(o :BallExplodeSprite):
 	ball_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
-	ball_per_team_tomake[o.team] +=1 # make next ball
+	o.team.dec_ball_count()
 
 func shield_explode_effect(o :Shield):
 	var obj = shield_explode_free_list.get_node2d()

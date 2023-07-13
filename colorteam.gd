@@ -19,7 +19,28 @@ var color_index :int
 var color :Color
 var name :String
 var stats :Dictionary # key string -> int
+var name_label :Label
 var labels :Dictionary # key string -> Label at HUD
+var ball_count_limit :int
+var ball_count :int
+
+func calc_tomake_ball()->int:
+	return ball_count_limit - ball_count
+
+func inc_ball_count():
+	ball_count +=1
+	update_name_label()
+
+func dec_ball_count():
+	ball_count -=1
+	update_name_label()
+
+func set_ball_count_limit(v :int):
+	ball_count_limit = v
+	update_name_label()
+
+func update_name_label():
+	name_label.text = "%s(%d/%d)" % [name.to_snake_case(),ball_count,ball_count_limit]
 
 func inc_stat(k :Stat):
 	var ks = ColorTeam.stat_string(k)

@@ -36,6 +36,7 @@ func spawn(t :ColorTeam, p :Vector2):
 	for i in INIT_SHIELD:
 		add_shield()
 
+
 func get_shield_count()->int:
 	return $ShieldContainer.get_child_count()
 
