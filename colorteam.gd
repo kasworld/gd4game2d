@@ -23,41 +23,47 @@ var name :String
 var stats :Dictionary # key string -> int
 var name_label :Label
 var labels :Dictionary # key string -> Label at HUD
-var ball_count_limit :int
-var ball_count :int
 
 func calc_tomake_ball()->int:
-	return ball_count_limit - ball_count
+	return get_stat(Stat.BALL_MAX) - get_stat(Stat.BALL_NOW)
 
 func inc_ball_count():
-	ball_count +=1
-	set_stat(Stat.BALL_NOW, ball_count)
+	inc_stat(Stat.BALL_NOW)
 
 func dec_ball_count():
-	ball_count -=1
-	set_stat(Stat.BALL_NOW, ball_count)
+	dec_stat(Stat.BALL_NOW)
 
 func set_ball_count_limit(v :int):
-	ball_count_limit = v
-	set_stat(Stat.BALL_MAX, ball_count_limit)
+	set_stat(Stat.BALL_MAX, v)
 
 func set_stat(k :Stat, v :int):
 	var ks = ColorTeam.stat_string(k)
 	stats[ks] =  v
 	labels[ks].text = str(stats[ks])
 
+func get_stat(k :Stat)->int:
+	var ks = ColorTeam.stat_string(k)
+	return stats[ks]
+
 func inc_stat(k :Stat):
+	var ks = ColorTeam.stat_string(k)
+	stats[ks] +=  1
+	labels[ks].text = str(stats[ks])
+
+func dec_stat(k :Stat):
 	var ks = ColorTeam.stat_string(k)
 	stats[ks] +=  1
 	labels[ks].text = str(stats[ks])
 
 func _init(ci :int, ball_per_team :int):
 	color_index = ci
-	ball_count_limit = ball_per_team
 	color = NamedColorList.get_color(color_index)
 	name = NamedColorList.get_colorname(color_index)
+	name_label = make_label(name.to_snake_case(), color)
 	for k in Stat.keys():
 		stats[k] = 0
+		labels[k] = make_label(str(stats[k]), color)
+	set_ball_count_limit(ball_per_team)
 
 static func make_colorteam_list(team_count :int, ball_per_team :int)->Array[ColorTeam]:
 	var in_use_index = {}
@@ -80,3 +86,13 @@ static func make_colorteam_list(team_count :int, ball_per_team :int)->Array[Colo
 		rtn.append(ct)
 #		print("%s %s %s %s" % [t, ct.color_index, ct.color, ct.name])
 	return rtn
+
+static func make_label(s :String, c :Color)->Label:
+	var lb = Label.new()
+	lb.label_settings = LabelSettings.new()
+	lb.text = s
+	lb.label_settings.font_color = c
+	lb.label_settings.outline_size = 2
+	lb.label_settings.outline_color = c.inverted()
+	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	return lb

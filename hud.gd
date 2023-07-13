@@ -47,35 +47,27 @@ func enable_team_ball_input(b :bool):
 	$BallPerTeam.enable(b)
 
 func init_teamstats(colorteam_list :Array[ColorTeam]):
-	# clear
 	for o in $TeamStatGrid.get_children():
 		$TeamStatGrid.remove_child(o)
-
 	$TeamStatGrid.columns = ColorTeam.Stat.keys().size() + 1
-
-	add_label_to_teamstat("Team",Color.WHITE)
-	for s in ColorTeam.Stat.keys():
-		add_label_to_teamstat(s.to_lower()+" ",Color.WHITE)
-
+	add_header()
 	for t in colorteam_list:
-		t.name_label = add_label_to_teamstat(t.name.to_snake_case(), t.color)
-		for c in ColorTeam.Stat.keys():
-			var lb = add_label_to_teamstat(str(t.stats[c]) , t.color)
-			t.labels[c] = lb
+		t.name_label.label_settings.font_size = vp_size.y / 50
+		$TeamStatGrid.add_child(t.name_label)
+		for k in t.labels:
+			var lb = t.labels[k]
+			lb.label_settings.font_size = vp_size.y / 50
+			$TeamStatGrid.add_child(lb)
+	add_header()
 
-	add_label_to_teamstat("Team",Color.WHITE)
+func add_header():
+	add_label_to_teamstat("team",Color.WHITE)
 	for s in ColorTeam.Stat.keys():
 		add_label_to_teamstat(s.to_lower()+" ",Color.WHITE)
 
 func add_label_to_teamstat(s :String, c :Color)->Label:
-	var lb = Label.new()
-	lb.label_settings = LabelSettings.new()
-	lb.text = s
+	var lb = ColorTeam.make_label(s,c)
 	lb.label_settings.font_size = vp_size.y / 50
-	lb.label_settings.font_color = c
-	lb.label_settings.outline_size = 2
-	lb.label_settings.outline_color = c.inverted()
-	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	$TeamStatGrid.add_child(lb)
 	return lb
 
