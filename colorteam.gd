@@ -52,7 +52,7 @@ func inc_stat(k :Stat):
 
 func dec_stat(k :Stat):
 	var ks = ColorTeam.stat_string(k)
-	stats[ks] +=  1
+	stats[ks] -=  1
 	labels[ks].text = str(stats[ks])
 
 func _init(ci :int, ball_per_team :int):
