@@ -24,10 +24,9 @@ func get_team_count()->int:
 func get_ball_per_team()->int:
 	return $BallPerTeam.get_value()
 
-func init(vp :Vector2, colorteam_list :Array[ColorTeam], cloud_count :int,team_count :int, ball_per_team:int):
+func init(vp :Vector2, cloud_count :int,team_count :int, ball_per_team:int):
 	vp_size = vp
 	init_game_stat()
-	init_teamstats(colorteam_list)
 
 	$CloudCount.init("Cloud count", cloud_count, 0, 1000)
 	$CloudCount.position.x = vp_size.x - $CloudCount.size.x

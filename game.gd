@@ -55,8 +55,6 @@ func check_no_gameobject()->bool:
 		$EffectContainer.get_child_count() == 0
 
 func do_change_team_count():
-	flag_team_count_change = false
-	$UILayer/HUD.enable_team_ball_input(true)
 	var team_count = $UILayer/HUD.get_team_count()
 	colorteam_list = ColorTeam.make_colorteam_list(team_count)
 	$UILayer/HUD.init_teamstats(colorteam_list)
@@ -64,6 +62,8 @@ func do_change_team_count():
 	for t in colorteam_list:
 		t.set_ball_count_limit(ball_per_team)
 	flag_apply_ball_per_team_count = true
+	flag_team_count_change = false
+	$UILayer/HUD.enable_team_ball_input(true)
 
 func _on_hud_cloud_count_changed(v) -> void:
 	make_clouds(v)
@@ -80,20 +80,18 @@ func make_clouds(cloud_count :int):
 			if tomake >=0:
 				break
 
-func init_game(cloud_count :int, team_count:int, ball_per_team :int):
-	colorteam_list = ColorTeam.make_colorteam_list(team_count)
-	$UILayer/HUD.init(vp_size, colorteam_list, cloud_count, team_count, ball_per_team)
-	for t in colorteam_list:
-		t.set_ball_count_limit(ball_per_team)
-
 func _ready():
 	randomize()
 	life_start = Time.get_unix_time_from_system()
 	vp_size = get_viewport_rect().size
 	$Background.init_bg(vp_size)
-	var cloud_count :int = 100
+
+	var cloud_count  = 100
+	var team_count = 3
+	var ball_per_team = 10
 	make_clouds(cloud_count)
-	init_game(cloud_count, 3, 10)
+	$UILayer/HUD.init(vp_size, cloud_count, team_count, ball_per_team)
+	do_change_team_count()
 
 var fps :float
 func _process(delta: float) -> void:
