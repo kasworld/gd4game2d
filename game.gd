@@ -36,11 +36,13 @@ func apply_ball_per_team_count():
 						break
 	flag_apply_ball_per_team_count = false
 
-# pretty much difficult
+var flag_team_count_change :bool
 func _on_hud_team_count_changed(v) -> void:
 #	var ctlist = ColorTeam.make_colorteam_list(v)
 #	$UILayer/HUD.init_teamstats(ctlist)
-#	make_no_gameobject()
+	make_no_gameobject()
+	flag_team_count_change = true
+	$UILayer/HUD.enable_team_ball_input(false)
 	pass # Replace with function body.
 
 func make_no_gameobject():
@@ -90,6 +92,11 @@ var fps :float
 func _process(delta: float) -> void:
 	handle_input()
 	fps = (fps+1.0/delta)/2
+	if flag_team_count_change:
+		if check_no_gameobject():
+			flag_team_count_change = false
+			$UILayer/HUD.enable_team_ball_input(true)
+			# do change team count
 	apply_ball_per_team_count()
 
 func handle_input():

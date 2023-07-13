@@ -34,6 +34,9 @@ func init(vp :Vector2, colorteam_list :Array[ColorTeam], cloud_count :int,team_c
 
 	$Help.label_settings.font_size = vp_size.y / 32
 
+func enable_team_ball_input(b :bool):
+	$TeamCount.enable(b)
+	$BallPerTeam.enable(b)
 
 func init_teamstats(colorteam_list :Array[ColorTeam]):
 	# clear

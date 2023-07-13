@@ -19,11 +19,13 @@ func enable(b :bool):
 	$Dec.disabled = not b
 	$Inc.disabled = not b
 	$Number.editable = b
+	val_diff = 0
 
 func _process(_delta: float) -> void:
-	if Time.get_unix_time_from_system() - click_start > delay_sec:
-		$Number.value += val_diff
-		click_start = Time.get_unix_time_from_system()
+	if val_diff != 0:
+		if Time.get_unix_time_from_system() - click_start > delay_sec:
+			$Number.value += val_diff
+			click_start = Time.get_unix_time_from_system()
 
 func _on_dec_button_down() -> void:
 	val_diff = -1
