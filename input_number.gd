@@ -15,6 +15,11 @@ var val_diff :float
 var delay_sec :float = 0.3
 var click_start :float
 
+func enable(b :bool):
+	$Dec.disabled = not b
+	$Inc.disabled = not b
+	$Number.editable = b
+
 func _process(_delta: float) -> void:
 	if Time.get_unix_time_from_system() - click_start > delay_sec:
 		$Number.value += val_diff
