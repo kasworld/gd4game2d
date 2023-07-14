@@ -4,8 +4,7 @@ var cell_w :float
 var cell_h :float
 var grid_x_count :int
 var grid_y_count :int
-var grid # [x][y][Area2D]
-
+var grid # [x][y][Node]
 
 func _init(vp_size :Vector2):
 	cell_w = 100
@@ -30,5 +29,13 @@ func add_area2d_list(a_list : Array[Node]):
 		grid[x2grid(o.position.x)][y2grid(o.position.y)] = o
 
 func find_near(p :Vector2)->Array[Node]:
-	return []
+	var rtn :Array[Node] = []
+	var x1 = x2grid(p.x -cell_w)
+	var x2 = x2grid(p.x +cell_w)
+	var y1 = x2grid(p.y -cell_h)
+	var y2 = x2grid(p.y +cell_h)
+	for x in range(x1,x2+1):
+		for y in range(y1,y2+1):
+			rtn.append_array(grid[x][y])
+	return rtn
 
