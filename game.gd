@@ -91,12 +91,15 @@ func _ready():
 	$UILayer/HUD.init(vp_size, cloud_count, team_count, ball_per_team)
 	do_change_team_count()
 
-var fps :float
-func _process(delta: float) -> void:
+func build_space_partition()->SpacePartition:
 	var sp = SpacePartition.new(vp_size)
 	sp.add_area2d_list($BallContainer.get_children())
 	sp.add_area2d_list($BulletContainer.get_children())
 	sp.add_area2d_list($HommingContainer.get_children())
+	return sp
+
+var fps :float
+func _process(delta: float) -> void:
 	handle_input()
 	fps = (fps+1.0/delta)/2
 	if flag_team_count_change:
