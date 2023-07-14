@@ -84,32 +84,29 @@ var most_danger_area2d :Area2D # ball , bullet, shield, homming
 var most_danger_value :float = 0
 
 func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
-	var local_shape_owner = shape_find_owner(local_shape_index)
-	var local_shape_node = shape_owner_get_owner(local_shape_owner)
-	if local_shape_node == $CollisionShape2D:
+	if area.team == team:
+		return
+	if local_shape_index == 0:
 		if area is Ball:
-			if area.team != team and area_shape_index == 0:
+			if area_shape_index == 0:
 				area.team.inc_stat(ColorTeam.Stat.KILL_BALL)
 				end()
 		elif area is Bullet:
-			if area.team != team:
-				area.team.inc_stat(ColorTeam.Stat.KILL_BULLET)
-				end()
+			area.team.inc_stat(ColorTeam.Stat.KILL_BULLET)
+			end()
 		elif area is Shield:
-			if area.team != team:
-				area.team.inc_stat(ColorTeam.Stat.KILL_SHIELD)
-				end()
+			area.team.inc_stat(ColorTeam.Stat.KILL_SHIELD)
+			end()
 		elif area is HommingBullet:
-			if area.team != team:
-				area.team.inc_stat(ColorTeam.Stat.KILL_HOMMING)
-				end()
+			area.team.inc_stat(ColorTeam.Stat.KILL_HOMMING)
+			end()
 		else:
 			print_debug("unknown Area2 ", area)
 
-	elif local_shape_node == $Scan1:
+	elif local_shape_index == 1:
 		var dval = AI.calc_danger_level(self, area)
 		if dval > most_danger_value:
 			most_danger_value = dval
 			most_danger_area2d = area
 	else:
-		print_debug("unknown local shape ", local_shape_node)
+		print_debug("unknown local index ", local_shape_index)
