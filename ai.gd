@@ -33,6 +33,18 @@ static func calc_danger_level(me :Ball, dst :Area2D)->float:
 #	var vl = (dst.velocity-me.velocity).length()
 	return 1000.0/l
 
+static func find_most_danger_Node(me:Ball, node_list :Array[Node])->Node:
+	var most_danger_area2d :Node # ball , bullet, shield, homming
+	var most_danger_value :float = 0
+	for o in node_list:
+		if me.team == o.team:
+			continue
+		var dval = AI.calc_danger_level(me, o)
+		if dval > most_danger_value:
+			most_danger_value = dval
+			most_danger_area2d = o
+	return most_danger_area2d
+
 static func find_other_team_ball(ball_list :Array, t :ColorTeam)->Ball:
 	if ball_list.size() == 0:
 		return null

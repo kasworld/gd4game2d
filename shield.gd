@@ -32,8 +32,6 @@ func _process(delta: float) -> void:
 	position = position.rotated(delta*rotate_dir)
 
 func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, _local_shape_index: int) -> void:
-	if area_shape_index != 0: # ball kill area
-		return
 	if area.team == team:
 		return
 	if area is Ball:

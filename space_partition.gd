@@ -26,7 +26,7 @@ func y2grid(y)->int:
 
 func add_area2d_list(a_list : Array[Node]):
 	for o in a_list:
-		grid[x2grid(o.position.x)][y2grid(o.position.y)] = o
+		grid[x2grid(o.position.x)][y2grid(o.position.y)].append(o)
 
 func find_near(p :Vector2)->Array[Node]:
 	var rtn :Array[Node] = []
@@ -34,8 +34,8 @@ func find_near(p :Vector2)->Array[Node]:
 	var x2 = x2grid(p.x +cell_w)
 	var y1 = x2grid(p.y -cell_h)
 	var y2 = x2grid(p.y +cell_h)
-	for x in range(x1,x2+1):
-		for y in range(y1,y2+1):
+	for x in range(x1,x2):
+		for y in range(y1,y2):
 			rtn.append_array(grid[x][y])
 	return rtn
 

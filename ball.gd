@@ -55,58 +55,45 @@ func end():
 		emit_signal("ended", self)
 
 func _process(delta: float) -> void:
-	var v = AI.do_fire_bullet(position, team,delta,most_danger_area2d,get_ball_list.call())
+	var node_list = get_tree().current_scene.get_near_nodes(position)
+	var most_danger_node = AI.find_most_danger_Node(self,node_list)
+	var oldv = velocity
+	velocity = AI.do_accel(delta,position,velocity, most_danger_node)
+	if oldv != velocity:
+		team.inc_stat(ColorTeam.Stat.ACCEL)
+
+	var v = AI.do_fire_bullet(position, team,delta,most_danger_node,get_ball_list.call())
 	if v != Vector2.ZERO:
 		get_tree().current_scene.fire_bullet(team, position, v)
 
-	var dst = AI.do_fire_homming(team,delta,most_danger_area2d,get_ball_list.call())
-	if dst != null:
+	var dst = AI.do_fire_homming(team,delta,most_danger_node,get_ball_list.call())
+	if dst != null and dst is Ball:
 		get_tree().current_scene.fire_homming(team, position, dst)
 
 	if AI.do_add_shield(delta):
 		add_shield()
 
 func _physics_process(delta: float) -> void:
-	var oldv = velocity
-	velocity = AI.do_accel(delta,position,velocity, most_danger_area2d)
-	if oldv != velocity:
-		team.inc_stat(ColorTeam.Stat.ACCEL)
-
 	position += velocity * delta
 	var bn = Bounce.new(position,velocity,vp_size,bounce_radius)
 	position = bn.position
 	velocity = bn.velocity
 
-	most_danger_value = 0
-	most_danger_area2d = null
-
-var most_danger_area2d :Area2D # ball , bullet, shield, homming
-var most_danger_value :float = 0
-
 func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
 	if area.team == team:
 		return
-	if local_shape_index == 0:
-		if area is Ball:
-			if area_shape_index == 0:
-				area.team.inc_stat(ColorTeam.Stat.KILL_BALL)
-				end()
-		elif area is Bullet:
-			area.team.inc_stat(ColorTeam.Stat.KILL_BULLET)
-			end()
-		elif area is Shield:
-			area.team.inc_stat(ColorTeam.Stat.KILL_SHIELD)
-			end()
-		elif area is HommingBullet:
-			area.team.inc_stat(ColorTeam.Stat.KILL_HOMMING)
-			end()
-		else:
-			print_debug("unknown Area2 ", area)
-
-	elif local_shape_index == 1:
-		var dval = AI.calc_danger_level(self, area)
-		if dval > most_danger_value:
-			most_danger_value = dval
-			most_danger_area2d = area
+	if area is Ball:
+		area.team.inc_stat(ColorTeam.Stat.KILL_BALL)
+		end()
+	elif area is Bullet:
+		area.team.inc_stat(ColorTeam.Stat.KILL_BULLET)
+		end()
+	elif area is Shield:
+		area.team.inc_stat(ColorTeam.Stat.KILL_SHIELD)
+		end()
+	elif area is HommingBullet:
+		area.team.inc_stat(ColorTeam.Stat.KILL_HOMMING)
+		end()
 	else:
-		print_debug("unknown local index ", local_shape_index)
+		print_debug("unknown Area2 ", area)
+
