@@ -72,13 +72,14 @@ func add_label_to_teamstat(s :String, c :Color)->Label:
 	return lb
 
 func init_game_stat():
+	var lbset = LabelSettings.new()
+	lbset.font_size = vp_size.y / 30
+	lbset.font_color = Color.WHITE
+	lbset.outline_size = 2
+	lbset.outline_color = Color.BLACK
 	for s in GameStatName.keys():
 		var lb = Label.new()
-		lb.label_settings = LabelSettings.new()
-		lb.label_settings.font_size = vp_size.y / 30
-		lb.label_settings.font_color = Color.WHITE
-		lb.label_settings.outline_size = 2
-		lb.label_settings.outline_color = Color.BLACK
+		lb.label_settings = lbset
 		lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		game_stat_label[s] = lb
 		$GameStats.add_child(lb)

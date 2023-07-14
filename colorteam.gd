@@ -89,10 +89,10 @@ static func make_colorteam_list(team_count :int, ball_per_team :int)->Array[Colo
 
 static func make_label(s :String, c :Color)->Label:
 	var lb = Label.new()
-	lb.label_settings = LabelSettings.new()
 	lb.text = s
+	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lb.label_settings = LabelSettings.new()
 	lb.label_settings.font_color = c
 	lb.label_settings.outline_size = 2
 	lb.label_settings.outline_color = c.inverted()
-	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	return lb
