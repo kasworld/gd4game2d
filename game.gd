@@ -93,6 +93,10 @@ func _ready():
 
 var fps :float
 func _process(delta: float) -> void:
+	var sp = SpacePartition.new(vp_size)
+	sp.add_area2d_list($BallContainer.get_children())
+	sp.add_area2d_list($BulletContainer.get_children())
+	sp.add_area2d_list($HommingContainer.get_children())
 	handle_input()
 	fps = (fps+1.0/delta)/2
 	if flag_team_count_change:
