@@ -37,7 +37,7 @@ func apply_ball_per_team_count():
 	flag_apply_ball_per_team_count = false
 
 var flag_team_count_change :bool
-func _on_hud_team_count_changed(v) -> void:
+func _on_hud_team_count_changed(_v) -> void:
 	make_no_gameobject()
 	flag_team_count_change = true
 	$UILayer/HUD.enable_team_ball_input(false)

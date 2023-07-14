@@ -59,10 +59,10 @@ func _init(ci :int, ball_per_team :int):
 	color_index = ci
 	color = NamedColorList.get_color(color_index)
 	name = NamedColorList.get_colorname(color_index)
-	name_label = make_label(name.to_snake_case(), color)
+	name_label = ColorTeam.make_label(name.to_snake_case(), color)
 	for k in Stat.keys():
 		stats[k] = 0
-		labels[k] = make_label(str(stats[k]), color)
+		labels[k] = ColorTeam.make_label(str(stats[k]), color)
 	set_ball_count_limit(ball_per_team)
 
 static func make_colorteam_list(team_count :int, ball_per_team :int)->Array[ColorTeam]:
