@@ -14,21 +14,17 @@ var life_start :float
 func spawn(t :ColorTeam, p :Vector2, bl :Ball)->void:
 	t.inc_stat(ColorTeam.Stat.NEW_HOMMING)
 	team = t
+	dest_ball = bl
 	alive = true
 	life_start = Time.get_unix_time_from_system()
-	$Sprite2D.self_modulate = t.color
-	dest_ball = bl
+	$InnerSprite.self_modulate = team.color
+	$OuterSprite.self_modulate = dest_ball.team.color
+
 	AI.connect_if_not(dest_ball.ended,dest_ball_end)
 	position = p
 	speed = randfn(SPEED_LIMIT, SPEED_LIMIT/10.0)
 	if speed < SPEED_LIMIT/3 :
 		speed = SPEED_LIMIT/3
-
-func change_color():
-	if $Sprite2D.self_modulate == team.color:
-		$Sprite2D.self_modulate = dest_ball.team.color
-	else:
-		$Sprite2D.self_modulate = team.color
 
 func dest_ball_end(_o :Ball):
 	end()
@@ -38,16 +34,11 @@ func end():
 		alive = false
 		get_tree().current_scene.homming_end(self)
 
-var frame := 0
 func _process(_delta: float) -> void:
 	var dur = Time.get_unix_time_from_system() - life_start
 	if dur > LIFE_SEC:
 		end()
 		return
-
-	frame+=1
-	if frame % 15 == 0:
-		change_color()
 
 func _physics_process(delta: float) -> void:
 	if dest_ball == null or not dest_ball.alive:
