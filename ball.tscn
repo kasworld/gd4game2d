@@ -10,10 +10,7 @@ radius = 16.1245
 radius = 200.0
 
 [node name="Ball" type="Area2D"]
-visible = false
 collision_mask = 57
-monitoring = false
-monitorable = false
 script = ExtResource("1_v147x")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

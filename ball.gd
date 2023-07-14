@@ -1,6 +1,5 @@
 class_name Ball extends Area2D
 
-signal shield_add(b:Ball)
 signal ended(o :Ball)
 
 const SPEED_LIMIT :float = 200
@@ -29,14 +28,10 @@ func spawn(t :ColorTeam, p :Vector2):
 	life_start = Time.get_unix_time_from_system()
 	position = p
 	velocity = Vector2.DOWN.rotated( randf() * 2 * PI )*SPEED_LIMIT
-	monitorable = true
-	monitoring = true
-	visible = true
 	for o in $ShieldContainer.get_children():
 		o.spawn(team, shield_end)
 	for i in INIT_SHIELD:
 		add_shield()
-
 
 func get_shield_count()->int:
 	return $ShieldContainer.get_child_count()
