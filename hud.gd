@@ -16,35 +16,26 @@ func _on_ball_per_team_value_changed(v) -> void:
 	emit_signal("ball_per_team_changed",v)
 
 func get_cloud_count()->int:
-	return $CloudCount.get_value()
+	return $CountContainer/CloudCount.get_value()
 
 func get_team_count()->int:
-	return $TeamCount.get_value()
+	return $CountContainer/TeamCount.get_value()
 
 func get_ball_per_team()->int:
-	return $BallPerTeam.get_value()
+	return $CountContainer/BallPerTeam.get_value()
 
 func init(vp :Vector2, cloud_count :int,team_count :int, ball_per_team:int):
 	vp_size = vp
 	init_game_stat()
 
-	$CloudCount.init("Cloud count", cloud_count, 0, 1000)
-	$CloudCount.position.x = vp_size.x - $CloudCount.size.x
-	$CloudCount.position.y = vp_size.y/2 - $CloudCount.size.y
-
-	$TeamCount.init("Team count", team_count, 0, 100)
-	$TeamCount.position.x = vp_size.x - $TeamCount.size.x
-	$TeamCount.position.y = vp_size.y/2
-
-	$BallPerTeam.init("Balls / team", ball_per_team, 0, 100)
-	$BallPerTeam.position.x = vp_size.x - $BallPerTeam.size.x
-	$BallPerTeam.position.y = vp_size.y/2 + $BallPerTeam.size.y
-
-	$Help.label_settings.font_size = vp_size.y / 32
+	$CountContainer/CloudCount.init("Cloud count", vp_size.y / 32, cloud_count, 0, 999)
+	$CountContainer/TeamCount.init("Team count", vp_size.y / 32, team_count, 1, 100)
+	$CountContainer/BallPerTeam.init("Balls / team", vp_size.y / 32, ball_per_team, 0, 100)
+	$CountContainer/Help.label_settings.font_size = vp_size.y / 32
 
 func enable_team_ball_input(b :bool):
-	$TeamCount.enable(b)
-	$BallPerTeam.enable(b)
+	$CountContainer/TeamCount.enable(b)
+	$CountContainer/BallPerTeam.enable(b)
 
 func init_teamstats(colorteam_list :Array[ColorTeam]):
 	for o in $TeamStatGrid.get_children():

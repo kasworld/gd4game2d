@@ -9,6 +9,8 @@ default_font = SubResource("SystemFont_iaqm1")
 default_font_size = 40
 
 [node name="InputNumber" type="HBoxContainer"]
+offset_right = 748.0
+offset_bottom = 63.0
 theme = SubResource("Theme_xdwha")
 script = ExtResource("1_68mee")
 
@@ -19,7 +21,7 @@ text = "Input Number
 
 [node name="Dec" type="Button" parent="."]
 layout_mode = 2
-text = "<"
+text = "0000<="
 
 [node name="Number" type="SpinBox" parent="."]
 layout_mode = 2
@@ -30,7 +32,7 @@ alignment = 2
 
 [node name="Inc" type="Button" parent="."]
 layout_mode = 2
-text = ">"
+text = "=>0000"
 
 [connection signal="button_down" from="Dec" to="." method="_on_dec_button_down"]
 [connection signal="button_up" from="Dec" to="." method="_on_dec_button_up"]

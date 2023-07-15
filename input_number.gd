@@ -2,11 +2,14 @@ class_name InputNumber extends HBoxContainer
 
 signal value_changed(v :int)
 
-func init(s :String, v :int, minv :int, maxv :int)->void:
+func init(s :String,fontsize :float, v :int, minv :int, maxv :int)->void:
 	$Label.text = s
 	$Number.value = v
 	$Number.min_value = minv
 	$Number.max_value = maxv
+	$Dec.text = "%s<=" % minv
+	$Inc.text = "=>%s" % maxv
+	theme.set_default_font_size(fontsize)
 
 func get_value()->int:
 	return $Number.value
