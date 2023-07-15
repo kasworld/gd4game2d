@@ -56,7 +56,6 @@ func end():
 
 func _process(delta: float) -> void:
 	var node_list = get_tree().current_scene.get_near_nodes(position, 100)
-
 	var danger_dict = AI.find_danger_objs(self,node_list)
 #	var danger_dict = {
 #		"All":[null, 0.0],
@@ -64,18 +63,17 @@ func _process(delta: float) -> void:
 #		"Bullet":[null, 0.0],
 #		"Homming":[null, 0.0],
 #	}
-
 	var oldv = velocity
 	velocity = AI.do_accel(delta,position,velocity, danger_dict.All[0])
 	if oldv != velocity:
 		team.inc_stat(ColorTeam.Stat.ACCEL)
 
-	var v = AI.do_fire_bullet(position, team,delta,danger_dict.All[0],get_ball_list.call())
+	var v = AI.do_fire_bullet(position, team,delta,danger_dict,get_ball_list.call())
 	if v != Vector2.ZERO:
 		get_tree().current_scene.fire_bullet(team, position, v)
 
-	var dst = AI.do_fire_homming(team,delta,danger_dict.Ball[0],get_ball_list.call())
-	if dst != null and dst is Ball:
+	var dst = AI.do_fire_homming(team,delta,danger_dict,get_ball_list.call())
+	if dst != null :
 		get_tree().current_scene.fire_homming(team, position, dst)
 
 	if AI.do_add_shield(delta):
