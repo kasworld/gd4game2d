@@ -49,17 +49,5 @@ func _physics_process(delta: float) -> void:
 func _on_area_entered(area: Area2D) -> void:
 	if area.team == team:
 		return
-	if area is Ball:
-		area.team.inc_stat(ColorTeam.Stat.KILL_BALL)
-		end()
-	elif area is Bullet:
-		area.team.inc_stat(ColorTeam.Stat.KILL_BULLET)
-		end()
-	elif area is Shield:
-		area.team.inc_stat(ColorTeam.Stat.KILL_SHIELD)
-		end()
-	elif area is HommingBullet:
-		area.team.inc_stat(ColorTeam.Stat.KILL_HOMMING)
-		end()
-	else:
-		print_debug("unknown Area2D ", area, typeof(area))
+	area.team.inc_stat(ColorTeam.Stat.KILL_HOMMING)
+	end()
