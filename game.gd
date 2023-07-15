@@ -99,8 +99,8 @@ func build_space_partition()->SpacePartition:
 	return sp
 
 var sp :SpacePartition
-func get_near_nodes(p :Vector2)->Array[Node]:
-	return sp.find_near(p)
+func get_near_nodes(p :Vector2, r :float)->Array[Node]:
+	return sp.find_near(p, r)
 
 var fps :float
 func _process(delta: float) -> void:

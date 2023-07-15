@@ -28,12 +28,12 @@ func add_area2d_list(a_list : Array[Node]):
 	for o in a_list:
 		grid[x2grid(o.position.x)][y2grid(o.position.y)].append(o)
 
-func find_near(p :Vector2)->Array[Node]:
+func find_near(p :Vector2, r :float)->Array[Node]:
 	var rtn :Array[Node] = []
-	var x1 = x2grid(p.x -cell_w)
-	var x2 = x2grid(p.x +cell_w)
-	var y1 = x2grid(p.y -cell_h)
-	var y2 = x2grid(p.y +cell_h)
+	var x1 = x2grid(p.x - r)
+	var x2 = x2grid(p.x + r)
+	var y1 = x2grid(p.y - r)
+	var y2 = x2grid(p.y + r)
 	for x in range(x1,x2):
 		for y in range(y1,y2):
 			rtn.append_array(grid[x][y])

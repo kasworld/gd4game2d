@@ -55,7 +55,7 @@ func end():
 		emit_signal("ended", self)
 
 func _process(delta: float) -> void:
-	var node_list = get_tree().current_scene.get_near_nodes(position)
+	var node_list = get_tree().current_scene.get_near_nodes(position, 100)
 	var most_danger_node = AI.find_most_danger_Node(self,node_list)
 	var oldv = velocity
 	velocity = AI.do_accel(delta,position,velocity, most_danger_node)
