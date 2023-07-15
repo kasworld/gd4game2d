@@ -23,6 +23,7 @@ var name :String
 var stats :Dictionary # key string -> int
 var name_label :Label
 var labels :Dictionary # key string -> Label at HUD
+var label_settings :LabelSettings
 
 func calc_tomake_ball()->int:
 	return get_stat(Stat.BALL_MAX) - get_stat(Stat.BALL_NOW)
@@ -59,11 +60,22 @@ func _init(ci :int, ball_per_team :int):
 	color_index = ci
 	color = NamedColorList.get_color(color_index)
 	name = NamedColorList.get_colorname(color_index)
-	name_label = ColorTeam.make_label(name.to_snake_case(), color)
+	label_settings = LabelSettings.new()
+	label_settings.outline_size = 2
+	label_settings.font_color = color
+	label_settings.outline_color = color.inverted()
+	name_label = make_label(name.to_snake_case())
 	for k in Stat.keys():
 		stats[k] = 0
-		labels[k] = ColorTeam.make_label(str(stats[k]), color)
+		labels[k] = make_label(str(stats[k]))
 	set_ball_count_limit(ball_per_team)
+
+func make_label(s :String)->Label:
+	var lb = Label.new()
+	lb.text = s
+	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lb.label_settings = label_settings
+	return lb
 
 static func make_colorteam_list(team_count :int, ball_per_team :int)->Array[ColorTeam]:
 	var in_use_index = {}
@@ -87,12 +99,3 @@ static func make_colorteam_list(team_count :int, ball_per_team :int)->Array[Colo
 #		print("%s %s %s %s" % [t, ct.color_index, ct.color, ct.name])
 	return rtn
 
-static func make_label(s :String, c :Color)->Label:
-	var lb = Label.new()
-	lb.text = s
-	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	lb.label_settings = LabelSettings.new()
-	lb.label_settings.font_color = c
-	lb.label_settings.outline_size = 2
-	lb.label_settings.outline_color = c.inverted()
-	return lb

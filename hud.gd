@@ -50,7 +50,14 @@ func init_teamstats(colorteam_list :Array[ColorTeam]):
 	for o in $TeamStatGrid.get_children():
 		$TeamStatGrid.remove_child(o)
 	$TeamStatGrid.columns = ColorTeam.Stat.keys().size() + 1
-	add_header()
+
+	var header_label_settings = LabelSettings.new()
+	header_label_settings.outline_size = 2
+	header_label_settings.font_color = Color.WHITE
+	header_label_settings.outline_color = Color.BLACK
+	header_label_settings.font_size = vp_size.y / 50
+
+	add_header(header_label_settings)
 	for t in colorteam_list:
 		t.name_label.label_settings.font_size = vp_size.y / 50
 		$TeamStatGrid.add_child(t.name_label)
@@ -58,16 +65,18 @@ func init_teamstats(colorteam_list :Array[ColorTeam]):
 			var lb = t.labels[k]
 			lb.label_settings.font_size = vp_size.y / 50
 			$TeamStatGrid.add_child(lb)
-	add_header()
+	add_header(header_label_settings)
 
-func add_header():
-	add_label_to_teamstat("team",Color.WHITE)
+func add_header(lbs :LabelSettings):
+	add_label_to_teamstat("team",lbs)
 	for s in ColorTeam.Stat.keys():
-		add_label_to_teamstat(s.to_lower()+" ",Color.WHITE)
+		add_label_to_teamstat(s.to_lower()+" ",lbs)
 
-func add_label_to_teamstat(s :String, c :Color)->Label:
-	var lb = ColorTeam.make_label(s,c)
-	lb.label_settings.font_size = vp_size.y / 50
+func add_label_to_teamstat(s :String, lbs :LabelSettings)->Label:
+	var lb = Label.new()
+	lb.text = s
+	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lb.label_settings = lbs
 	$TeamStatGrid.add_child(lb)
 	return lb
 
