@@ -30,7 +30,7 @@ func init(vp :Vector2, cloud_count :int,team_count :int, ball_per_team:int):
 
 	$CountContainer/CloudCount.init("Cloud count", vp_size.y / 32, cloud_count, 0, 999)
 	$CountContainer/TeamCount.init("Team count", vp_size.y / 32, team_count, 1, 100)
-	$CountContainer/BallPerTeam.init("Balls / team", vp_size.y / 32, ball_per_team, 0, 100)
+	$CountContainer/BallPerTeam.init("Balls / team", vp_size.y / 32, ball_per_team, 0, 200)
 	$CountContainer/Help.label_settings.font_size = vp_size.y / 32
 
 func enable_team_ball_input(b :bool):

@@ -36,11 +36,15 @@ static func find_other_team_ball(ball_list :Array, t :ColorTeam)->Ball:
 		try -= 1
 	return null
 
-
+# larger is danger
 static func calc_danger_level(me :Ball, dst :Area2D)->float:
-	var l = (dst.global_position-me.global_position).length()
-#	var vl = (dst.velocity-me.velocity).length()
-	return 1000.0/l
+	var delta = 1.0/60.0
+	var l1 = (dst.global_position-me.global_position).length()
+	var l2 = ((dst.global_position + dst.velocity *delta) - (me.global_position + me.velocity *delta)).length()
+	if l1 > l2 : # approaching
+		return 1000.0/l1
+	else:
+		return 0
 
 static func find_danger_objs(me:Ball, node_list :Array[Node])->Dictionary:
 	var rtn = {
@@ -71,10 +75,10 @@ static func find_danger_objs(me:Ball, node_list :Array[Node])->Dictionary:
 	return rtn
 
 static func do_accel(delta :float, pos: Vector2, velocity :Vector2, o :Area2D)->Vector2:
-	if not AI.rand_per_sec(delta, 30.0):
-		return velocity
+#	if not AI.rand_per_sec(delta, 30.0):
+#		return velocity
 	if AI.not_null_and_alive(o):
-		velocity += (pos - o.global_position).limit_length(Ball.SPEED_LIMIT)
+		velocity += (pos - o.global_position).normalized()*Ball.SPEED_LIMIT
 		velocity = velocity.rotated( (randf()-0.5)*PI)
 		velocity = velocity.limit_length(Ball.SPEED_LIMIT)
 	return velocity
