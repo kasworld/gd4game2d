@@ -92,7 +92,7 @@ func _ready():
 	do_change_team_count()
 
 func build_space_partition()->SpacePartition:
-	var sp = SpacePartition.new(vp_size)
+	sp = SpacePartition.new(vp_size)
 	sp.add_area2d_list($BallContainer.get_children())
 	sp.add_area2d_list($BulletContainer.get_children())
 	sp.add_area2d_list($HommingContainer.get_children())
@@ -110,7 +110,7 @@ func _process(delta: float) -> void:
 		if check_no_gameobject():
 			do_change_team_count()
 	apply_ball_per_team_count()
-	sp = build_space_partition()
+	build_space_partition()
 
 func handle_input():
 	if Input.is_action_just_pressed("HUD"):

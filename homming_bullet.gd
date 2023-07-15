@@ -50,7 +50,7 @@ func _physics_process(delta: float) -> void:
 	if randf() < 0.1:
 		accel = (dest_ball.position - position)
 
-func _on_area_shape_entered(_area_rid: RID, area: Area2D, area_shape_index: int, _local_shape_index: int) -> void:
+func _on_area_shape_entered(_area_rid: RID, area: Area2D, _area_shape_index: int, _local_shape_index: int) -> void:
 	if area.team == team:
 		return
 	if area is Ball:
