@@ -180,7 +180,7 @@ func bullet_explode_effect_end(o :BulletExplodeSprite):
 	bullet_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
 
-func fire_homming(t :ColorTeam, p :Vector2, dst :Ball):
+func fire_homming(t :ColorTeam, p :Vector2, dst :Area2D):
 	var obj = homming_free_list.get_node2d()
 	$HommingContainer.add_child(obj)
 	obj.spawn(t,p,dst)

@@ -100,7 +100,7 @@ static func do_fire_bullet(from_pos :Vector2, team :ColorTeam, delta :float, dan
 	var v = AI.calc_aim_vector2(from_pos, Bullet.SPEED_LIMIT, dst.global_position, dst.velocity )
 	return v
 
-static func do_fire_homming(myteam :ColorTeam, delta :float, danger_dict :Dictionary, ball_list :Array)->Area2D:
+static func do_fire_homming(team :ColorTeam, delta :float, danger_dict :Dictionary, ball_list :Array)->Area2D:
 #	var danger_dict = {
 #		"All":[null, 0.0],
 #		"Ball":[null, 0.0],
@@ -109,10 +109,15 @@ static func do_fire_homming(myteam :ColorTeam, delta :float, danger_dict :Dictio
 #	}
 	if not AI.rand_per_sec(delta, 2.0):
 		return null
-	if danger_dict.Ball[0] != null:
-		return danger_dict.Ball[0]
+
+	var dst :Area2D
+	if danger_dict.Ball[1] > danger_dict.Homming[1]:
+		dst = danger_dict.Ball[0]
 	else:
-		return find_other_team_ball(ball_list, myteam)
+		dst = danger_dict.Homming[0]
+	if dst == null:
+		dst = find_other_team_ball(ball_list, team)
+	return dst
 
 static func do_add_shield(delta :float)->bool:
 	if not AI.rand_per_sec(delta, 2.0):
