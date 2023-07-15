@@ -35,7 +35,7 @@ func _physics_process(delta: float) -> void:
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	end()
 
-func _on_area_shape_entered(_area_rid: RID, area: Area2D, _area_shape_index: int, _local_shape_index: int) -> void:
+func _on_area_entered(area: Area2D) -> void:
 	if area.team == team:
 		return
 	if area is Ball:
