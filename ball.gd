@@ -64,7 +64,7 @@ func _process(delta: float) -> void:
 	$DangerPointerContainer.update_danger_dict(self, danger_dict)
 
 	var oldv = velocity
-	velocity = AI.do_accel(delta,position,velocity, danger_dict.All[0])
+	velocity = AI.accel_to_evade(vp_size, position, velocity, danger_dict.All[0])
 	if oldv != velocity:
 		team.inc_stat(ColorTeam.Stat.ACCEL)
 

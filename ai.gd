@@ -74,14 +74,26 @@ static func find_danger_objs(me:Ball, node_list :Array[Node])->Dictionary:
 				rtn.Homming = [o, dval]
 	return rtn
 
-static func do_accel(delta :float, pos: Vector2, velocity :Vector2, o :Area2D)->Vector2:
-#	if not AI.rand_per_sec(delta, 30.0):
-#		return velocity
-	if AI.not_null_and_alive(o):
+static func accel_to_evade(vp_size:Vector2, pos: Vector2, velocity :Vector2, o :Area2D)->Vector2:
+	if not AI.not_null_and_alive(o):
+		return velocity
+	if pos.distance_to(vp_size/2) < (vp_size/4).length():
 		velocity += (pos - o.global_position).normalized()*Ball.SPEED_LIMIT
-		velocity = velocity.rotated( (randf()-0.5)*PI)
+		velocity = velocity.rotated( (randf()-0.5)*PI/2)
+		velocity = velocity.limit_length(Ball.SPEED_LIMIT)
+	else: # evade to center
+		velocity = to_center(pos, o.global_position, vp_size/2) * Ball.SPEED_LIMIT
+		velocity = velocity.rotated( (randf()-0.5)*PI/2)
 		velocity = velocity.limit_length(Ball.SPEED_LIMIT)
 	return velocity
+
+static func to_center(p1 :Vector2, p2 :Vector2, center :Vector2)->Vector2:
+	var vt = p1.direction_to(p2)
+	var ot = vt.orthogonal()
+	if p1.direction_to(center).dot(ot) > 0:
+		return ot # face to center?
+	else:
+		return -ot
 
 static func do_fire_bullet(from_pos :Vector2, team :ColorTeam, delta :float, danger_dict :Dictionary, ball_list :Array)->Vector2:
 #	var danger_dict = {
