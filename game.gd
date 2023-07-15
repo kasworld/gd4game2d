@@ -92,10 +92,11 @@ func _ready():
 	do_change_team_count()
 
 func build_space_partition()->SpacePartition:
-	sp = SpacePartition.new(vp_size)
-	sp.add_area2d_list($BallContainer.get_children())
-	sp.add_area2d_list($BulletContainer.get_children())
-	sp.add_area2d_list($HommingContainer.get_children())
+	sp = SpacePartition.new(vp_size, [
+		$BallContainer.get_children(),
+		$BulletContainer.get_children(),
+		$HommingContainer.get_children(),
+	])
 	return sp
 
 var sp :SpacePartition

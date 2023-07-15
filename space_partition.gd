@@ -6,7 +6,7 @@ var grid_x_count :int
 var grid_y_count :int
 var grid # [x][y][Node]
 
-func _init(vp_size :Vector2):
+func _init(vp_size :Vector2, array_node_array :Array):
 	cell_w = 100
 	cell_h = 100
 	grid_x_count = int(vp_size.x / cell_w) + 1
@@ -18,6 +18,9 @@ func _init(vp_size :Vector2):
 		grid[x].resize(grid_y_count)
 		for y in grid_y_count:
 			grid[x][y] = []
+
+	for ar in array_node_array:
+		add_area2d_list(ar)
 
 func x2grid(x)->int:
 	return clampi((x / cell_w), 0, grid_x_count-1)
