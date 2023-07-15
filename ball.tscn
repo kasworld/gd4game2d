@@ -20,6 +20,6 @@ texture = ExtResource("2_va4id")
 
 [node name="ShieldContainer" type="Node2D" parent="."]
 
-[node name="DangerPointerContainer" parent="." instance=ExtResource("3_fg04u")]
+[node name="DangerPointerContainer" parent="." groups=["dangerlines"] instance=ExtResource("3_fg04u")]
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
