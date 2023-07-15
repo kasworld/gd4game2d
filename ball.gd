@@ -61,6 +61,8 @@ func _process(delta: float) -> void:
 #		"Bullet":[null, 0.0],
 #		"Homming":[null, 0.0],
 #	}
+	$DangerPointerContainer.update_danger_dict(self, danger_dict)
+
 	var oldv = velocity
 	velocity = AI.do_accel(delta,position,velocity, danger_dict.All[0])
 	if oldv != velocity:

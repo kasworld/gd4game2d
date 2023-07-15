@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://b770gdo2mqi4w"]
+[gd_scene load_steps=5 format=3 uid="uid://b770gdo2mqi4w"]
 
 [ext_resource type="Script" path="res://ball.gd" id="1_v147x"]
 [ext_resource type="Texture2D" uid="uid://dvyyrpqnnmsql" path="res://resource/ball.png" id="2_va4id"]
+[ext_resource type="PackedScene" uid="uid://6bss6yx5kk82" path="res://danger_pointer_container.tscn" id="3_fg04u"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y6oq3"]
 radius = 16.1245
@@ -18,5 +19,7 @@ scale = Vector2(0.7, 0.7)
 texture = ExtResource("2_va4id")
 
 [node name="ShieldContainer" type="Node2D" parent="."]
+
+[node name="DangerPointerContainer" parent="." instance=ExtResource("3_fg04u")]
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

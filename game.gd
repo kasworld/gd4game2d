@@ -124,6 +124,9 @@ func handle_input():
 		get_tree().quit()
 	if Input.is_action_just_pressed("Restart"):
 		get_tree().reload_current_scene()
+	if Input.is_action_just_pressed("Pause"):
+		pass
+#		get_tree().paused = not get_tree().paused
 
 func ball_spawn_effect(t :ColorTeam):
 	var obj = ball_spawn_free_list.get_node2d()

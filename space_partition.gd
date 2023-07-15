@@ -50,8 +50,8 @@ func find_near(p :Vector2, r :float)->Array[Node]:
 	var x2 = x2grid(p.x + r)
 	var y1 = y2grid(p.y - r)
 	var y2 = y2grid(p.y + r)
-	for x in range(x1,x2):
-		for y in range(y1,y2):
+	for x in range(x1,x2+1):
+		for y in range(y1,y2+1):
 			rtn.append_array(grid[x][y])
 #	print(rtn.size())
 	return rtn
