@@ -7,10 +7,23 @@ var grid_y_count :int
 var grid # [x][y][Node]
 
 func _init(vp_size :Vector2, array_node_array :Array):
-	cell_w = 100
-	cell_h = 100
+	var totalobj_count :int = 0
+	for ar in array_node_array:
+		totalobj_count += ar.size()
+	var csize = sqrt(totalobj_count)
+	cell_w = vp_size.x / csize
+	cell_h = vp_size.y / csize
+
+	# make cell square
+	if cell_h < cell_w:
+		cell_w = cell_h
+	else:
+		cell_h = cell_w
 	grid_x_count = int(vp_size.x / cell_w) + 1
 	grid_y_count = int(vp_size.y / cell_h) + 1
+
+#	print("%s %s (%s %s) (%s %s)" % [totalobj_count, csize, cell_w , cell_h, grid_x_count, grid_y_count])
+
 	grid = []
 	grid.resize(grid_x_count)
 	for x in grid_x_count:
@@ -35,10 +48,11 @@ func find_near(p :Vector2, r :float)->Array[Node]:
 	var rtn :Array[Node] = []
 	var x1 = x2grid(p.x - r)
 	var x2 = x2grid(p.x + r)
-	var y1 = x2grid(p.y - r)
-	var y2 = x2grid(p.y + r)
+	var y1 = y2grid(p.y - r)
+	var y2 = y2grid(p.y + r)
 	for x in range(x1,x2):
 		for y in range(y1,y2):
 			rtn.append_array(grid[x][y])
+#	print(rtn.size())
 	return rtn
 
