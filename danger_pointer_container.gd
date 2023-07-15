@@ -22,6 +22,7 @@ func _init() -> void:
 		line_dict[k].add_point( Vector2(0,0),0)
 		line_dict[k].add_point( Vector2(0,0),0)
 		line_dict[k].visible = false
+		line_dict[k].set_width(5)
 		add_child(line_dict[k])
 
 var line_dict = {
