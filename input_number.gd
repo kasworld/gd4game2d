@@ -4,9 +4,9 @@ signal value_changed(v :int)
 
 func init(s :String,fontsize :float, v :int, minv :int, maxv :int)->void:
 	$Label.text = s
-	$Number.value = v
 	$Number.min_value = minv
 	$Number.max_value = maxv
+	$Number.value = v
 	$Dec.text = "%s<=" % minv
 	$Inc.text = "=>%s" % maxv
 	theme.set_default_font_size(fontsize)
