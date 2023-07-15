@@ -1,7 +1,5 @@
 class_name Ball extends Area2D
 
-signal ended(o :Ball)
-
 const SPEED_LIMIT :float = 200
 const MAX_SHIELD = 12
 const INIT_SHIELD = 12
@@ -52,7 +50,7 @@ func shield_end(sh :Shield):
 func end():
 	if alive:
 		alive = false
-		emit_signal("ended", self)
+		get_tree().current_scene.ball_end(self)
 
 func _process(delta: float) -> void:
 	var node_list = get_tree().current_scene.get_near_nodes(position, 100)

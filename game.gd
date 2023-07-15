@@ -138,7 +138,6 @@ func ball_spawn_effect_end(o :BallSpawnSprite):
 
 	var obj = ball_free_list.get_node2d()
 	$BallContainer.add_child(obj)
-	AI.connect_if_not(obj.ended,ball_end)
 	obj.spawn(o.team,o.position)
 
 func ball_end(o:Ball):

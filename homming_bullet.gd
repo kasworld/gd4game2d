@@ -5,29 +5,25 @@ const LIFE_SEC = 10.0
 
 var speed :float
 var team :ColorTeam
-var dest_ball :Ball
+var target :Area2D
 var velocity :Vector2
 var accel :Vector2
 var alive :bool
 var life_start :float
 
-func spawn(t :ColorTeam, p :Vector2, bl :Ball)->void:
+func spawn(t :ColorTeam, p :Vector2, tg :Area2D)->void:
 	t.inc_stat(ColorTeam.Stat.NEW_HOMMING)
 	team = t
-	dest_ball = bl
+	target = tg
 	alive = true
 	life_start = Time.get_unix_time_from_system()
 	$InnerSprite.self_modulate = team.color
-	$OuterSprite.self_modulate = dest_ball.team.color
+	$OuterSprite.self_modulate = target.team.color
 
-	AI.connect_if_not(dest_ball.ended,dest_ball_end)
 	position = p
 	speed = randfn(SPEED_LIMIT, SPEED_LIMIT/10.0)
 	if speed < SPEED_LIMIT/3 :
 		speed = SPEED_LIMIT/3
-
-func dest_ball_end(_o :Ball):
-	end()
 
 func end():
 	if alive:
@@ -41,14 +37,14 @@ func _process(_delta: float) -> void:
 		return
 
 func _physics_process(delta: float) -> void:
-	if dest_ball == null or not dest_ball.alive:
+	if target == null or not target.alive:
 		end()
 		return
 	velocity = velocity.limit_length(speed)
 	position += velocity * delta
 	velocity +=accel
 	if randf() < 0.1:
-		accel = (dest_ball.position - position)
+		accel = (target.position - position)
 
 func _on_area_entered(area: Area2D) -> void:
 	if area.team == team:
