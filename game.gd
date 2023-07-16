@@ -84,7 +84,7 @@ func _ready():
 	vp_size = get_viewport_rect().size
 	$Background.init_bg(vp_size)
 
-	var cloud_count = 0
+	var cloud_count = 100
 	var team_count = 3
 	var ball_per_team = 1
 	make_clouds(cloud_count)
