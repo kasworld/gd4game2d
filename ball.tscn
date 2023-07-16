@@ -22,4 +22,8 @@ texture = ExtResource("2_va4id")
 
 [node name="DangerPointerContainer" parent="." groups=["dangerlines"] instance=ExtResource("3_fg04u")]
 
+[node name="DirSprite" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_va4id")
+
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

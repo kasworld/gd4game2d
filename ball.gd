@@ -21,6 +21,7 @@ func _ready() -> void:
 func spawn(t :ColorTeam, p :Vector2):
 	t.inc_stat(ColorTeam.Stat.NEW_BALL)
 	$ColorBallSprite.self_modulate = t.color
+	$DirSprite.self_modulate = t.color.inverted()
 	team = t
 	alive = true
 	life_start = Time.get_unix_time_from_system()
@@ -84,7 +85,7 @@ func _physics_process(delta: float) -> void:
 	var bn = Bounce.new(position,velocity,vp_size,bounce_radius)
 	position = bn.position
 	velocity = bn.velocity
-#	rotation = velocity.angle()+PI/2
+	$DirSprite.position = Vector2.RIGHT.rotated(velocity.angle())*20
 
 func _on_area_entered(area: Area2D) -> void:
 	if area.team == team:
