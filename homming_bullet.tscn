@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://cwrcrvtx8kfca"]
 
 [ext_resource type="Script" path="res://homming_bullet.gd" id="1_lgavg"]
-[ext_resource type="Texture2D" uid="uid://bc1gt5fvhe58f" path="res://resource/ring.png" id="2_v4r4u"]
-[ext_resource type="Texture2D" uid="uid://dvyyrpqnnmsql" path="res://resource/ball.png" id="3_1qosl"]
+[ext_resource type="Texture2D" uid="uid://bxs7kr74kj8uc" path="res://resource/ball2.png" id="2_sfk03"]
+[ext_resource type="Texture2D" uid="uid://wh2e1068swff" path="res://resource/ring2.png" id="3_srw2p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6uydk"]
 radius = 15.1327
@@ -17,10 +17,10 @@ shape = SubResource("CircleShape2D_6uydk")
 
 [node name="InnerSprite" type="Sprite2D" parent="."]
 scale = Vector2(0.7, 0.7)
-texture = ExtResource("2_v4r4u")
+texture = ExtResource("3_srw2p")
 
 [node name="OuterSprite" type="Sprite2D" parent="."]
 scale = Vector2(0.35, 0.35)
-texture = ExtResource("3_1qosl")
+texture = ExtResource("2_sfk03")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

@@ -43,6 +43,7 @@ func _physics_process(delta: float) -> void:
 	velocity = velocity.limit_length(speed)
 	position += velocity * delta
 	velocity +=accel
+	rotation = velocity.angle()+PI/2
 	if randf() < 0.1:
 		accel = (target.position - position)
 

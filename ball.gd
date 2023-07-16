@@ -84,6 +84,7 @@ func _physics_process(delta: float) -> void:
 	var bn = Bounce.new(position,velocity,vp_size,bounce_radius)
 	position = bn.position
 	velocity = bn.velocity
+#	rotation = velocity.angle()+PI/2
 
 func _on_area_entered(area: Area2D) -> void:
 	if area.team == team:

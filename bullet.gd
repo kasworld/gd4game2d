@@ -31,6 +31,7 @@ func _process(_delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	position += velocity * delta
 	velocity = velocity.limit_length(SPEED_LIMIT)
+	rotation = velocity.angle()+PI/2
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	end()
