@@ -10,7 +10,8 @@ var life_start :float
 
 func spawn(t :ColorTeam,p :Vector2, v :Vector2):
 	t.inc_stat(ColorTeam.Stat.NEW_BULLET)
-	$Sprite2D.self_modulate = t.color
+	$MainSprite.self_modulate = t.color
+	$SubSprite.self_modulate = t.color.inverted()
 	team = t
 	alive = true
 	life_start = Time.get_unix_time_from_system()
@@ -31,7 +32,7 @@ func _process(_delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	position += velocity * delta
 	velocity = velocity.limit_length(SPEED_LIMIT)
-	rotation = velocity.angle()+PI/2
+	rotation = velocity.angle()
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	end()

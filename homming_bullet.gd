@@ -17,8 +17,8 @@ func spawn(t :ColorTeam, p :Vector2, tg :Area2D)->void:
 	target = tg
 	alive = true
 	life_start = Time.get_unix_time_from_system()
-	$InnerSprite.self_modulate = team.color
-	$OuterSprite.self_modulate = target.team.color
+	$InnerSprite.self_modulate = target.team.color
+	$OuterSprite.self_modulate = team.color
 
 	position = p
 	speed = randfn(SPEED_LIMIT, SPEED_LIMIT/10.0)
@@ -43,7 +43,7 @@ func _physics_process(delta: float) -> void:
 	velocity = velocity.limit_length(speed)
 	position += velocity * delta
 	velocity +=accel
-	rotation = velocity.angle()+PI/2
+	rotation = velocity.angle()
 	if randf() < 0.1:
 		accel = (target.position - position)
 
