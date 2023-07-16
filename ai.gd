@@ -79,11 +79,11 @@ static func accel_to_evade(vp_size:Vector2, pos: Vector2, velocity :Vector2, o :
 		return velocity
 	if pos.distance_squared_to(vp_size/2) < (vp_size/4).length_squared(): # evade to backward
 		velocity = (pos - o.global_position).normalized()*Ball.SPEED_LIMIT
-		velocity = velocity.rotated( (randf()-0.5)*PI/4)
+		velocity = velocity.rotated( (randf()-0.5)*PI/8)
 		velocity = velocity.limit_length(Ball.SPEED_LIMIT)
 	else: # evade to center
 		velocity = to_center(pos, o.global_position, vp_size/2) * Ball.SPEED_LIMIT
-		velocity = velocity.rotated( (randf()-0.5)*PI/4)
+		velocity = velocity.rotated( (randf()-0.5)*PI/8)
 		velocity = velocity.limit_length(Ball.SPEED_LIMIT)
 	return velocity
 
