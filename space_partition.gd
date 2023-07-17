@@ -6,7 +6,7 @@ var grid_x_count :int
 var grid_y_count :int
 var grid # [x][y][Node]
 
-func _init(vp_size :Vector2, array_node_array :Array):
+func make(vp_size :Vector2, array_node_array :Array):
 	var totalobj_count :int = 0
 	for ar in array_node_array:
 		totalobj_count += ar.size()
@@ -24,16 +24,26 @@ func _init(vp_size :Vector2, array_node_array :Array):
 
 #	print("%s %s (%s %s) (%s %s)" % [totalobj_count, csize, cell_w , cell_h, grid_x_count, grid_y_count])
 
-	grid = []
-	grid.resize(grid_x_count)
+	if grid == null:
+		grid = []
+	else:
+		for x in grid.size():
+			for y in grid[x].size():
+				grid[x][y].clear()
+	if grid.size() < grid_x_count:
+		grid.resize(grid_x_count)
 	for x in grid_x_count:
-		grid[x] = []
-		grid[x].resize(grid_y_count)
+		if grid[x] == null:
+			grid[x] = []
+		if grid[x].size() < grid_y_count:
+			grid[x].resize(grid_y_count)
 		for y in grid_y_count:
-			grid[x][y] = []
+			if grid[x][y] == null:
+				grid[x][y] = []
 
 	for ar in array_node_array:
 		add_area2d_list(ar)
+
 
 func x2grid(x)->int:
 	return clampi((x / cell_w), 0, grid_x_count-1)

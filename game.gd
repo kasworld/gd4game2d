@@ -92,14 +92,14 @@ func _ready():
 	do_change_team_count()
 
 func build_space_partition()->SpacePartition:
-	sp = SpacePartition.new(vp_size, [
+	sp.make(vp_size, [
 		$BallContainer.get_children(),
 		$BulletContainer.get_children(),
 		$HommingContainer.get_children(),
 	])
 	return sp
 
-var sp :SpacePartition
+var sp = SpacePartition.new()
 func get_near_nodes(p :Vector2, r :float)->Array[Node]:
 	return sp.find_near(p, r)
 
@@ -125,10 +125,8 @@ func handle_input():
 	if Input.is_action_just_pressed("Restart"):
 		get_tree().reload_current_scene()
 	if Input.is_action_just_pressed("DangerLine"):
-		view_dangerlines = not view_dangerlines
-		get_tree().call_group("dangerlines", "toggle_visible",view_dangerlines)
+		pass
 
-var view_dangerlines = true
 
 func ball_spawn_effect(t :ColorTeam):
 	var obj = ball_spawn_free_list.get_node2d()

@@ -31,6 +31,3 @@ var line_dict = {
 	"Bullet":Line2D,
 	"Homming":Line2D,
 }
-
-func toggle_visible(b :bool):
-	visible = b
