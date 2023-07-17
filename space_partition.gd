@@ -26,20 +26,18 @@ func make(vp_size :Vector2, array_node_array :Array):
 
 	if grid == null:
 		grid = []
-	else:
-		for x in grid.size():
-			for y in grid[x].size():
-				grid[x][y].clear()
-	if grid.size() < grid_x_count:
+	if grid.size() != grid_x_count:
 		grid.resize(grid_x_count)
 	for x in grid_x_count:
 		if grid[x] == null:
 			grid[x] = []
-		if grid[x].size() < grid_y_count:
+		if grid[x].size() != grid_y_count:
 			grid[x].resize(grid_y_count)
 		for y in grid_y_count:
 			if grid[x][y] == null:
 				grid[x][y] = []
+			else:
+				grid[x][y].clear()
 
 	for ar in array_node_array:
 		add_area2d_list(ar)
