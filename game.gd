@@ -125,8 +125,13 @@ func handle_input():
 	if Input.is_action_just_pressed("Restart"):
 		get_tree().reload_current_scene()
 	if Input.is_action_just_pressed("DangerLine"):
-		pass
+		view_dangerlines = not view_dangerlines
+		$BallContainer.get_children().all(show_danger_pointer)
 
+var view_dangerlines = true
+func show_danger_pointer(o):
+	o.show_danger_pointer(view_dangerlines)
+	return true
 
 func ball_spawn_effect(t :ColorTeam):
 	var obj = ball_spawn_free_list.get_node2d()
@@ -141,7 +146,7 @@ func ball_spawn_effect_end(o :BallSpawnSprite):
 
 	var obj = ball_free_list.get_node2d()
 	$BallContainer.add_child(obj)
-	obj.spawn(o.team,o.position)
+	obj.spawn(o.team,o.position,view_dangerlines)
 
 func ball_end(o:Ball):
 	ball_free_list.put_node2d(o)

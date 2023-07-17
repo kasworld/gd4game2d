@@ -18,7 +18,7 @@ func _ready() -> void:
 	vp_size = get_viewport_rect().size
 	bounce_radius = $CollisionShape2D.shape.radius
 
-func spawn(t :ColorTeam, p :Vector2):
+func spawn(t :ColorTeam, p :Vector2, show_dp :bool):
 	t.inc_stat(ColorTeam.Stat.NEW_BALL)
 	$ColorBallSprite.self_modulate = t.color
 	$DirSprite.self_modulate = t.color.inverted()
@@ -27,6 +27,7 @@ func spawn(t :ColorTeam, p :Vector2):
 	life_start = Time.get_unix_time_from_system()
 	position = p
 	velocity = Vector2.DOWN.rotated( randf() * 2 * PI )*SPEED_LIMIT
+	show_danger_pointer(show_dp)
 	for o in $ShieldContainer.get_children():
 		o.spawn(team, shield_end)
 	for i in INIT_SHIELD:
@@ -93,3 +94,5 @@ func _on_area_entered(area: Area2D) -> void:
 	area.team.inc_stat(ColorTeam.Stat.KILL_BALL)
 	end()
 
+func show_danger_pointer(b :bool):
+	$DangerPointerContainer.visible = b
