@@ -17,7 +17,6 @@ enum Stat {
 static func stat_string(k :Stat)->String:
 	return Stat.keys()[k]
 
-var color_index :int
 var color :Color
 var name :String
 var stats :Dictionary # key string -> int
@@ -57,9 +56,9 @@ func dec_stat(k :Stat):
 	labels[ks].text = str(stats[ks])
 
 func _init(ci :int, ball_per_team :int):
-	color_index = ci
-	color = NamedColorList.get_color(color_index)
-	name = NamedColorList.get_colorname(color_index)
+	color = NamedColorList.get_color(ci)
+	name = NamedColorList.get_colorname(ci)
+
 	label_settings = LabelSettings.new()
 	label_settings.outline_size = 2
 	label_settings.font_color = color

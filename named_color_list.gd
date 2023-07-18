@@ -6,6 +6,12 @@ static func get_color(i :int)->Color:
 static func get_colorname(i :int)->String:
 	return color_list[i%color_list.size()][1]
 
+static func get_colorname_by_color(c :Color)->String:
+	for v in color_list:
+		if v[0] == c:
+			return v[1]
+	return c.to_html()
+
 const color_list = [
 [Color.ALICE_BLUE, "ALICE_BLUE"],
 [Color.ANTIQUE_WHITE, "ANTIQUE_WHITE"],
