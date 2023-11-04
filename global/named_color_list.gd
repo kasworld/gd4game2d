@@ -1,12 +1,12 @@
-class_name NamedColorList
+extends Node
 
-static func get_color(i :int)->Color:
+func get_color(i :int)->Color:
 	return color_list[i%color_list.size()][0]
 
-static func get_colorname(i :int)->String:
+func get_colorname(i :int)->String:
 	return color_list[i%color_list.size()][1]
 
-static func get_colorname_by_color(c :Color)->String:
+func get_colorname_by_color(c :Color)->String:
 	for v in color_list:
 		if v[0] == c:
 			return v[1]

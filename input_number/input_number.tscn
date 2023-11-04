@@ -1,8 +1,9 @@
 [gd_scene load_steps=4 format=3 uid="uid://nw137vk0gcgq"]
 
-[ext_resource type="Script" path="res://input_number.gd" id="1_68mee"]
+[ext_resource type="Script" path="res://input_number/input_number.gd" id="1_uo4da"]
 
 [sub_resource type="SystemFont" id="SystemFont_iaqm1"]
+subpixel_positioning = 0
 
 [sub_resource type="Theme" id="Theme_xdwha"]
 default_font = SubResource("SystemFont_iaqm1")
@@ -12,7 +13,7 @@ default_font_size = 40
 offset_right = 748.0
 offset_bottom = 63.0
 theme = SubResource("Theme_xdwha")
-script = ExtResource("1_68mee")
+script = ExtResource("1_uo4da")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2

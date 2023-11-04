@@ -17,6 +17,11 @@ boot_splash/image="res://resource/Cloud.png"
 boot_splash/fullsize=false
 config/icon="res://resource/ball.png"
 
+[autoload]
+
+Bounce="*res://global/bounce.gd"
+NamedColorList="*res://global/named_color_list.gd"
+
 [display]
 
 window/size/viewport_width=3840
