@@ -8,14 +8,14 @@ var shield_free_list = Node2DPool.new(preload("res://shield.tscn").instantiate)
 var get_ball_list :Callable
 var team :ColorTeam
 var velocity :Vector2
-var vp_size :Vector2
+var vp_area :Rect2
 var bounce_radius :float
 var alive :bool
 var life_start :float
 
 func _ready() -> void:
 	get_ball_list = get_tree().current_scene.get_ball_list
-	vp_size = get_viewport_rect().size
+	vp_area = get_viewport_rect()
 	bounce_radius = $CollisionShape2D.shape.radius
 
 func spawn(t :ColorTeam, p :Vector2, show_dp :bool):
@@ -66,7 +66,7 @@ func _process(delta: float) -> void:
 	$DangerPointerContainer.update_danger_dict(self, danger_dict)
 
 	var oldv = velocity
-	velocity = AI.accel_to_evade(vp_size, position, velocity, danger_dict.All[0])
+	velocity = AI.accel_to_evade(vp_area.size, position, velocity, danger_dict.All[0])
 	if oldv != velocity:
 		team.inc_stat(ColorTeam.Stat.ACCEL)
 
@@ -83,7 +83,7 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	position += velocity * delta
-	var bn = Bounce.bounce(position,velocity,vp_size,bounce_radius)
+	var bn = Bounce.bounce(position,velocity,vp_area,bounce_radius)
 	position = bn.position
 	velocity = bn.velocity
 	$DirSprite.position = Vector2.RIGHT.rotated(velocity.angle())*20

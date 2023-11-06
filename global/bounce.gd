@@ -1,22 +1,22 @@
 extends Node
 
-func bounce(pos :Vector2,vel :Vector2, bound :Vector2, radius :float)->Dictionary:
+func bounce(pos :Vector2,vel :Vector2, bound :Rect2, radius :float)->Dictionary:
 	var xbounce = 0
 	var ybounce = 0
-	if pos.x < radius :
-		pos.x = radius
+	if pos.x < bound.position.x + radius :
+		pos.x = bound.position.x + radius
 		vel.x = abs(vel.x)
 		xbounce = -1
-	elif pos.x > bound.x - radius:
-		pos.x = bound.x - radius
+	elif pos.x > bound.end.x - radius:
+		pos.x = bound.end.x - radius
 		vel.x = -abs(vel.x)
 		xbounce = 1
-	if pos.y < radius :
-		pos.y = radius
+	if pos.y < bound.position.y + radius :
+		pos.y = bound.position.y + radius
 		vel.y = abs(vel.y)
 		ybounce = -1
-	elif pos.y > bound.y - radius:
-		pos.y = bound.y - radius
+	elif pos.y > bound.end.y - radius:
+		pos.y = bound.end.y - radius
 		vel.y = -abs(vel.y)
 		ybounce = 1
 	return {
