@@ -3,13 +3,13 @@ class_name Background extends ParallaxBackground
 const SPEED_LIMIT :float = 20
 var velocity :Vector2
 var accel :Vector2
-var vp_size :Vector2
+var vp_rect :Rect2
 var bg_state :int
 
-func init_bg(vp :Vector2) -> void:
-	vp_size = vp
+func init_bg(rt :Rect2) -> void:
+	vp_rect = rt
 	init_ani_tile()
-	$ColorRect.size = vp_size
+	$ColorRect.size = vp_rect.size
 
 var bg_colors = [
 	Color.DIM_GRAY,
@@ -36,11 +36,11 @@ func toggle_bg():
 func init_ani_tile():
 	velocity = Vector2.ONE.rotated( randf() * 2 * PI ) * SPEED_LIMIT
 	var tilevt = Vector2(128.0, 128.0) # from image
-	var sizevt = Vector2( vp_size.y/4,vp_size.y/4)
+	var sizevt = Vector2( vp_rect.size.y/4,vp_rect.size.y/4)
 	var scalevt = Vector2(sizevt.x/tilevt.x, sizevt.y/tilevt.y)
 	var mirrorvt = Vector2(
-		(int(vp_size.x / sizevt.x) + 1) * sizevt.x,
-		(int(vp_size.y / sizevt.y) + 1) * sizevt.y,
+		(int(vp_rect.size.x / sizevt.x) + 1) * sizevt.x,
+		(int(vp_rect.size.y / sizevt.y) + 1) * sizevt.y,
 		)
 	$ParallaxLayer.motion_mirroring = mirrorvt
 	var tilecountvt = mirrorvt / sizevt

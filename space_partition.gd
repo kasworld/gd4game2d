@@ -6,21 +6,21 @@ var grid_x_count :int
 var grid_y_count :int
 var grid # [x][y][Node]
 
-func make(vp_size :Vector2, array_node_array :Array):
+func make(vp_rect :Rect2, array_node_array :Array):
 	var totalobj_count :int = 0
 	for ar in array_node_array:
 		totalobj_count += ar.size()
 	var csize = sqrt(totalobj_count)
-	cell_w = vp_size.x / csize
-	cell_h = vp_size.y / csize
+	cell_w = vp_rect.size.x / csize
+	cell_h = vp_rect.size.y / csize
 
 	# make cell square
 	if cell_h < cell_w:
 		cell_w = cell_h
 	else:
 		cell_h = cell_w
-	grid_x_count = int(vp_size.x / cell_w) + 1
-	grid_y_count = int(vp_size.y / cell_h) + 1
+	grid_x_count = int(vp_rect.size.x / cell_w) + 1
+	grid_y_count = int(vp_rect.size.y / cell_h) + 1
 
 #	print("%s %s (%s %s) (%s %s)" % [totalobj_count, csize, cell_w , cell_h, grid_x_count, grid_y_count])
 

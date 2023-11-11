@@ -9,7 +9,7 @@ var bullet_explode_free_list = Node2DPool.new(preload("res://bullet_explode_effe
 var homming_free_list = Node2DPool.new(preload("res://homming_bullet.tscn").instantiate)
 var homming_explode_free_list = Node2DPool.new(preload("res://homming_explode_effect.tscn").instantiate)
 
-var vp_size :Vector2
+var vp_rect :Rect2
 var colorteam_list :Array[ColorTeam]
 var life_start :float
 
@@ -81,18 +81,22 @@ func make_clouds(cloud_count :int):
 func _ready():
 	randomize()
 	life_start = Time.get_unix_time_from_system()
-	vp_size = get_viewport_rect().size
-	$Background.init_bg(vp_size)
+	vp_rect = get_viewport_rect()
+	$Background.init_bg(vp_rect)
 
 	var cloud_count = 100
 	var team_count = 3
 	var ball_per_team = 1
 	make_clouds(cloud_count)
-	$UILayer/HUD.init(vp_size, cloud_count, team_count, ball_per_team)
+	$UILayer/HUD.init(vp_rect.size, cloud_count, team_count, ball_per_team)
 	do_change_team_count()
 
+	var msgrect = Rect2( vp_rect.size.x * 0.2 ,vp_rect.size.y * 0.4 , vp_rect.size.x * 0.6 , vp_rect.size.y * 0.2   )
+	$TimedMessage.init(msgrect, tr("gd4game2d 2.0"))
+	$TimedMessage.show_message("시작합니다.")
+
 func build_space_partition()->SpacePartition:
-	sp.make(vp_size, [
+	sp.make(vp_rect, [
 		$BallContainer.get_children(),
 		$BulletContainer.get_children(),
 		$HommingContainer.get_children(),
@@ -137,7 +141,7 @@ func ball_spawn_effect(t :ColorTeam):
 	var obj = ball_spawn_free_list.get_node2d()
 	$EffectContainer.add_child(obj)
 	t.inc_ball_count()
-	var p = Vector2(randf_range(0,vp_size.x),randf_range(0,vp_size.y))
+	var p = Vector2(randf_range(vp_rect.position.x,vp_rect.end.x),randf_range(vp_rect.position.y,vp_rect.end.y))
 	obj.spawn(t,p)
 
 func ball_spawn_effect_end(o :BallSpawnSprite):
