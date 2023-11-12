@@ -92,8 +92,8 @@ func _ready():
 	do_change_team_count()
 
 	var msgrect = Rect2( vp_rect.size.x * 0.2 ,vp_rect.size.y * 0.4 , vp_rect.size.x * 0.6 , vp_rect.size.y * 0.2   )
-	$TimedMessage.init(msgrect, tr("gd4game2d 2.0"))
-	$TimedMessage.show_message("시작합니다.")
+	$TimedMessage.init(msgrect, tr("gd4game2d 2.0.1"))
+	$TimedMessage.show_message("Copyright 2023 SeukWon Kang (kasworld@gmail.com)")
 
 func build_space_partition()->SpacePartition:
 	sp.make(vp_rect, [
