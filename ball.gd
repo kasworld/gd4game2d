@@ -83,7 +83,7 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	position += velocity * delta
-	var bn = Bounce.bounce(position,velocity,vp_area,bounce_radius)
+	var bn = Bounce.bounce2d(position,velocity,vp_area,bounce_radius)
 	position = bn.position
 	velocity = bn.velocity
 	$DirSprite.position = Vector2.RIGHT.rotated(velocity.angle())*20

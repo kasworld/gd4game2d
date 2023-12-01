@@ -37,7 +37,7 @@ func _process(_delta: float) -> void:
 	$Sprite2D.scale = Vector2.ONE * (sin(tm*PI/59+scale_base*2*PI)/3+1)
 
 func _physics_process(delta: float) -> void:
-	var bn = Bounce.bounce(position,velocity,vp_area,BOUNCE_RADIUS)
+	var bn = Bounce.bounce2d(position,velocity,vp_area,BOUNCE_RADIUS)
 	position = bn.position
 	velocity = bn.velocity
 
