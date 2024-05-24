@@ -1,6 +1,6 @@
 class_name Ball extends Area2D
 
-const SPEED_LIMIT :float = 200
+const SPEED_LIMIT :float = 400
 const MAX_SHIELD = 12
 const INIT_SHIELD = 12
 

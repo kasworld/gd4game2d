@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://hud.gd" id="1_b1ff5"]
 [ext_resource type="LabelSettings" uid="uid://0ootsxt7d3hr" path="res://label_help.tres" id="3_3jjdy"]
-[ext_resource type="PackedScene" uid="uid://nw137vk0gcgq" path="res://input_number.tscn" id="3_l3yib"]
+[ext_resource type="PackedScene" uid="uid://nw137vk0gcgq" path="res://input_number/input_number.tscn" id="3_l3yib"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3
