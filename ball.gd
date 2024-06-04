@@ -56,7 +56,8 @@ func end():
 
 func _process(delta: float) -> void:
 	var r_scene = get_tree().current_scene
-	var node_list = r_scene.sp.find_near(position, 100)
+	#var node_list = r_scene.sp.find_near(position, 100)
+	var node_list = r_scene.qt.search(position, 100,100)
 	var danger_dict = AI.find_danger_objs(self,node_list)
 #	var danger_dict = {
 #		"All":[null, 0.0],
