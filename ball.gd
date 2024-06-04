@@ -1,8 +1,8 @@
 class_name Ball extends Area2D
 
 const SPEED_LIMIT :float = 400
-const MAX_SHIELD = 12
-const INIT_SHIELD = 12
+const MAX_SHIELD = 2
+const INIT_SHIELD = 0
 
 var shield_scene = preload("res://shield.tscn")
 var get_ball_list :Callable
@@ -55,7 +55,8 @@ func end():
 		get_tree().current_scene.ball_end(self)
 
 func _process(delta: float) -> void:
-	var node_list = get_tree().current_scene.sp.find_near(position, 100)
+	var r_scene = get_tree().current_scene
+	var node_list = r_scene.sp.find_near(position, 100)
 	var danger_dict = AI.find_danger_objs(self,node_list)
 #	var danger_dict = {
 #		"All":[null, 0.0],
@@ -72,11 +73,11 @@ func _process(delta: float) -> void:
 
 	var v = AI.do_fire_bullet(position, team,delta,danger_dict,get_ball_list.call())
 	if v != Vector2.ZERO:
-		get_tree().current_scene.fire_bullet(team, position, v)
+		r_scene.fire_bullet(team, position, v)
 
 	var dst = AI.do_fire_homming(team,delta,danger_dict,get_ball_list.call())
 	if dst != null :
-		get_tree().current_scene.fire_homming(team, position, dst)
+		r_scene.fire_homming(team, position, dst)
 
 	if AI.do_add_shield(delta):
 		add_shield()
