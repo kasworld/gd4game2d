@@ -69,6 +69,7 @@ func _ready():
 	life_start = Time.get_unix_time_from_system()
 	vp_rect = get_viewport_rect()
 	$Background.init_bg(vp_rect)
+	#$Background.toggle_bg()
 
 	var cloud_count = 100
 	var team_count = 3
@@ -93,9 +94,7 @@ var sp = SpacePartition.new()
 func get_near_nodes(p :Vector2, r :float)->Array[Node]:
 	return sp.find_near(p, r)
 
-var fps :float
 func _process(delta: float) -> void:
-	fps = (fps+1.0/delta)/2
 	if flag_team_count_change:
 		if check_no_gameobject():
 			do_change_team_count()
@@ -218,7 +217,10 @@ func homming_explode_effect_end(o :HommingExplodeSprite):
 func get_ball_list()->Array:
 	return $BallContainer.get_children()
 
-func update_game_stat():
+func _on_stat_timer_timeout() -> void:
+	set_game_stat("GameSec", Time.get_unix_time_from_system() - life_start)
+	set_game_stat("FPS", Performance.get_monitor(Performance.TIME_FPS))
+
 	set_game_stat("Ball", $BallContainer.get_child_count())
 	set_game_stat("Bullet", $BulletContainer.get_child_count())
 	set_game_stat("Homming", $HommingContainer.get_child_count())
@@ -227,11 +229,6 @@ func update_game_stat():
 	for b in $BallContainer.get_children():
 		shield_count += b.get_shield_count()
 	set_game_stat("Shield", shield_count )
-
-func _on_stat_timer_timeout() -> void:
-	set_game_stat("GameSec", Time.get_unix_time_from_system() - life_start)
-	set_game_stat("FPS", fps)
-	update_game_stat()
 
 ################## hud ##################
 func _on_cloud_count_value_changed(idx) -> void:

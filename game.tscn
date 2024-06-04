@@ -29,7 +29,6 @@ z_index = 50
 [node name="EffectContainer" type="Node2D" parent="."]
 
 [node name="StatTimer" type="Timer" parent="."]
-wait_time = 0.3
 autostart = true
 
 [node name="Background" parent="." instance=ExtResource("3_mj7ta")]
