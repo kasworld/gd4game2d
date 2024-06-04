@@ -4,7 +4,7 @@ const SPEED_LIMIT :float = 400
 const MAX_SHIELD = 12
 const INIT_SHIELD = 12
 
-var shield_free_list = Node2DPool.new(preload("res://shield.tscn").instantiate)
+var shield_scene = preload("res://shield.tscn")
 var get_ball_list :Callable
 var team :ColorTeam
 var velocity :Vector2
@@ -40,12 +40,11 @@ func add_shield():
 	if get_shield_count() >= MAX_SHIELD:
 		return
 	team.inc_stat(ColorTeam.Stat.NEW_SHIELD)
-	var sh = shield_free_list.get_node2d()
+	var sh = shield_scene.instantiate()
 	$ShieldContainer.add_child(sh)
 	sh.spawn(team, shield_end)
 
 func shield_end(sh :Shield):
-	shield_free_list.put_node2d(sh)
 	$ShieldContainer.remove_child.call_deferred(sh)
 	get_tree().current_scene.shield_explode_effect(sh)
 

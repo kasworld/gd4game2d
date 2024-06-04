@@ -1,13 +1,13 @@
 extends Node2D
 
-var ball_free_list = Node2DPool.new(preload("res://ball.tscn").instantiate)
-var ball_spawn_free_list = Node2DPool.new(preload("res://ball_spawn_sprite.tscn").instantiate)
-var ball_explode_free_list = Node2DPool.new(preload("res://ball_explode_effect.tscn").instantiate)
-var shield_explode_free_list = Node2DPool.new(preload("res://shield_explode_effect.tscn").instantiate)
-var bullet_free_list = Node2DPool.new(preload("res://bullet.tscn").instantiate)
-var bullet_explode_free_list = Node2DPool.new(preload("res://bullet_explode_effect.tscn").instantiate)
-var homming_free_list = Node2DPool.new(preload("res://homming_bullet.tscn").instantiate)
-var homming_explode_free_list = Node2DPool.new(preload("res://homming_explode_effect.tscn").instantiate)
+var ball_scene = preload("res://ball.tscn")
+var ball_spawn_scene = preload("res://ball_spawn_sprite.tscn")
+var ball_explode_scene = preload("res://ball_explode_effect.tscn")
+var shield_explode_scene = preload("res://shield_explode_effect.tscn")
+var bullet_scene = preload("res://bullet.tscn")
+var bullet_explode_scene = preload("res://bullet_explode_effect.tscn")
+var homming_scene = preload("res://homming_bullet.tscn")
+var homming_explode_scene = preload("res://homming_explode_effect.tscn")
 
 var vp_rect :Rect2
 var colorteam_list :Array[ColorTeam]
@@ -138,75 +138,67 @@ func show_danger_pointer(o):
 	return true
 
 func ball_spawn_effect(t :ColorTeam):
-	var obj = ball_spawn_free_list.get_node2d()
+	var obj = ball_spawn_scene.instantiate()
 	$EffectContainer.add_child(obj)
 	t.inc_ball_count()
 	var p = Vector2(randf_range(vp_rect.position.x,vp_rect.end.x),randf_range(vp_rect.position.y,vp_rect.end.y))
 	obj.spawn(t,p)
 
 func ball_spawn_effect_end(o :BallSpawnSprite):
-	ball_spawn_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
 
-	var obj = ball_free_list.get_node2d()
+	var obj = ball_scene.instantiate()
 	$BallContainer.add_child(obj)
 	obj.spawn(o.team,o.position,view_dangerlines)
 
 func ball_end(o:Ball):
-	ball_free_list.put_node2d(o)
 	$BallContainer.remove_child.call_deferred(o)
 
-	var obj = ball_explode_free_list.get_node2d()
+	var obj = ball_explode_scene.instantiate()
 	$EffectContainer.add_child(obj)
 	obj.spawn(o.team,o.position)
 
 func ball_explode_effect_end(o :BallExplodeSprite):
-	ball_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
 	o.team.dec_ball_count()
 	flag_apply_ball_per_team_count = true
 
 func shield_explode_effect(o :Shield):
-	var obj = shield_explode_free_list.get_node2d()
+	var obj = shield_explode_scene.instantiate()
 	$EffectContainer.add_child(obj)
 	obj.spawn(o.team,o.global_position)
 
 func shield_explode_effect_end(o :ShieldExplodeSprite):
-	shield_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
 
 func fire_bullet(t :ColorTeam, p :Vector2, v :Vector2):
-	var obj = bullet_free_list.get_node2d()
+	var obj = bullet_scene.instantiate()
 	$BulletContainer.add_child(obj)
 	obj.spawn(t,p,v)
 
 func bullet_end(o :Bullet):
-	bullet_free_list.put_node2d(o)
 	$BulletContainer.remove_child.call_deferred(o)
 
-	var obj = bullet_explode_free_list.get_node2d()
+	var obj = bullet_explode_scene.instantiate()
 	$EffectContainer.add_child(obj)
 	obj.spawn(o.team,o.position)
 
 func bullet_explode_effect_end(o :BulletExplodeSprite):
-	bullet_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
 
 func fire_homming(t :ColorTeam, p :Vector2, dst :Area2D):
-	var obj = homming_free_list.get_node2d()
+	var obj = homming_scene.instantiate()
 	$HommingContainer.add_child(obj)
 	obj.spawn(t,p,dst)
 
 func homming_end(o:HommingBullet):
-	homming_free_list.put_node2d(o)
 	$HommingContainer.remove_child.call_deferred(o)
 
-	var obj = homming_explode_free_list.get_node2d()
+	var obj = homming_explode_scene.instantiate()
 	$EffectContainer.add_child(obj)
 	obj.spawn(o.team,o.position)
 
 func homming_explode_effect_end(o :HommingExplodeSprite):
-	homming_explode_free_list.put_node2d(o)
 	$EffectContainer.remove_child(o)
 
 func get_ball_list()->Array:
