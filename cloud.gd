@@ -1,4 +1,4 @@
-extends Area2D
+extends Sprite2D
 
 const SPEED_LIMIT = 10.0
 const BOUNCE_RADIUS = 10.0
@@ -24,17 +24,17 @@ func _ready() -> void:
 	scale_base = randf()
 
 	if randi_range(0,1) == 0 :
-		$Sprite2D.flip_h = true
+		flip_h = true
 	if randi_range(0,1) == 0 :
-		$Sprite2D.flip_v = true
+		flip_v = true
 
 func _process(_delta: float) -> void:
 	var tm = Time.get_unix_time_from_system()
-	$Sprite2D.self_modulate.a = (sin(tm*PI/61+alpha_base*2*PI)+1)/2
-	$Sprite2D.self_modulate.r = 1-(sin(tm*PI/53+alpha_base*2*PI)+1)/20
-	$Sprite2D.self_modulate.g = 1-(sin(tm*PI/51+alpha_base*2*PI)+1)/20
-	$Sprite2D.self_modulate.b = 1-(sin(tm*PI/47+alpha_base*2*PI)+1)/20
-	$Sprite2D.scale = Vector2.ONE * (sin(tm*PI/59+scale_base*2*PI)/3+1)
+	self_modulate.a = (sin(tm*PI/61+alpha_base*2*PI)+1)/2
+	self_modulate.r = 1-(sin(tm*PI/53+alpha_base*2*PI)+1)/20
+	self_modulate.g = 1-(sin(tm*PI/51+alpha_base*2*PI)+1)/20
+	self_modulate.b = 1-(sin(tm*PI/47+alpha_base*2*PI)+1)/20
+	scale = Vector2.ONE * (sin(tm*PI/59+scale_base*2*PI)/3+1)
 
 func _physics_process(delta: float) -> void:
 	var bn = Bounce.bounce2d(position,velocity,vp_area,BOUNCE_RADIUS)
