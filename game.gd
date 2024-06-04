@@ -146,6 +146,7 @@ func ball_spawn_effect(t :ColorTeam):
 
 func ball_spawn_effect_end(o :BallSpawnSprite):
 	$EffectContainer.remove_child(o)
+	o.queue_free()
 
 	var obj = ball_scene.instantiate()
 	$BallContainer.add_child(obj)
@@ -153,6 +154,7 @@ func ball_spawn_effect_end(o :BallSpawnSprite):
 
 func ball_end(o:Ball):
 	$BallContainer.remove_child.call_deferred(o)
+	o.queue_free()
 
 	var obj = ball_explode_scene.instantiate()
 	$EffectContainer.add_child(obj)
@@ -160,6 +162,7 @@ func ball_end(o:Ball):
 
 func ball_explode_effect_end(o :BallExplodeSprite):
 	$EffectContainer.remove_child(o)
+	o.queue_free()
 	o.team.dec_ball_count()
 	flag_apply_ball_per_team_count = true
 
@@ -170,6 +173,7 @@ func shield_explode_effect(o :Shield):
 
 func shield_explode_effect_end(o :ShieldExplodeSprite):
 	$EffectContainer.remove_child(o)
+	o.queue_free()
 
 func fire_bullet(t :ColorTeam, p :Vector2, v :Vector2):
 	var obj = bullet_scene.instantiate()
@@ -178,6 +182,7 @@ func fire_bullet(t :ColorTeam, p :Vector2, v :Vector2):
 
 func bullet_end(o :Bullet):
 	$BulletContainer.remove_child.call_deferred(o)
+	o.queue_free()
 
 	var obj = bullet_explode_scene.instantiate()
 	$EffectContainer.add_child(obj)
@@ -185,6 +190,7 @@ func bullet_end(o :Bullet):
 
 func bullet_explode_effect_end(o :BulletExplodeSprite):
 	$EffectContainer.remove_child(o)
+	o.queue_free()
 
 func fire_homming(t :ColorTeam, p :Vector2, dst :Area2D):
 	var obj = homming_scene.instantiate()
@@ -193,6 +199,7 @@ func fire_homming(t :ColorTeam, p :Vector2, dst :Area2D):
 
 func homming_end(o:HommingBullet):
 	$HommingContainer.remove_child.call_deferred(o)
+	o.queue_free()
 
 	var obj = homming_explode_scene.instantiate()
 	$EffectContainer.add_child(obj)
@@ -200,6 +207,7 @@ func homming_end(o:HommingBullet):
 
 func homming_explode_effect_end(o :HommingExplodeSprite):
 	$EffectContainer.remove_child(o)
+	o.queue_free()
 
 func get_ball_list()->Array:
 	return $BallContainer.get_children()

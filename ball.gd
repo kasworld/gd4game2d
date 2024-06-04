@@ -46,6 +46,7 @@ func add_shield():
 
 func shield_end(sh :Shield):
 	$ShieldContainer.remove_child.call_deferred(sh)
+	sh.queue_free()
 	get_tree().current_scene.shield_explode_effect(sh)
 
 func end():
