@@ -6,3 +6,4 @@ addons/godot-git-plugin/
 *.apk.idsig
 *.pck
 *.tmp
+.vscode/

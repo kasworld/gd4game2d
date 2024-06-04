@@ -12,13 +12,14 @@ func init_bg(rt :Rect2) -> void:
 	$ColorRect.size = vp_rect.size
 
 var bg_colors = [
-	Color.DIM_GRAY,
-	Color.DARK_BLUE,
-	Color.DARK_GREEN,
-	Color.DARK_RED,
-	Color.ORANGE.darkened(0.5),
-	Color.PURPLE.darkened(0.5),
-	Color.YELLOW.darkened(0.5),
+	Color.BLACK,
+	Color.RED,
+	Color.BLUE,
+	Color.GREEN,
+	Color.CYAN,
+	Color.MAGENTA,
+	Color.YELLOW,
+	Color.WHITE,
 ]
 
 func toggle_bg():
