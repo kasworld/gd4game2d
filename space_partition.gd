@@ -42,7 +42,6 @@ func make(vp_rect :Rect2, array_node_array :Array):
 	for ar in array_node_array:
 		add_area2d_list(ar)
 
-
 func x2grid(x)->int:
 	return clampi((x / cell_w), 0, grid_x_count-1)
 func y2grid(y)->int:

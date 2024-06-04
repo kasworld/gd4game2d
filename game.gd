@@ -91,8 +91,6 @@ func build_space_partition()->SpacePartition:
 	return sp
 
 var sp = SpacePartition.new()
-func get_near_nodes(p :Vector2, r :float)->Array[Node]:
-	return sp.find_near(p, r)
 
 func _process(delta: float) -> void:
 	if flag_team_count_change:
