@@ -19,7 +19,6 @@ config/icon="res://resource/ball.png"
 
 [autoload]
 
-Bounce="*res://global/bounce.gd"
 NamedColorList="*res://global/named_color_list.gd"
 
 [display]
