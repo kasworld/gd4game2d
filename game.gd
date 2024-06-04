@@ -95,7 +95,6 @@ func get_near_nodes(p :Vector2, r :float)->Array[Node]:
 
 var fps :float
 func _process(delta: float) -> void:
-	handle_input()
 	fps = (fps+1.0/delta)/2
 	if flag_team_count_change:
 		if check_no_gameobject():
@@ -103,20 +102,41 @@ func _process(delta: float) -> void:
 	apply_ball_per_team_count()
 	build_space_partition()
 
-func handle_input():
-	if Input.is_action_just_pressed("HUD"):
-		$HUD.visible = not $HUD.visible
-	if Input.is_action_just_pressed("Background"):
-		$Background.toggle_bg()
-	if Input.is_action_just_pressed("Cloud"):
-		$CloudContainer.visible = not $CloudContainer.visible
-	if Input.is_action_just_pressed("Quit"):
-		get_tree().quit()
-	if Input.is_action_just_pressed("Restart"):
-		get_tree().reload_current_scene()
-	if Input.is_action_just_pressed("DangerLine"):
-		view_dangerlines = not view_dangerlines
-		$BallContainer.get_children().all(show_danger_pointer)
+var key2fn = {
+	KEY_ESCAPE:_on_button_quit_pressed,
+	KEY_R:_on_button_restart_pressed,
+	KEY_H:_on_button_hud_pressed,
+	KEY_C:_on_button_cloud_pressed,
+	KEY_B:_on_button_background_pressed,
+	KEY_D:_on_button_danger_line_pressed,
+}
+
+func _on_button_quit_pressed() -> void:
+	get_tree().quit()
+
+func _on_button_restart_pressed() -> void:
+	get_tree().reload_current_scene()
+
+func _on_button_hud_pressed() -> void:
+	$HUD.visible = not $HUD.visible
+
+func _on_button_cloud_pressed() -> void:
+	$CloudContainer.visible = not $CloudContainer.visible
+
+func _on_button_background_pressed() -> void:
+	$Background.toggle_bg()
+
+func _on_button_danger_line_pressed() -> void:
+	view_dangerlines = not view_dangerlines
+	$BallContainer.get_children().all(show_danger_pointer)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed:
+		var fn = key2fn.get(event.keycode)
+		if fn != null:
+			fn.call()
+	elif event is InputEventMouseButton and event.is_pressed():
+		pass
 
 var view_dangerlines = true
 func show_danger_pointer(o):
@@ -242,13 +262,13 @@ func get_ball_per_team()->int:
 func hud_init(cloud_count :int,team_count :int, ball_per_team:int):
 	init_game_stat()
 
+	$HUD/CountContainer.theme.default_font_size = vp_rect.size.y / 32
 	$HUD/CountContainer/CloudCount.init(0, "Cloud count(0-999)", vp_rect.size.y / 32)
 	$HUD/CountContainer/CloudCount.set_limits(0, true,cloud_count, 999, true)
 	$HUD/CountContainer/TeamCount.init(1,"Team count(0-100)", vp_rect.size.y / 32)
 	$HUD/CountContainer/TeamCount.set_limits(1,true, team_count, 100, true)
 	$HUD/CountContainer/BallPerTeam.init(2, "Balls / team(0-200)", vp_rect.size.y / 32)
 	$HUD/CountContainer/BallPerTeam.set_limits(0,true, ball_per_team, 200, true)
-	$HUD/CountContainer/Help.label_settings.font_size = vp_rect.size.y / 32
 	hud_set_pos.call_deferred()
 
 func hud_set_pos()->void:
