@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://7u1t5lj73shm"]
+[gd_scene load_steps=7 format=3 uid="uid://7u1t5lj73shm"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_vjs00"]
 [ext_resource type="PackedScene" uid="uid://s5uj50u6rb05" path="res://hud.tscn" id="2_fponq"]
 [ext_resource type="PackedScene" uid="uid://cocfmr8wyudsh" path="res://background.tscn" id="3_mj7ta"]
 [ext_resource type="PackedScene" uid="uid://c6cct2gj2a3im" path="res://timed_message/timed_message.tscn" id="4_k86i1"]
+
+[sub_resource type="SystemFont" id="SystemFont_bejao"]
+
+[sub_resource type="Theme" id="Theme_lcewc"]
+resource_local_to_scene = true
+default_font = SubResource("SystemFont_bejao")
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_vjs00")
@@ -32,6 +38,7 @@ autostart = true
 
 [node name="TimedMessage" parent="." instance=ExtResource("4_k86i1")]
 visible = false
+theme = SubResource("Theme_lcewc")
 
 [connection signal="ball_per_team_changed" from="UILayer/HUD" to="." method="_on_hud_ball_per_team_changed"]
 [connection signal="cloud_count_changed" from="UILayer/HUD" to="." method="_on_hud_cloud_count_changed"]
