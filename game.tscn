@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://game.gd" id="1_vjs00"]
 [ext_resource type="PackedScene" uid="uid://cocfmr8wyudsh" path="res://background.tscn" id="3_mj7ta"]
 [ext_resource type="LabelSettings" uid="uid://0ootsxt7d3hr" path="res://label_help.tres" id="3_rxv1c"]
-[ext_resource type="PackedScene" uid="uid://nw137vk0gcgq" path="res://input_number/input_number.tscn" id="4_cd3gv"]
+[ext_resource type="PackedScene" uid="uid://dllxbmyyau3u5" path="res://int_edit/int_edit.tscn" id="4_4c577"]
 [ext_resource type="PackedScene" uid="uid://c6cct2gj2a3im" path="res://timed_message/timed_message.tscn" id="4_k86i1"]
 
 [sub_resource type="SystemFont" id="SystemFont_bejao"]
@@ -72,15 +72,15 @@ Change Background : B"
 label_settings = ExtResource("3_rxv1c")
 horizontal_alignment = 2
 
-[node name="CloudCount" parent="HUD/CountContainer" instance=ExtResource("4_cd3gv")]
+[node name="CloudCount" parent="HUD/CountContainer" instance=ExtResource("4_4c577")]
 layout_mode = 2
 alignment = 2
 
-[node name="TeamCount" parent="HUD/CountContainer" instance=ExtResource("4_cd3gv")]
+[node name="TeamCount" parent="HUD/CountContainer" instance=ExtResource("4_4c577")]
 layout_mode = 2
 alignment = 2
 
-[node name="BallPerTeam" parent="HUD/CountContainer" instance=ExtResource("4_cd3gv")]
+[node name="BallPerTeam" parent="HUD/CountContainer" instance=ExtResource("4_4c577")]
 layout_mode = 2
 alignment = 2
 

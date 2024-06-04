@@ -214,16 +214,18 @@ func _on_stat_timer_timeout() -> void:
 	update_game_stat()
 
 ################## hud ##################
-func _on_cloud_count_value_changed(v) -> void:
+func _on_cloud_count_value_changed(idx) -> void:
+	var v = get_cloud_count()
 	make_clouds(v)
 
 var flag_team_count_change :bool
-func _on_team_count_value_changed(v) -> void:
+func _on_team_count_value_changed(idx) -> void:
 	make_no_gameobject()
 	flag_team_count_change = true
 	enable_team_ball_input(false)
 
-func _on_ball_per_team_value_changed(v) -> void:
+func _on_ball_per_team_value_changed(idx) -> void:
+	var v = get_ball_per_team()
 	for t in colorteam_list:
 		t.set_ball_count_limit(v)
 	flag_apply_ball_per_team_count = true
@@ -240,9 +242,12 @@ func get_ball_per_team()->int:
 func hud_init(cloud_count :int,team_count :int, ball_per_team:int):
 	init_game_stat()
 
-	$HUD/CountContainer/CloudCount.init("Cloud count", vp_rect.size.y / 32, cloud_count, 0, 999)
-	$HUD/CountContainer/TeamCount.init("Team count", vp_rect.size.y / 32, team_count, 1, 100)
-	$HUD/CountContainer/BallPerTeam.init("Balls / team", vp_rect.size.y / 32, ball_per_team, 0, 200)
+	$HUD/CountContainer/CloudCount.init(0, "Cloud count(0-999)", vp_rect.size.y / 32)
+	$HUD/CountContainer/CloudCount.set_limits(0, true,cloud_count, 999, true)
+	$HUD/CountContainer/TeamCount.init(1,"Team count(0-100)", vp_rect.size.y / 32)
+	$HUD/CountContainer/TeamCount.set_limits(1,true, team_count, 100, true)
+	$HUD/CountContainer/BallPerTeam.init(2, "Balls / team(0-200)", vp_rect.size.y / 32)
+	$HUD/CountContainer/BallPerTeam.set_limits(0,true, ball_per_team, 200, true)
 	$HUD/CountContainer/Help.label_settings.font_size = vp_rect.size.y / 32
 	hud_set_pos.call_deferred()
 
@@ -251,8 +256,8 @@ func hud_set_pos()->void:
 	$HUD/CountContainer.position = vp_rect.size - $HUD/CountContainer.size
 
 func enable_team_ball_input(b :bool):
-	$HUD/CountContainer/TeamCount.enable(b)
-	$HUD/CountContainer/BallPerTeam.enable(b)
+	$HUD/CountContainer/TeamCount.disable_buttons(not b)
+	$HUD/CountContainer/BallPerTeam.disable_buttons(not b)
 
 func init_teamstats(colorteam_list :Array[ColorTeam]):
 	for o in $HUD/TeamStatGrid.get_children():
@@ -315,5 +320,4 @@ var game_stat_label :Dictionary
 
 func set_game_stat(n :String, v):
 	game_stat_label[n].text = "{0} : {1}".format( [n , GameStatName[n] % v ] )
-
 
