@@ -5,18 +5,21 @@
 [sub_resource type="Theme" id="Theme_rsp75"]
 
 [sub_resource type="SystemFont" id="SystemFont_aut32"]
+subpixel_positioning = 0
 
 [sub_resource type="Theme" id="Theme_cfe30"]
 default_font = SubResource("SystemFont_aut32")
 default_font_size = 100
 
 [sub_resource type="SystemFont" id="SystemFont_t6at0"]
+subpixel_positioning = 0
 
 [sub_resource type="Theme" id="Theme_53h71"]
 default_font = SubResource("SystemFont_t6at0")
 default_font_size = 43
 
 [sub_resource type="SystemFont" id="SystemFont_60x5w"]
+subpixel_positioning = 0
 
 [sub_resource type="Theme" id="Theme_lcjeb"]
 default_font = SubResource("SystemFont_60x5w")

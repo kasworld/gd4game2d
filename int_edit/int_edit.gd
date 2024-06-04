@@ -9,6 +9,7 @@ class_name IntEdit
 @onready var decbtn = $VBoxContainer/DecButton
 
 signal value_changed(idx:int) # emit button up
+signal value_changing(idx:int) # emit value changed
 signal over_limit_low_reached(idx:int) # emit when try dec on low limit value
 signal over_limit_high_reached(idx:int) # emit when try inc on high limit value
 
@@ -69,7 +70,7 @@ func inc(v :int)->void:
 			current_value = limit_high
 			over_limit_high_reached.emit(index)
 	if current_value != oldval:
-		value_changed.emit(index)
+		value_changing.emit(index)
 		update_label()
 
 func dec(v :int)->void:
@@ -80,7 +81,7 @@ func dec(v :int)->void:
 			current_value = limit_low
 			over_limit_low_reached.emit(index)
 	if current_value != oldval:
-		value_changed.emit(index)
+		value_changing.emit(index)
 		update_label()
 
 const click_inc_sec = 1
@@ -94,6 +95,7 @@ func _on_dec_button_button_up() -> void:
 		dec(click_inc_sec)
 	repeat_inc_sec = 0
 	$Timer.stop()
+	value_changed.emit(index)
 
 func _on_inc_button_button_down() -> void:
 	repeat_inc_sec = 1
@@ -103,6 +105,7 @@ func _on_inc_button_button_up() -> void:
 		inc(click_inc_sec)
 	repeat_inc_sec = 0
 	$Timer.stop()
+	value_changed.emit(index)
 
 func _on_timer_timeout() -> void:
 	if repeat_inc_sec < 0 :
