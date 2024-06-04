@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://7u1t5lj73shm"]
+[gd_scene load_steps=8 format=3 uid="uid://7u1t5lj73shm"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_vjs00"]
-[ext_resource type="PackedScene" uid="uid://s5uj50u6rb05" path="res://hud.tscn" id="2_fponq"]
 [ext_resource type="PackedScene" uid="uid://cocfmr8wyudsh" path="res://background.tscn" id="3_mj7ta"]
+[ext_resource type="LabelSettings" uid="uid://0ootsxt7d3hr" path="res://label_help.tres" id="3_rxv1c"]
+[ext_resource type="PackedScene" uid="uid://nw137vk0gcgq" path="res://input_number/input_number.tscn" id="4_cd3gv"]
 [ext_resource type="PackedScene" uid="uid://c6cct2gj2a3im" path="res://timed_message/timed_message.tscn" id="4_k86i1"]
 
 [sub_resource type="SystemFont" id="SystemFont_bejao"]
@@ -13,11 +14,6 @@ default_font = SubResource("SystemFont_bejao")
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_vjs00")
-
-[node name="UILayer" type="CanvasLayer" parent="."]
-layer = 100
-
-[node name="HUD" parent="UILayer" instance=ExtResource("2_fponq")]
 
 [node name="CloudContainer" type="Node2D" parent="."]
 z_index = 50
@@ -36,11 +32,63 @@ autostart = true
 
 [node name="Background" parent="." instance=ExtResource("3_mj7ta")]
 
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+focus_mode = 2
+
+[node name="TeamStatGrid" type="GridContainer" parent="HUD"]
+layout_mode = 2
+columns = 10
+
+[node name="GameStats" type="VBoxContainer" parent="HUD"]
+layout_mode = 2
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="CountContainer" type="VBoxContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -748.0
+offset_top = -468.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Help" type="Label" parent="HUD/CountContainer"]
+layout_mode = 2
+text = "Quit : ESC
+Restart : R
+Toggle HUD : H
+Toggle Cloud : C
+Toggle Danger Line : D
+Change Background : B"
+label_settings = ExtResource("3_rxv1c")
+horizontal_alignment = 2
+
+[node name="CloudCount" parent="HUD/CountContainer" instance=ExtResource("4_cd3gv")]
+layout_mode = 2
+alignment = 2
+
+[node name="TeamCount" parent="HUD/CountContainer" instance=ExtResource("4_cd3gv")]
+layout_mode = 2
+alignment = 2
+
+[node name="BallPerTeam" parent="HUD/CountContainer" instance=ExtResource("4_cd3gv")]
+layout_mode = 2
+alignment = 2
+
 [node name="TimedMessage" parent="." instance=ExtResource("4_k86i1")]
 visible = false
 theme = SubResource("Theme_lcewc")
 
-[connection signal="ball_per_team_changed" from="UILayer/HUD" to="." method="_on_hud_ball_per_team_changed"]
-[connection signal="cloud_count_changed" from="UILayer/HUD" to="." method="_on_hud_cloud_count_changed"]
-[connection signal="team_count_changed" from="UILayer/HUD" to="." method="_on_hud_team_count_changed"]
 [connection signal="timeout" from="StatTimer" to="." method="_on_stat_timer_timeout"]
+[connection signal="value_changed" from="HUD/CountContainer/CloudCount" to="." method="_on_cloud_count_value_changed"]
+[connection signal="value_changed" from="HUD/CountContainer/TeamCount" to="." method="_on_team_count_value_changed"]
+[connection signal="value_changed" from="HUD/CountContainer/BallPerTeam" to="." method="_on_ball_per_team_value_changed"]

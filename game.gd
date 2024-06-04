@@ -13,11 +13,6 @@ var vp_rect :Rect2
 var colorteam_list :Array[ColorTeam]
 var life_start :float
 
-func _on_hud_ball_per_team_changed(v) -> void:
-	for t in colorteam_list:
-		t.set_ball_count_limit(v)
-	flag_apply_ball_per_team_count = true
-
 var flag_apply_ball_per_team_count :bool
 func apply_ball_per_team_count():
 	if flag_apply_ball_per_team_count == false:
@@ -36,12 +31,6 @@ func apply_ball_per_team_count():
 						break
 	flag_apply_ball_per_team_count = false
 
-var flag_team_count_change :bool
-func _on_hud_team_count_changed(_v) -> void:
-	make_no_gameobject()
-	flag_team_count_change = true
-	$UILayer/HUD.enable_team_ball_input(false)
-
 func make_no_gameobject():
 	for t in colorteam_list:
 		t.set_ball_count_limit(0)
@@ -55,16 +44,13 @@ func check_no_gameobject()->bool:
 		$EffectContainer.get_child_count() == 0
 
 func do_change_team_count():
-	var team_count = $UILayer/HUD.get_team_count()
-	var ball_per_team = $UILayer/HUD.get_ball_per_team()
+	var team_count = get_team_count()
+	var ball_per_team = get_ball_per_team()
 	colorteam_list = ColorTeam.make_colorteam_list(team_count,ball_per_team)
-	$UILayer/HUD.init_teamstats(colorteam_list)
+	init_teamstats(colorteam_list)
 	flag_apply_ball_per_team_count = true
 	flag_team_count_change = false
-	$UILayer/HUD.enable_team_ball_input(true)
-
-func _on_hud_cloud_count_changed(v) -> void:
-	make_clouds(v)
+	enable_team_ball_input(true)
 
 func make_clouds(cloud_count :int):
 	var tomake = cloud_count - $CloudContainer.get_child_count()
@@ -88,7 +74,7 @@ func _ready():
 	var team_count = 3
 	var ball_per_team = 1
 	make_clouds(cloud_count)
-	$UILayer/HUD.init(vp_rect.size, cloud_count, team_count, ball_per_team)
+	hud_init(cloud_count, team_count, ball_per_team)
 	do_change_team_count()
 
 	var msgrect = Rect2( vp_rect.size.x * 0.2 ,vp_rect.size.y * 0.4 , vp_rect.size.x * 0.6 , vp_rect.size.y * 0.2   )
@@ -119,7 +105,7 @@ func _process(delta: float) -> void:
 
 func handle_input():
 	if Input.is_action_just_pressed("HUD"):
-		$UILayer.visible = not $UILayer.visible
+		$HUD.visible = not $HUD.visible
 	if Input.is_action_just_pressed("Background"):
 		$Background.toggle_bg()
 	if Input.is_action_just_pressed("Cloud"):
@@ -213,17 +199,121 @@ func get_ball_list()->Array:
 	return $BallContainer.get_children()
 
 func update_game_stat():
-	$UILayer/HUD.set_game_stat("Ball", $BallContainer.get_child_count())
-	$UILayer/HUD.set_game_stat("Bullet", $BulletContainer.get_child_count())
-	$UILayer/HUD.set_game_stat("Homming", $HommingContainer.get_child_count())
-	$UILayer/HUD.set_game_stat("Explosion", $EffectContainer.get_child_count())
+	set_game_stat("Ball", $BallContainer.get_child_count())
+	set_game_stat("Bullet", $BulletContainer.get_child_count())
+	set_game_stat("Homming", $HommingContainer.get_child_count())
+	set_game_stat("Explosion", $EffectContainer.get_child_count())
 	var shield_count = 0
 	for b in $BallContainer.get_children():
 		shield_count += b.get_shield_count()
-	$UILayer/HUD.set_game_stat("Shield", shield_count )
+	set_game_stat("Shield", shield_count )
 
 func _on_stat_timer_timeout() -> void:
-	$UILayer/HUD.set_game_stat("GameSec", Time.get_unix_time_from_system() - life_start)
-	$UILayer/HUD.set_game_stat("FPS", fps)
+	set_game_stat("GameSec", Time.get_unix_time_from_system() - life_start)
+	set_game_stat("FPS", fps)
 	update_game_stat()
+
+################## hud ##################
+func _on_cloud_count_value_changed(v) -> void:
+	make_clouds(v)
+
+var flag_team_count_change :bool
+func _on_team_count_value_changed(v) -> void:
+	make_no_gameobject()
+	flag_team_count_change = true
+	enable_team_ball_input(false)
+
+func _on_ball_per_team_value_changed(v) -> void:
+	for t in colorteam_list:
+		t.set_ball_count_limit(v)
+	flag_apply_ball_per_team_count = true
+
+func get_cloud_count()->int:
+	return $HUD/CountContainer/CloudCount.get_value()
+
+func get_team_count()->int:
+	return $HUD/CountContainer/TeamCount.get_value()
+
+func get_ball_per_team()->int:
+	return $HUD/CountContainer/BallPerTeam.get_value()
+
+func hud_init(cloud_count :int,team_count :int, ball_per_team:int):
+	init_game_stat()
+
+	$HUD/CountContainer/CloudCount.init("Cloud count", vp_rect.size.y / 32, cloud_count, 0, 999)
+	$HUD/CountContainer/TeamCount.init("Team count", vp_rect.size.y / 32, team_count, 1, 100)
+	$HUD/CountContainer/BallPerTeam.init("Balls / team", vp_rect.size.y / 32, ball_per_team, 0, 200)
+	$HUD/CountContainer/Help.label_settings.font_size = vp_rect.size.y / 32
+	hud_set_pos.call_deferred()
+
+func hud_set_pos()->void:
+	$HUD/GameStats.position.x = vp_rect.size.x - $HUD/GameStats.size.x
+	$HUD/CountContainer.position = vp_rect.size - $HUD/CountContainer.size
+
+func enable_team_ball_input(b :bool):
+	$HUD/CountContainer/TeamCount.enable(b)
+	$HUD/CountContainer/BallPerTeam.enable(b)
+
+func init_teamstats(colorteam_list :Array[ColorTeam]):
+	for o in $HUD/TeamStatGrid.get_children():
+		$HUD/TeamStatGrid.remove_child(o)
+	$HUD/TeamStatGrid.columns = ColorTeam.Stat.keys().size() + 1
+
+	var header_label_settings = LabelSettings.new()
+	header_label_settings.outline_size = 2
+	header_label_settings.font_color = Color.WHITE
+	header_label_settings.outline_color = Color.BLACK
+	header_label_settings.font_size = vp_rect.size.y / 50
+
+	add_header(header_label_settings)
+	for t in colorteam_list:
+		t.name_label.label_settings.font_size = vp_rect.size.y / 50
+		$HUD/TeamStatGrid.add_child(t.name_label)
+		for k in t.labels:
+			var lb = t.labels[k]
+			lb.label_settings.font_size = vp_rect.size.y / 50
+			$HUD/TeamStatGrid.add_child(lb)
+	add_header(header_label_settings)
+
+func add_header(lbs :LabelSettings):
+	add_label_to_teamstat("team",lbs)
+	for s in ColorTeam.Stat.keys():
+		add_label_to_teamstat(s.to_lower()+" ",lbs)
+
+func add_label_to_teamstat(s :String, lbs :LabelSettings)->Label:
+	var lb = Label.new()
+	lb.text = s
+	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lb.label_settings = lbs
+	$HUD/TeamStatGrid.add_child(lb)
+	return lb
+
+func init_game_stat():
+	var lbset = LabelSettings.new()
+	lbset.font_size = vp_rect.size.y / 30
+	lbset.font_color = Color.WHITE
+	lbset.outline_size = 2
+	lbset.outline_color = Color.BLACK
+	for s in GameStatName.keys():
+		var lb = Label.new()
+		lb.label_settings = lbset
+		lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		game_stat_label[s] = lb
+		$HUD/GameStats.add_child(lb)
+		set_game_stat(s,0)
+
+const GameStatName = {
+	"GameSec" :"%04.2f",
+	"FPS" :"%04.2f",
+	"Ball" :"%d",
+	"Shield" :"%d",
+	"Bullet" :"%d",
+	"Homming" :"%d",
+	"Explosion" :"%d",
+}
+var game_stat_label :Dictionary
+
+func set_game_stat(n :String, v):
+	game_stat_label[n].text = "{0} : {1}".format( [n , GameStatName[n] % v ] )
+
 
