@@ -11,7 +11,6 @@ var homming_explode_scene = preload("res://homming_explode_effect.tscn")
 
 var vp_rect :Rect2
 var colorteam_list :Array[ColorTeam]
-var life_start :float
 
 var flag_apply_ball_per_team_count :bool
 func apply_ball_per_team_count():
@@ -66,7 +65,6 @@ func make_clouds(cloud_count :int):
 
 func _ready():
 	randomize()
-	life_start = Time.get_unix_time_from_system()
 	vp_rect = get_viewport_rect()
 	$Background.init_bg(vp_rect)
 	#$Background.toggle_bg()
@@ -217,7 +215,7 @@ func get_ball_list()->Array:
 	return $BallContainer.get_children()
 
 func _on_stat_timer_timeout() -> void:
-	set_game_stat("GameSec", Time.get_unix_time_from_system() - life_start)
+	set_game_stat("GameSec", Time.get_ticks_msec() / 1000.0)
 	set_game_stat("FPS", Performance.get_monitor(Performance.TIME_FPS))
 
 	set_game_stat("Ball", $BallContainer.get_child_count())
