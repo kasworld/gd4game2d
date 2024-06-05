@@ -76,9 +76,9 @@ func _ready():
 	hud_init(cloud_count, team_count, ball_per_team)
 	do_change_team_count()
 
-	var msgrect = Rect2( vp_rect.size.x * 0.2 ,vp_rect.size.y * 0.4 , vp_rect.size.x * 0.6 , vp_rect.size.y * 0.2   )
-	$TimedMessage.init(msgrect.size.y /5, msgrect, tr("gd4game2d 3.0.0"))
-	$TimedMessage.show_message("Copyright 2023 SeukWon Kang (kasworld@gmail.com)")
+	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.4 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.2   )
+	$TimedMessage.init(msgrect.size.y /5, msgrect, tr("gd4game2d 3.1.0"))
+	$TimedMessage.show_message("Copyright 2023,2024 SeukWon Kang (kasworld@gmail.com)")
 
 var qt :QuadTree
 func build_quadtree()->void:
@@ -245,33 +245,38 @@ func _on_ball_per_team_value_changed(idx) -> void:
 	flag_apply_ball_per_team_count = true
 
 func get_cloud_count()->int:
-	return $HUD/CountContainer/CloudCount.get_value()
+	return CloundCount.get_value()
 
 func get_team_count()->int:
-	return $HUD/CountContainer/TeamCount.get_value()
+	return TeamCount.get_value()
 
 func get_ball_per_team()->int:
-	return $HUD/CountContainer/BallPerTeam.get_value()
+	return BallPerTeam.get_value()
+
+@onready var count_container = $HUD/RightContainer/CountContainer
+@onready var CloundCount = $HUD/RightContainer/CountContainer/CloudCount
+@onready var TeamCount = $HUD/RightContainer/CountContainer/TeamCount
+@onready var BallPerTeam = $HUD/RightContainer/CountContainer/BallPerTeam
+@onready var GameStats = $HUD/RightContainer/GameStats
 
 func hud_init(cloud_count :int,team_count :int, ball_per_team:int):
 	init_game_stat()
 
-	$HUD/CountContainer.theme.default_font_size = vp_rect.size.y / 32
-	$HUD/CountContainer/CloudCount.init(0, "Cloud count(0-999)", vp_rect.size.y / 32)
-	$HUD/CountContainer/CloudCount.set_limits(0, true,cloud_count, 999, true)
-	$HUD/CountContainer/TeamCount.init(1,"Team count(0-100)", vp_rect.size.y / 32)
-	$HUD/CountContainer/TeamCount.set_limits(1,true, team_count, 100, true)
-	$HUD/CountContainer/BallPerTeam.init(2, "Balls / team(0-200)", vp_rect.size.y / 32)
-	$HUD/CountContainer/BallPerTeam.set_limits(0,true, ball_per_team, 200, true)
+	$HUD/RightContainer.theme.default_font_size = vp_rect.size.y / 32
+	CloundCount.init(0, "Cloud count(0-999)", vp_rect.size.y / 32)
+	CloundCount.set_limits(0, true,cloud_count, 999, true)
+	TeamCount.init(1,"Team count(0-100)", vp_rect.size.y / 32)
+	TeamCount.set_limits(1,true, team_count, 100, true)
+	BallPerTeam.init(2, "Balls / team(0-200)", vp_rect.size.y / 32)
+	BallPerTeam.set_limits(0,true, ball_per_team, 200, true)
 	hud_set_pos.call_deferred()
 
 func hud_set_pos()->void:
-	$HUD/GameStats.position.x = vp_rect.size.x - $HUD/GameStats.size.x
-	$HUD/CountContainer.position = vp_rect.size - $HUD/CountContainer.size
+	$HUD/RightContainer.position.x = vp_rect.size.x - $HUD/RightContainer.size.x
 
 func enable_team_ball_input(b :bool):
-	$HUD/CountContainer/TeamCount.disable_buttons(not b)
-	$HUD/CountContainer/BallPerTeam.disable_buttons(not b)
+	TeamCount.disable_buttons(not b)
+	BallPerTeam.disable_buttons(not b)
 
 func init_teamstats(colorteam_list :Array[ColorTeam]):
 	for o in $HUD/TeamStatGrid.get_children():
@@ -318,7 +323,7 @@ func init_game_stat():
 		lb.label_settings = lbset
 		lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		game_stat_label[s] = lb
-		$HUD/GameStats.add_child(lb)
+		GameStats.add_child(lb)
 		set_game_stat(s,0)
 
 const GameStatName = {

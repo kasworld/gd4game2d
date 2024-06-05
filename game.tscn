@@ -5,8 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dllxbmyyau3u5" path="res://int_edit/int_edit.tscn" id="4_4c577"]
 [ext_resource type="PackedScene" uid="uid://c6cct2gj2a3im" path="res://timed_message/timed_message.tscn" id="4_k86i1"]
 
-[sub_resource type="Theme" id="Theme_qyvb6"]
-default_font_size = 32
+[sub_resource type="Theme" id="Theme_ywec6"]
 
 [sub_resource type="SystemFont" id="SystemFont_bejao"]
 
@@ -42,60 +41,59 @@ focus_mode = 2
 layout_mode = 2
 columns = 10
 
-[node name="GameStats" type="VBoxContainer" parent="HUD"]
-layout_mode = 2
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-
-[node name="CountContainer" type="VBoxContainer" parent="HUD"]
+[node name="RightContainer" type="VBoxContainer" parent="HUD"]
 layout_mode = 1
-anchors_preset = 3
+anchors_preset = 1
 anchor_left = 1.0
-anchor_top = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -748.0
-offset_top = -468.0
+offset_right = 320.0
+offset_bottom = 633.0
 grow_horizontal = 0
-grow_vertical = 0
-theme = SubResource("Theme_qyvb6")
+theme = SubResource("Theme_ywec6")
 
-[node name="ButtonQuit" type="Button" parent="HUD/CountContainer"]
+[node name="GameStats" type="VBoxContainer" parent="HUD/RightContainer"]
+layout_mode = 2
+
+[node name="ButtonContainer" type="VBoxContainer" parent="HUD/RightContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="ButtonQuit" type="Button" parent="HUD/RightContainer/ButtonContainer"]
 layout_mode = 2
 text = "ESC:Quit"
 
-[node name="ButtonRestart" type="Button" parent="HUD/CountContainer"]
+[node name="ButtonRestart" type="Button" parent="HUD/RightContainer/ButtonContainer"]
 layout_mode = 2
 text = "R:Restart"
 
-[node name="ButtonHUD" type="Button" parent="HUD/CountContainer"]
+[node name="ButtonHUD" type="Button" parent="HUD/RightContainer/ButtonContainer"]
 layout_mode = 2
 text = "H:HUD"
 
-[node name="ButtonCloud" type="Button" parent="HUD/CountContainer"]
+[node name="ButtonCloud" type="Button" parent="HUD/RightContainer/ButtonContainer"]
 layout_mode = 2
 text = "C:Cloud"
 
-[node name="ButtonBackground" type="Button" parent="HUD/CountContainer"]
+[node name="ButtonBackground" type="Button" parent="HUD/RightContainer/ButtonContainer"]
 layout_mode = 2
 text = "B:Background"
 
-[node name="ButtonDangerLine" type="Button" parent="HUD/CountContainer"]
+[node name="ButtonDangerLine" type="Button" parent="HUD/RightContainer/ButtonContainer"]
 layout_mode = 2
 text = "D:DangerLine"
 
-[node name="CloudCount" parent="HUD/CountContainer" instance=ExtResource("4_4c577")]
+[node name="CountContainer" type="VBoxContainer" parent="HUD/RightContainer"]
+layout_mode = 2
+
+[node name="CloudCount" parent="HUD/RightContainer/CountContainer" instance=ExtResource("4_4c577")]
 layout_mode = 2
 alignment = 2
 
-[node name="TeamCount" parent="HUD/CountContainer" instance=ExtResource("4_4c577")]
+[node name="TeamCount" parent="HUD/RightContainer/CountContainer" instance=ExtResource("4_4c577")]
 layout_mode = 2
 alignment = 2
 
-[node name="BallPerTeam" parent="HUD/CountContainer" instance=ExtResource("4_4c577")]
+[node name="BallPerTeam" parent="HUD/RightContainer/CountContainer" instance=ExtResource("4_4c577")]
 layout_mode = 2
 alignment = 2
 
@@ -104,12 +102,12 @@ visible = false
 theme = SubResource("Theme_lcewc")
 
 [connection signal="timeout" from="StatTimer" to="." method="_on_stat_timer_timeout"]
-[connection signal="pressed" from="HUD/CountContainer/ButtonQuit" to="." method="_on_button_quit_pressed"]
-[connection signal="pressed" from="HUD/CountContainer/ButtonRestart" to="." method="_on_button_restart_pressed"]
-[connection signal="pressed" from="HUD/CountContainer/ButtonHUD" to="." method="_on_button_hud_pressed"]
-[connection signal="pressed" from="HUD/CountContainer/ButtonCloud" to="." method="_on_button_cloud_pressed"]
-[connection signal="pressed" from="HUD/CountContainer/ButtonBackground" to="." method="_on_button_background_pressed"]
-[connection signal="pressed" from="HUD/CountContainer/ButtonDangerLine" to="." method="_on_button_danger_line_pressed"]
-[connection signal="value_changed" from="HUD/CountContainer/CloudCount" to="." method="_on_cloud_count_value_changed"]
-[connection signal="value_changed" from="HUD/CountContainer/TeamCount" to="." method="_on_team_count_value_changed"]
-[connection signal="value_changed" from="HUD/CountContainer/BallPerTeam" to="." method="_on_ball_per_team_value_changed"]
+[connection signal="pressed" from="HUD/RightContainer/ButtonContainer/ButtonQuit" to="." method="_on_button_quit_pressed"]
+[connection signal="pressed" from="HUD/RightContainer/ButtonContainer/ButtonRestart" to="." method="_on_button_restart_pressed"]
+[connection signal="pressed" from="HUD/RightContainer/ButtonContainer/ButtonHUD" to="." method="_on_button_hud_pressed"]
+[connection signal="pressed" from="HUD/RightContainer/ButtonContainer/ButtonCloud" to="." method="_on_button_cloud_pressed"]
+[connection signal="pressed" from="HUD/RightContainer/ButtonContainer/ButtonBackground" to="." method="_on_button_background_pressed"]
+[connection signal="pressed" from="HUD/RightContainer/ButtonContainer/ButtonDangerLine" to="." method="_on_button_danger_line_pressed"]
+[connection signal="value_changed" from="HUD/RightContainer/CountContainer/CloudCount" to="." method="_on_cloud_count_value_changed"]
+[connection signal="value_changed" from="HUD/RightContainer/CountContainer/TeamCount" to="." method="_on_team_count_value_changed"]
+[connection signal="value_changed" from="HUD/RightContainer/CountContainer/BallPerTeam" to="." method="_on_ball_per_team_value_changed"]
