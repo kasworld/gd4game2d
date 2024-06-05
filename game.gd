@@ -12,6 +12,7 @@ var homming_explode_scene = preload("res://homming_explode_effect.tscn")
 @onready var CloundCount = $HUD/RightContainer/CountContainer/CloudCount
 @onready var TeamCount = $HUD/RightContainer/CountContainer/TeamCount
 @onready var BallPerTeam = $HUD/RightContainer/CountContainer/BallPerTeam
+@onready var ShieldPerBall = $HUD/RightContainer/CountContainer/ShieldPerBall
 @onready var GameStats = $HUD/RightContainer/GameStats
 
 var vp_rect :Rect2
@@ -77,19 +78,21 @@ func _ready():
 
 	init_game_stat()
 	$HUD/RightContainer.theme.default_font_size = vp_rect.size.y / 32
-	CloundCount.init(0, "Cloud count(0-999)", vp_rect.size.y / 32)
-	CloundCount.set_limits(0, true,Global.CloudCount, 999, true)
-	TeamCount.init(1,"Team count(0-100)", vp_rect.size.y / 32)
-	TeamCount.set_limits(1,true, Global.TeamCount, 100, true)
-	BallPerTeam.init(2, "Balls / team(0-200)", vp_rect.size.y / 32)
-	BallPerTeam.set_limits(0,true, Global.BallPerTeam, 200, true)
+	CloundCount.init(0, "Cloud count(0-999) ", vp_rect.size.y / 32
+		).set_limits(0, true,Global.CloudCount, 999, true)
+	TeamCount.init(1,"Team count(0-100) ", vp_rect.size.y / 32
+		).set_limits(1,true, Global.TeamCount, 100, true)
+	BallPerTeam.init(2, "Balls / team(0-200) ", vp_rect.size.y / 32
+		).set_limits(0,true, Global.BallPerTeam, 200, true)
+	ShieldPerBall.init(3, "Shield / ball(0-12) ", vp_rect.size.y / 32
+		).set_limits(0,true, Global.ShieldCount, 12, true)
 	$HUD/RightContainer.position.x = vp_rect.size.x - $HUD/RightContainer.size.x
 
 	make_clouds()
 	do_change_team_count()
 
 	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.4 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.2   )
-	$TimedMessage.init(msgrect.size.y /5, msgrect, tr("gd4game2d 3.1.0"))
+	$TimedMessage.init(msgrect.size.y /5, msgrect, tr("gd4game2d 4.0.0"))
 	$TimedMessage.show_message("Copyright 2023,2024 SeukWon Kang (kasworld@gmail.com)")
 
 var qt :QuadTree
@@ -255,6 +258,9 @@ func _on_ball_per_team_value_changed(idx) -> void:
 		t.set_ball_count_limit(v)
 	flag_apply_ball_per_team_count = true
 
+func _on_shield_per_ball_value_changed(idx: int) -> void:
+	Global.ShieldCount = ShieldPerBall.get_value()
+
 func enable_team_ball_input(b :bool):
 	TeamCount.disable_buttons(not b)
 	BallPerTeam.disable_buttons(not b)
@@ -320,4 +326,6 @@ var game_stat_label :Dictionary
 
 func set_game_stat(n :String, v):
 	game_stat_label[n].text = "{0} : {1}".format( [n , GameStatName[n] % v ] )
+
+
 

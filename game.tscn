@@ -97,6 +97,10 @@ alignment = 2
 layout_mode = 2
 alignment = 2
 
+[node name="ShieldPerBall" parent="HUD/RightContainer/CountContainer" instance=ExtResource("4_4c577")]
+layout_mode = 2
+alignment = 2
+
 [node name="TimedMessage" parent="." instance=ExtResource("4_k86i1")]
 visible = false
 theme = SubResource("Theme_lcewc")
@@ -111,3 +115,4 @@ theme = SubResource("Theme_lcewc")
 [connection signal="value_changed" from="HUD/RightContainer/CountContainer/CloudCount" to="." method="_on_cloud_count_value_changed"]
 [connection signal="value_changed" from="HUD/RightContainer/CountContainer/TeamCount" to="." method="_on_team_count_value_changed"]
 [connection signal="value_changed" from="HUD/RightContainer/CountContainer/BallPerTeam" to="." method="_on_ball_per_team_value_changed"]
+[connection signal="value_changed" from="HUD/RightContainer/CountContainer/ShieldPerBall" to="." method="_on_shield_per_ball_value_changed"]
