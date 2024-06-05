@@ -9,6 +9,11 @@ var bullet_explode_scene = preload("res://bullet_explode_effect.tscn")
 var homming_scene = preload("res://homming_bullet.tscn")
 var homming_explode_scene = preload("res://homming_explode_effect.tscn")
 
+@onready var CloundCount = $HUD/RightContainer/CountContainer/CloudCount
+@onready var TeamCount = $HUD/RightContainer/CountContainer/TeamCount
+@onready var BallPerTeam = $HUD/RightContainer/CountContainer/BallPerTeam
+@onready var GameStats = $HUD/RightContainer/GameStats
+
 var vp_rect :Rect2
 var colorteam_list :Array[ColorTeam]
 
@@ -43,15 +48,16 @@ func check_no_gameobject()->bool:
 		$EffectContainer.get_child_count() == 0
 
 func do_change_team_count():
-	var team_count = get_team_count()
-	var ball_per_team = get_ball_per_team()
+	var team_count = TeamCount.get_value()
+	var ball_per_team = BallPerTeam.get_value()
 	colorteam_list = ColorTeam.make_colorteam_list(team_count,ball_per_team)
 	init_teamstats(colorteam_list)
 	flag_apply_ball_per_team_count = true
 	flag_team_count_change = false
 	enable_team_ball_input(true)
 
-func make_clouds(cloud_count :int):
+func make_clouds():
+	var cloud_count = CloundCount.get_value()
 	var tomake = cloud_count - $CloudContainer.get_child_count()
 	if tomake > 0:
 		for i in tomake:
@@ -69,8 +75,17 @@ func _ready():
 	$Background.init_bg(vp_rect)
 	#$Background.toggle_bg()
 
-	make_clouds(Global.CloudCount)
-	hud_init(Global.CloudCount, Global.TeamCount, Global.BallPerTeam)
+	init_game_stat()
+	$HUD/RightContainer.theme.default_font_size = vp_rect.size.y / 32
+	CloundCount.init(0, "Cloud count(0-999)", vp_rect.size.y / 32)
+	CloundCount.set_limits(0, true,Global.CloudCount, 999, true)
+	TeamCount.init(1,"Team count(0-100)", vp_rect.size.y / 32)
+	TeamCount.set_limits(1,true, Global.TeamCount, 100, true)
+	BallPerTeam.init(2, "Balls / team(0-200)", vp_rect.size.y / 32)
+	BallPerTeam.set_limits(0,true, Global.BallPerTeam, 200, true)
+	$HUD/RightContainer.position.x = vp_rect.size.x - $HUD/RightContainer.size.x
+
+	make_clouds()
 	do_change_team_count()
 
 	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.4 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.2   )
@@ -226,8 +241,7 @@ func _on_stat_timer_timeout() -> void:
 
 ################## hud ##################
 func _on_cloud_count_value_changed(idx) -> void:
-	var v = get_cloud_count()
-	make_clouds(v)
+	make_clouds()
 
 var flag_team_count_change :bool
 func _on_team_count_value_changed(idx) -> void:
@@ -236,40 +250,10 @@ func _on_team_count_value_changed(idx) -> void:
 	enable_team_ball_input(false)
 
 func _on_ball_per_team_value_changed(idx) -> void:
-	var v = get_ball_per_team()
+	var v = BallPerTeam.get_value()
 	for t in colorteam_list:
 		t.set_ball_count_limit(v)
 	flag_apply_ball_per_team_count = true
-
-func get_cloud_count()->int:
-	return CloundCount.get_value()
-
-func get_team_count()->int:
-	return TeamCount.get_value()
-
-func get_ball_per_team()->int:
-	return BallPerTeam.get_value()
-
-@onready var count_container = $HUD/RightContainer/CountContainer
-@onready var CloundCount = $HUD/RightContainer/CountContainer/CloudCount
-@onready var TeamCount = $HUD/RightContainer/CountContainer/TeamCount
-@onready var BallPerTeam = $HUD/RightContainer/CountContainer/BallPerTeam
-@onready var GameStats = $HUD/RightContainer/GameStats
-
-func hud_init(cloud_count :int,team_count :int, ball_per_team:int):
-	init_game_stat()
-
-	$HUD/RightContainer.theme.default_font_size = vp_rect.size.y / 32
-	CloundCount.init(0, "Cloud count(0-999)", vp_rect.size.y / 32)
-	CloundCount.set_limits(0, true,cloud_count, 999, true)
-	TeamCount.init(1,"Team count(0-100)", vp_rect.size.y / 32)
-	TeamCount.set_limits(1,true, team_count, 100, true)
-	BallPerTeam.init(2, "Balls / team(0-200)", vp_rect.size.y / 32)
-	BallPerTeam.set_limits(0,true, ball_per_team, 200, true)
-	hud_set_pos.call_deferred()
-
-func hud_set_pos()->void:
-	$HUD/RightContainer.position.x = vp_rect.size.x - $HUD/RightContainer.size.x
 
 func enable_team_ball_input(b :bool):
 	TeamCount.disable_buttons(not b)
