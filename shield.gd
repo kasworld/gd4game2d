@@ -1,7 +1,5 @@
 class_name Shield extends Area2D
 
-const LIFE_SEC = 10.0
-
 var shield_end_in_ball :Callable
 var rotate_dir :float
 var team :ColorTeam
@@ -16,7 +14,7 @@ func spawn(t :ColorTeam, shieldendfn :Callable):
 	alive = true
 	life_start = Time.get_unix_time_from_system()
 	rotate_dir = randfn(0,PI*2)
-	life_limit_sec = randfn(LIFE_SEC,LIFE_SEC/10)
+	life_limit_sec = randfn(Global.ShieldLiftSec,Global.ShieldLiftSec/10)
 
 func end():
 	if alive:

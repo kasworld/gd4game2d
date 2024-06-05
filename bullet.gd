@@ -1,7 +1,5 @@
 class_name Bullet extends Area2D
 
-const LIFE_SEC = 10.0
-const SPEED_LIMIT :float = 1000.0
 var team :ColorTeam
 var velocity :Vector2
 var alive :bool
@@ -15,7 +13,7 @@ func spawn(t :ColorTeam,p :Vector2, v :Vector2):
 	alive = true
 	life_start = Time.get_unix_time_from_system()
 	position = p
-	velocity = v.normalized() * SPEED_LIMIT
+	velocity = v.normalized() * Global.BulletSpeed
 
 func end():
 	if alive:
@@ -24,13 +22,13 @@ func end():
 
 func _process(_delta: float) -> void:
 	var dur = Time.get_unix_time_from_system() - life_start
-	if dur > LIFE_SEC:
+	if dur > Global.BulletLiftSec:
 		end()
 		return
 
 func _physics_process(delta: float) -> void:
 	position += velocity * delta
-	velocity = velocity.limit_length(SPEED_LIMIT)
+	velocity = velocity.limit_length(Global.BulletSpeed)
 	rotation = velocity.angle()
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:

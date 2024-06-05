@@ -1,7 +1,5 @@
 class_name HommingBullet extends Area2D
 
-const LIFE_SEC = 10.0
-const SPEED_LIMIT :float = 600
 var speed :float
 var team :ColorTeam
 var target :Area2D
@@ -20,9 +18,9 @@ func spawn(t :ColorTeam, p :Vector2, tg :Area2D)->void:
 	$OuterSprite.self_modulate = team.color
 
 	position = p
-	speed = randfn(SPEED_LIMIT, SPEED_LIMIT/10.0)
-	if speed < SPEED_LIMIT/3 :
-		speed = SPEED_LIMIT/3
+	speed = randfn(Global.HommingBulletSpeed, Global.HommingBulletSpeed/10.0)
+	if speed < Global.HommingBulletSpeed/3 :
+		speed = Global.HommingBulletSpeed/3
 
 func end():
 	if alive:
@@ -31,7 +29,7 @@ func end():
 
 func _process(_delta: float) -> void:
 	var dur = Time.get_unix_time_from_system() - life_start
-	if dur > LIFE_SEC:
+	if dur > Global.HommingBulletLiftSec:
 		end()
 		return
 

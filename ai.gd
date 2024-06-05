@@ -78,13 +78,13 @@ static func accel_to_evade(vp_size:Vector2, pos: Vector2, velocity :Vector2, o :
 	if not AI.not_null_and_alive(o):
 		return velocity
 	if pos.distance_squared_to(vp_size/2) < (vp_size/4).length_squared(): # evade to backward
-		velocity = (pos - o.global_position).normalized()*Ball.SPEED_LIMIT
+		velocity = (pos - o.global_position).normalized()*Global.BallSpeed
 		velocity = velocity.rotated( (randf()-0.5)*PI/8)
-		velocity = velocity.limit_length(Ball.SPEED_LIMIT)
+		velocity = velocity.limit_length(Global.BallSpeed)
 	else: # evade to center
-		velocity = to_center(pos, o.global_position, vp_size/2) * Ball.SPEED_LIMIT
+		velocity = to_center(pos, o.global_position, vp_size/2) * Global.BallSpeed
 		velocity = velocity.rotated( (randf()-0.5)*PI/8)
-		velocity = velocity.limit_length(Ball.SPEED_LIMIT)
+		velocity = velocity.limit_length(Global.BallSpeed)
 	return velocity
 
 static func to_center(p1 :Vector2, p2 :Vector2, center :Vector2)->Vector2:
@@ -113,7 +113,7 @@ static func do_fire_bullet(from_pos :Vector2, team :ColorTeam, delta :float, dan
 		dst = find_other_team_ball(ball_list, team)
 	if dst == null:
 		return Vector2.ZERO
-	var v = AI.calc_aim_vector2(from_pos, Bullet.SPEED_LIMIT, dst.global_position, dst.velocity )
+	var v = AI.calc_aim_vector2(from_pos, Global.BulletSpeed, dst.global_position, dst.velocity )
 	return v
 
 static func do_fire_homming(team :ColorTeam, delta :float, danger_dict :Dictionary, ball_list :Array)->Area2D:
