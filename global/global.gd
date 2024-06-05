@@ -9,3 +9,8 @@ var ShieldCount :int = 2
 var BulletLiftSec :float = 10
 var HommingBulletLiftSec :float = 10
 var ShieldLiftSec :float = 10
+
+# initial value
+var CloudCount :int = 100
+var TeamCount :int = 3
+var BallPerTeam :int = 1

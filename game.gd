@@ -69,11 +69,8 @@ func _ready():
 	$Background.init_bg(vp_rect)
 	#$Background.toggle_bg()
 
-	var cloud_count = 100
-	var team_count = 3
-	var ball_per_team = 1
-	make_clouds(cloud_count)
-	hud_init(cloud_count, team_count, ball_per_team)
+	make_clouds(Global.CloudCount)
+	hud_init(Global.CloudCount, Global.TeamCount, Global.BallPerTeam)
 	do_change_team_count()
 
 	var msgrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.4 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.2   )
