@@ -13,7 +13,7 @@ func _init(boundary: Rect2, capacity: int, max_depth: int=0, depth: int=0):
 	self.depth = depth
 	self.capacity = capacity
 
-func insert(position: Vector2, value: Variant = null) -> bool:
+func insert(position: Vector2, value: Node = null) -> bool:
 	if !contains(position):
 		return false
 	if children == null and !is_at_capacity():

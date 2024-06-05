@@ -82,15 +82,6 @@ func _ready():
 	$TimedMessage.init(msgrect.size.y /5, msgrect, tr("gd4game2d 3.0.0"))
 	$TimedMessage.show_message("Copyright 2023 SeukWon Kang (kasworld@gmail.com)")
 
-#var sp = SpacePartition.new()
-#func build_space_partition()->SpacePartition:
-	#sp.make(vp_rect, [
-		#$BallContainer.get_children(),
-		#$BulletContainer.get_children(),
-		#$HommingContainer.get_children(),
-	#])
-	#return sp
-
 var qt :QuadTree
 func build_quadtree()->void:
 	var count = $BallContainer.get_child_count() + $BulletContainer.get_child_count() + $HommingContainer.get_child_count()
@@ -107,7 +98,6 @@ func _process(delta: float) -> void:
 		if check_no_gameobject():
 			do_change_team_count()
 	apply_ball_per_team_count()
-	#build_space_partition()
 	build_quadtree()
 
 var key2fn = {
