@@ -1,8 +1,7 @@
 class_name Bullet extends Area2D
 
-const SPEED_LIMIT :float = 1000.0
 const LIFE_SEC = 10.0
-
+const SPEED_LIMIT :float = 1000.0
 var team :ColorTeam
 var velocity :Vector2
 var alive :bool

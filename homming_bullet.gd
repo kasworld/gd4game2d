@@ -1,8 +1,7 @@
 class_name HommingBullet extends Area2D
 
-const SPEED_LIMIT :float = 600
 const LIFE_SEC = 10.0
-
+const SPEED_LIMIT :float = 600
 var speed :float
 var team :ColorTeam
 var target :Area2D

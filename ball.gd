@@ -2,8 +2,6 @@ class_name Ball extends Area2D
 
 const SPEED_LIMIT :float = 400
 const MAX_SHIELD = 2
-const INIT_SHIELD = 0
-
 var shield_scene = preload("res://shield.tscn")
 var get_ball_list :Callable
 var team :ColorTeam
@@ -30,7 +28,7 @@ func spawn(t :ColorTeam, p :Vector2, show_dp :bool):
 	show_danger_pointer(show_dp)
 	for o in $ShieldContainer.get_children():
 		o.spawn(team, shield_end)
-	for i in INIT_SHIELD:
+	for i in MAX_SHIELD:
 		add_shield()
 
 func get_shield_count()->int:
