@@ -74,7 +74,6 @@ func _ready():
 	randomize()
 	vp_rect = get_viewport_rect()
 	$Background.init_bg(vp_rect)
-	#$Background.toggle_bg()
 
 	init_game_stat()
 	$HUD/RightContainer.theme.default_font_size = vp_rect.size.y / 32

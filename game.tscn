@@ -17,6 +17,7 @@ default_font = SubResource("SystemFont_bejao")
 script = ExtResource("1_vjs00")
 
 [node name="CloudContainer" type="Node2D" parent="."]
+visible = false
 z_index = 50
 
 [node name="BallContainer" type="Node2D" parent="."]
