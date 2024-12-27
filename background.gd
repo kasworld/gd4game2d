@@ -22,5 +22,3 @@ func toggle_bg():
 	bg_state += 1
 	bg_state %= bg_colors.size()
 	$ColorRect.color = bg_colors[bg_state]
-
-

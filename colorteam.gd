@@ -97,4 +97,3 @@ static func make_colorteam_list(team_count :int, ball_per_team :int)->Array[Colo
 		rtn.append(ct)
 #		print("%s %s %s %s" % [t, ct.color_index, ct.color, ct.name])
 	return rtn
-

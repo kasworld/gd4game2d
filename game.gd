@@ -325,6 +325,3 @@ var game_stat_label :Dictionary
 
 func set_game_stat(n :String, v):
 	game_stat_label[n].text = "{0} : {1}".format( [n , GameStatName[n] % v ] )
-
-
-
