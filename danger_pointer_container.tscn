@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://6bss6yx5kk82"]
 
-[ext_resource type="Script" path="res://danger_pointer_container.gd" id="1_gponk"]
+[ext_resource type="Script" uid="uid://lfk5l6v5kdyw" path="res://danger_pointer_container.gd" id="1_gponk"]
 
 [node name="DangerPointerContainer" type="Node2D"]
 script = ExtResource("1_gponk")

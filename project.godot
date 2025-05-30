@@ -12,9 +12,9 @@ config_version=5
 
 config/name="gd4game2d"
 run/main_scene="res://game.tscn"
-config/features=PackedStringArray("4.3")
-boot_splash/image="res://resource/Cloud.png"
+config/features=PackedStringArray("4.4")
 boot_splash/fullsize=false
+boot_splash/image="res://resource/Cloud.png"
 config/icon="res://resource/ball.png"
 
 [autoload]

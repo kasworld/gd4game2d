@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cwrcrvtx8kfca"]
 
-[ext_resource type="Script" path="res://homming_bullet.gd" id="1_lgavg"]
+[ext_resource type="Script" uid="uid://b08jxb2apgvd5" path="res://homming_bullet.gd" id="1_lgavg"]
 [ext_resource type="Texture2D" uid="uid://bc1gt5fvhe58f" path="res://resource/ring.png" id="2_0imhg"]
 [ext_resource type="Texture2D" uid="uid://dvyyrpqnnmsql" path="res://resource/ball.png" id="3_1qosl"]
 

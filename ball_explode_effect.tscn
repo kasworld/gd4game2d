@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bu7kn0mcn45o7"]
 
 [ext_resource type="Texture2D" uid="uid://dvyyrpqnnmsql" path="res://resource/ball.png" id="1_njubr"]
-[ext_resource type="Script" path="res://ball_explode_effect.gd" id="2_huop3"]
+[ext_resource type="Script" uid="uid://cpehldva77mua" path="res://ball_explode_effect.gd" id="2_huop3"]
 
 [node name="BallExplodeEffect" type="Sprite2D"]
 texture = ExtResource("1_njubr")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://5bmyd381nrdv"]
 
-[ext_resource type="Script" path="res://shield_explode_effect.gd" id="1_r5al0"]
+[ext_resource type="Script" uid="uid://dydqqx0kfvx5f" path="res://shield_explode_effect.gd" id="1_r5al0"]
 [ext_resource type="Texture2D" uid="uid://dvyyrpqnnmsql" path="res://resource/ball.png" id="1_yha6l"]
 
 [node name="ShieldExplodeEffect" type="Sprite2D"]
