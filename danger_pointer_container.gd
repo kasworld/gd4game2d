@@ -8,7 +8,7 @@ class_name DangerPointerContainer extends Node2D
 #	}
 func update_danger_dict(me :Ball, danger_dict :Dictionary):
 	for k in danger_dict:
-		var target = danger_dict[k][0]
+		var target :Area2D = danger_dict[k][0]
 		if AI.not_null_and_alive(target) == false:
 			line_dict[k].visible = false
 			continue

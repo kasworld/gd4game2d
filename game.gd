@@ -105,7 +105,7 @@ func build_quadtree()->void:
 	for o in $HommingContainer.get_children():
 		qt.insert(o.position, o)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if flag_team_count_change:
 		if check_no_gameobject():
 			do_change_team_count()
@@ -242,34 +242,34 @@ func _on_stat_timer_timeout() -> void:
 	set_game_stat("Shield", shield_count )
 
 ################## hud ##################
-func _on_cloud_count_value_changed(idx) -> void:
+func _on_cloud_count_value_changed(_idx) -> void:
 	make_clouds()
 
 var flag_team_count_change :bool
-func _on_team_count_value_changed(idx) -> void:
+func _on_team_count_value_changed(_idx) -> void:
 	make_no_gameobject()
 	flag_team_count_change = true
 	enable_team_ball_input(false)
 
-func _on_ball_per_team_value_changed(idx) -> void:
+func _on_ball_per_team_value_changed(_idx) -> void:
 	var v :int = BallPerTeam.get_value()
 	for t in colorteam_list:
 		t.set_ball_count_limit(v)
 	flag_apply_ball_per_team_count = true
 
-func _on_shield_per_ball_value_changed(idx: int) -> void:
+func _on_shield_per_ball_value_changed(_idx: int) -> void:
 	Global.ShieldCount = ShieldPerBall.get_value()
 
 func enable_team_ball_input(b :bool):
 	TeamCount.disable_buttons(not b)
 	BallPerTeam.disable_buttons(not b)
 
-func init_teamstats(colorteam_list :Array[ColorTeam]):
+func init_teamstats(_colorteam_list :Array[ColorTeam]):
 	for o in $HUD/TeamStatGrid.get_children():
 		$HUD/TeamStatGrid.remove_child(o)
 	$HUD/TeamStatGrid.columns = ColorTeam.Stat.keys().size() + 1
 
-	var header_label_settings = LabelSettings.new()
+	var header_label_settings := LabelSettings.new()
 	header_label_settings.outline_size = 2
 	header_label_settings.font_color = Color.WHITE
 	header_label_settings.outline_color = Color.BLACK

@@ -7,11 +7,11 @@ var max_depth :int
 var capacity := 0
 var depth :int
 
-func _init(boundary :Rect2, capacity :int, max_depth :int = 0, depth :int = 0):
-	self.boundary = boundary
-	self.max_depth = max_depth
-	self.depth = depth
-	self.capacity = capacity
+func _init(boundary_a :Rect2, capacity_a :int, max_depth_a :int = 0, depth_a :int = 0):
+	boundary = boundary_a
+	max_depth = max_depth_a
+	depth = depth_a
+	capacity = capacity_a
 
 func insert(position :Vector2, value :Node = null) -> bool:
 	if !contains(position):

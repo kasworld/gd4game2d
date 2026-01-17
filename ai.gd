@@ -113,7 +113,7 @@ static func do_fire_bullet(from_pos :Vector2, team :ColorTeam, delta :float, dan
 		dst = find_other_team_ball(ball_list, team)
 	if dst == null:
 		return Vector2.ZERO
-	var v = AI.calc_aim_vector2(from_pos, Global.BulletSpeed, dst.global_position, dst.velocity )
+	var v := AI.calc_aim_vector2(from_pos, Global.BulletSpeed, dst.global_position, dst.velocity )
 	return v
 
 static func do_fire_homming(team :ColorTeam, delta :float, danger_dict :Dictionary, ball_list :Array)->Area2D:

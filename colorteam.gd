@@ -77,9 +77,9 @@ func make_label(s :String)->Label:
 	return lb
 
 static func make_colorteam_list(team_count :int, ball_per_team :int)->Array[ColorTeam]:
-	var in_use_index = {}
+	var in_use_index := {}
 	var rtn :Array[ColorTeam] = []
-	var color_count = NamedColorList.color_list.size()
+	var color_count := NamedColorList.color_list.size()
 	for t in team_count:
 		var try_color_index :int
 		var try_count := 10
