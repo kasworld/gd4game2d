@@ -25,7 +25,7 @@ func _init() -> void:
 		line_dict[k].set_width(5)
 		add_child(line_dict[k])
 
-var line_dict = {
+var line_dict := {
 	"All":Line2D,
 	"Ball":Line2D,
 	"Bullet":Line2D,

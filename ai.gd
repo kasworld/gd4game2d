@@ -9,13 +9,13 @@ static func calc_aim_vector2(
 	src_speed :float,
 	dst_pos :Vector2, dst_vel :Vector2 )->Vector2:
 
-	var vt = dst_pos - src_pos
-	var dst_speed = dst_vel.length()
+	var vt := dst_pos - src_pos
+	var dst_speed := dst_vel.length()
 	if dst_speed == 0 :
 		return vt
-	var a2 = vt.angle_to(dst_vel)
-	var a1 = asin(dst_speed/src_speed * sin(a2))
-	var rtn = vt.rotated(a1)
+	var a2 := vt.angle_to(dst_vel)
+	var a1 := asin(dst_speed/src_speed * sin(a2))
+	var rtn := vt.rotated(a1)
 	return rtn
 
 static func rand_per_sec(delta :float, per_sec :float)->bool:
@@ -28,7 +28,7 @@ static func find_other_team_ball(ball_list :Array, t :ColorTeam)->Ball:
 	if ball_list.size() == 0:
 		return null
 	var dst :Ball
-	var try = 10
+	var try := 10
 	while try > 0 :
 		dst = ball_list.pick_random()
 		if dst != null and dst is Ball and dst.alive and dst.team != t:
@@ -38,16 +38,16 @@ static func find_other_team_ball(ball_list :Array, t :ColorTeam)->Ball:
 
 # larger is danger
 static func calc_danger_level(me :Ball, dst :Area2D)->float:
-	var delta = 1.0/60.0
-	var l1 = dst.global_position.distance_squared_to(me.global_position)
-	var l2 = (dst.global_position + dst.velocity *delta).distance_squared_to(me.global_position + me.velocity *delta)
+	var delta := 1.0/60.0
+	var l1 := dst.global_position.distance_squared_to(me.global_position)
+	var l2 :float = (dst.global_position + dst.velocity *delta).distance_squared_to(me.global_position + me.velocity *delta)
 	if l1 > l2 : # approaching
 		return 100000.0/l1
 	else:
 		return 0
 
 static func find_danger_objs(me:Ball, node_list :Array[Node])->Dictionary:
-	var rtn = {
+	var rtn := {
 		"All":[null, 0.0],
 		"Ball":[null, 0.0],
 		"Bullet":[null, 0.0],
@@ -60,7 +60,7 @@ static func find_danger_objs(me:Ball, node_list :Array[Node])->Dictionary:
 			continue
 		if not me.alive:
 			continue
-		var dval = AI.calc_danger_level(me, o)
+		var dval := AI.calc_danger_level(me, o)
 		if dval > rtn.All[1]:
 			rtn.All = [o, dval]
 		if o is Ball:
@@ -88,8 +88,8 @@ static func accel_to_evade(vp_size:Vector2, pos: Vector2, velocity :Vector2, o :
 	return velocity
 
 static func to_center(p1 :Vector2, p2 :Vector2, center :Vector2)->Vector2:
-	var vt = p1.direction_to(p2)
-	var ot = vt.orthogonal()
+	var vt := p1.direction_to(p2)
+	var ot := vt.orthogonal()
 	if p1.direction_to(center).dot(ot) > 0:
 		return ot # face to center?
 	else:
@@ -139,4 +139,3 @@ static func do_add_shield(delta :float)->bool:
 	if not AI.rand_per_sec(delta, 2.0):
 		return false
 	return true
-

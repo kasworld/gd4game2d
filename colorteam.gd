@@ -37,21 +37,21 @@ func set_ball_count_limit(v :int):
 	set_stat(Stat.BALL_MAX, v)
 
 func set_stat(k :Stat, v :int):
-	var ks = ColorTeam.stat_string(k)
+	var ks := ColorTeam.stat_string(k)
 	stats[ks] =  v
 	labels[ks].text = str(stats[ks])
 
 func get_stat(k :Stat)->int:
-	var ks = ColorTeam.stat_string(k)
+	var ks := ColorTeam.stat_string(k)
 	return stats[ks]
 
 func inc_stat(k :Stat):
-	var ks = ColorTeam.stat_string(k)
+	var ks := ColorTeam.stat_string(k)
 	stats[ks] +=  1
 	labels[ks].text = str(stats[ks])
 
 func dec_stat(k :Stat):
-	var ks = ColorTeam.stat_string(k)
+	var ks := ColorTeam.stat_string(k)
 	stats[ks] -=  1
 	labels[ks].text = str(stats[ks])
 
@@ -70,7 +70,7 @@ func _init(ci :int, ball_per_team :int):
 	set_ball_count_limit(ball_per_team)
 
 func make_label(s :String)->Label:
-	var lb = Label.new()
+	var lb := Label.new()
 	lb.text = s
 	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	lb.label_settings = label_settings
@@ -82,7 +82,7 @@ static func make_colorteam_list(team_count :int, ball_per_team :int)->Array[Colo
 	var color_count = NamedColorList.color_list.size()
 	for t in team_count:
 		var try_color_index :int
-		var try_count = 10
+		var try_count := 10
 		while true:
 			try_color_index = randi() % color_count
 			if in_use_index.get(try_color_index) == null :
@@ -93,7 +93,7 @@ static func make_colorteam_list(team_count :int, ball_per_team :int)->Array[Colo
 				print_debug("too many retry")
 				break
 		in_use_index[try_color_index] = true
-		var ct = ColorTeam.new(try_color_index, ball_per_team)
+		var ct := ColorTeam.new(try_color_index, ball_per_team)
 		rtn.append(ct)
 #		print("%s %s %s %s" % [t, ct.color_index, ct.color, ct.name])
 	return rtn

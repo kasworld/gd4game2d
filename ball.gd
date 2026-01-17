@@ -1,6 +1,6 @@
 class_name Ball extends Area2D
 
-var shield_scene = preload("res://shield.tscn")
+var shield_scene := preload("res://shield.tscn")
 var get_ball_list :Callable
 var team :ColorTeam
 var velocity :Vector2
@@ -36,7 +36,7 @@ func add_shield():
 	if get_shield_count() >= Global.ShieldCount:
 		return
 	team.inc_stat(ColorTeam.Stat.NEW_SHIELD)
-	var sh = shield_scene.instantiate()
+	var sh := shield_scene.instantiate()
 	$ShieldContainer.add_child(sh)
 	sh.spawn(team, shield_end)
 
@@ -51,9 +51,9 @@ func end():
 		get_tree().current_scene.ball_end(self)
 
 func _process(delta: float) -> void:
-	var r_scene = get_tree().current_scene
-	var node_list = r_scene.qt.search(position, 300,300)
-	var danger_dict = AI.find_danger_objs(self,node_list)
+	var r_scene := get_tree().current_scene
+	var node_list :Array = r_scene.qt.search(position, 300,300)
+	var danger_dict := AI.find_danger_objs(self,node_list)
 #	var danger_dict = {
 #		"All":[null, 0.0],
 #		"Ball":[null, 0.0],
@@ -62,16 +62,16 @@ func _process(delta: float) -> void:
 #	}
 	$DangerPointerContainer.update_danger_dict(self, danger_dict)
 
-	var oldv = velocity
+	var oldv := velocity
 	velocity = AI.accel_to_evade(vp_area.size, position, velocity, danger_dict.All[0])
 	if oldv != velocity:
 		team.inc_stat(ColorTeam.Stat.ACCEL)
 
-	var v = AI.do_fire_bullet(position, team,delta,danger_dict,get_ball_list.call())
+	var v := AI.do_fire_bullet(position, team,delta,danger_dict,get_ball_list.call())
 	if v != Vector2.ZERO:
 		r_scene.fire_bullet(team, position, v)
 
-	var dst = AI.do_fire_homming(team,delta,danger_dict,get_ball_list.call())
+	var dst := AI.do_fire_homming(team,delta,danger_dict,get_ball_list.call())
 	if dst != null :
 		r_scene.fire_homming(team, position, dst)
 
@@ -80,7 +80,7 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	position += velocity * delta
-	var bn = Bounce.bounce2d(position,velocity,vp_area,bounce_radius)
+	var bn := Bounce.bounce2d(position,velocity,vp_area,bounce_radius)
 	position = bn.position
 	velocity = bn.velocity
 	$DirSprite.position = Vector2.RIGHT.rotated(velocity.angle())*20

@@ -39,7 +39,7 @@ anchors_preset = 0
 focus_mode = 2
 
 [node name="TeamStatGrid" type="GridContainer" parent="HUD"]
-layout_mode = 2
+layout_mode = 0
 columns = 10
 
 [node name="RightContainer" type="VBoxContainer" parent="HUD"]

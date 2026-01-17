@@ -22,7 +22,7 @@ func end():
 		shield_end_in_ball.call(self)
 
 func _process(delta: float) -> void:
-	var dur = Time.get_unix_time_from_system() - life_start
+	var dur := Time.get_unix_time_from_system() - life_start
 	if dur > life_limit_sec:
 		end()
 		return

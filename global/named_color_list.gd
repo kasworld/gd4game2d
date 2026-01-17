@@ -1,5 +1,7 @@
 extends Node
 
+#class_name NamedColorList
+
 func get_color(i :int)->Color:
 	return color_list[i%color_list.size()][0]
 
@@ -11,6 +13,75 @@ func get_colorname_by_color(c :Color)->String:
 		if v[0] == c:
 			return v[1]
 	return c.to_html()
+
+func filter_to_colorlist(clist = color_list) -> Array[Color]:
+	var rtn :Array[Color] = []
+	for i in clist:
+		rtn.append(i[0])
+	return rtn
+
+func filter_to_namelist(clist = color_list) -> Array[String]:
+	var rtn :Array[String] = []
+	for i in clist:
+		rtn.append(i[1])
+	return rtn
+
+func make_light_color_list(l :float= 0.5) -> Array:
+	var rtn := []
+	for i in color_list:
+		if i[0].get_luminance() > l:
+			rtn.append(i)
+	return rtn
+
+func make_dark_color_list(l :float= 0.5, clist = color_list) -> Array:
+	var rtn := []
+	for i in clist:
+		if i[0].get_luminance() < l:
+			rtn.append(i)
+	return rtn
+
+func make_red_color_list(clist = color_list) -> Array:
+	var rtn := []
+	for i in clist:
+		if i[0].r > i[0].g and i[0].r > i[0].b:
+			rtn.append(i)
+	return rtn
+
+func make_blue_color_list(clist = color_list) -> Array:
+	var rtn := []
+	for i in clist:
+		if i[0].b > i[0].g and i[0].b > i[0].r:
+			rtn.append(i)
+	return rtn
+
+func make_green_color_list(clist = color_list) -> Array:
+	var rtn := []
+	for i in clist:
+		if i[0].g > i[0].r and i[0].g > i[0].b:
+			rtn.append(i)
+	return rtn
+
+func make_yellow_color_list(clist = color_list) -> Array:
+	var rtn := []
+	for i in clist:
+		if i[0].r > i[0].b and i[0].g > i[0].b:
+			rtn.append(i)
+	return rtn
+
+func make_cyan_color_list(clist = color_list) -> Array:
+	var rtn := []
+	for i in clist:
+		if i[0].b > i[0].r and i[0].g > i[0].r:
+			rtn.append(i)
+	return rtn
+
+func make_magenta_color_list(clist = color_list) -> Array:
+	var rtn := []
+	for i in clist:
+		if i[0].b > i[0].g and i[0].r > i[0].g:
+			rtn.append(i)
+	return rtn
+
 
 const color_list = [
 [Color.ALICE_BLUE, "ALICE_BLUE"],
@@ -160,4 +231,3 @@ const color_list = [
 [Color.YELLOW, "YELLOW"],
 [Color.YELLOW_GREEN, "YELLOW_GREEN"],
 ]
-

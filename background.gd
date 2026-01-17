@@ -7,7 +7,7 @@ func init_bg(rt :Rect2) -> void:
 	vp_rect = rt
 	$ColorRect.size = vp_rect.size
 
-var bg_colors = [
+var bg_colors := [
 	Color.BLACK,
 	Color.RED,
 	Color.BLUE,

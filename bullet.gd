@@ -21,7 +21,7 @@ func end():
 		get_tree().current_scene.bullet_end(self)
 
 func _process(_delta: float) -> void:
-	var dur = Time.get_unix_time_from_system() - life_start
+	var dur := Time.get_unix_time_from_system() - life_start
 	if dur > Global.BulletLiftSec:
 		end()
 		return
