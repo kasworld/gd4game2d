@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="gd4game2d"
+config/version="5.0.0"
 run/main_scene="res://game.tscn"
 config/features=PackedStringArray("4.5")
 boot_splash/fullsize=false
@@ -26,7 +27,7 @@ Global="*res://global/global.gd"
 
 window/size/viewport_width=3840
 window/size/viewport_height=2160
-window/size/mode=2
+window/size/mode=3
 
 [layer_names]
 
