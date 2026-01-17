@@ -264,17 +264,12 @@ func enable_team_ball_input(b :bool):
 	TeamCount.disable_buttons(not b)
 	BallPerTeam.disable_buttons(not b)
 
-func init_teamstats(_colorteam_list :Array[ColorTeam]):
+func init_teamstats(colorteam_list :Array[ColorTeam]):
 	for o in $HUD/TeamStatGrid.get_children():
 		$HUD/TeamStatGrid.remove_child(o)
 	$HUD/TeamStatGrid.columns = ColorTeam.Stat.keys().size() + 1
 
-	var header_label_settings := LabelSettings.new()
-	header_label_settings.outline_size = 2
-	header_label_settings.font_color = Color.WHITE
-	header_label_settings.outline_color = Color.BLACK
-	header_label_settings.font_size = vp_rect.size.y / 50
-
+	var header_label_settings := new_label_settings(vp_rect.size.y / 50)
 	add_header(header_label_settings)
 	for t in colorteam_list:
 		t.name_label.label_settings.font_size = vp_rect.size.y / 50
@@ -284,6 +279,14 @@ func init_teamstats(_colorteam_list :Array[ColorTeam]):
 			lb.label_settings.font_size = vp_rect.size.y / 50
 			$HUD/TeamStatGrid.add_child(lb)
 	add_header(header_label_settings)
+
+func new_label_settings(font_size :int) -> LabelSettings:
+	var label_settings := LabelSettings.new()
+	label_settings.outline_size = 2
+	label_settings.font_color = Color.WHITE
+	label_settings.outline_color = Color.BLACK
+	label_settings.font_size = font_size
+	return label_settings
 
 func add_header(lbs :LabelSettings):
 	add_label_to_teamstat("team",lbs)
@@ -299,11 +302,7 @@ func add_label_to_teamstat(s :String, lbs :LabelSettings)->Label:
 	return lb
 
 func init_game_stat():
-	var lbset := LabelSettings.new()
-	lbset.font_size = vp_rect.size.y / 30
-	lbset.font_color = Color.WHITE
-	lbset.outline_size = 2
-	lbset.outline_color = Color.BLACK
+	var lbset := new_label_settings(vp_rect.size.y / 30)
 	for s in GameStatName.keys():
 		var lb := Label.new()
 		lb.label_settings = lbset
