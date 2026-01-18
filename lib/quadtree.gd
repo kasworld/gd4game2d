@@ -1,8 +1,8 @@
 class_name QuadTree
 
 var boundary: Rect2
-var children = null # [0]-[3]: NW, NE, SW, SE
-var points :Dictionary[Vector2, Variant] = {}
+var children :Array # [0]-[3]: NW, NE, SW, SE
+var points :Dictionary[Vector2, Variant]
 var max_depth :int
 var capacity := 0
 var depth :int
@@ -12,11 +12,13 @@ func _init(boundary_a :Rect2, capacity_a :int, max_depth_a :int = 0, depth_a :in
 	max_depth = max_depth_a
 	depth = depth_a
 	capacity = capacity_a
+	children = []
+	points = {}
 
 func insert(position :Vector2, value :Node = null) -> bool:
 	if !contains(position):
 		return false
-	if children == null and !is_at_capacity():
+	if children.is_empty() and !is_at_capacity():
 		points[position] = value
 		return true
 	subdivide()
@@ -36,9 +38,8 @@ func search_region(region: Rect2, return_values=false, matches=null)->Array:
 				matches.append(points[point])
 			else:
 				matches.append(point)
-	if children:
-		for child in children:
-			child.search_region(region, return_values, matches)
+	for child in children:
+		child.search_region(region, return_values, matches)
 	return matches
 
 func search(position: Vector2, width: float, height: float, return_values=false, matches=null) -> Array:
@@ -59,7 +60,7 @@ func is_at_capacity() -> bool:
 	return points.size() >= capacity
 
 func subdivide():
-	if children == null and (max_depth <= 0 or depth < max_depth):
+	if children.is_empty() and (max_depth <= 0 or depth < max_depth):
 		children = [
 			QuadTree.new(Rect2(boundary.position, boundary.size/2),
 				capacity, max_depth, depth + 1),
