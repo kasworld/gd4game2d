@@ -15,7 +15,6 @@ var homming_explode_scene := preload("res://homming_explode_effect.tscn")
 @onready var ShieldPerBall := $HUD/RightContainer/CountContainer/ShieldPerBall
 @onready var GameStats := $HUD/RightContainer/GameStats
 
-var vp_rect :Rect2
 var colorteam_list :Array[ColorTeam]
 
 var flag_apply_ball_per_team_count :bool
@@ -52,7 +51,7 @@ func do_change_team_count():
 	var team_count :int = TeamCount.get_value()
 	var ball_per_team :int = BallPerTeam.get_value()
 	colorteam_list = ColorTeam.make_colorteam_list(team_count,ball_per_team)
-	init_teamstats(colorteam_list)
+	init_teamstats()
 	flag_apply_ball_per_team_count = true
 	flag_team_count_change = false
 	enable_team_ball_input(true)
@@ -70,34 +69,43 @@ func make_clouds():
 			if tomake >=0:
 				break
 
-func _ready():
-	randomize()
-	vp_rect = get_viewport_rect()
-	#$Background.init_bg(vp_rect)
+func on_viewport_size_changed() -> void:
+	var vp_size := get_viewport().get_visible_rect().size
+	var msgrect := Rect2( vp_size.x * 0.1 ,vp_size.y * 0.4 , vp_size.x * 0.8 , vp_size.y * 0.25 )
+	$TimedMessage.init(vp_size.y*0.05 , msgrect, "%s %s" % [
+			ProjectSettings.get_setting("application/config/name"),
+			ProjectSettings.get_setting("application/config/version") ] )
+func timed_message_hidden(_s :String) -> void:
+	pass
 
+
+func _ready():
+	on_viewport_size_changed()
+	get_viewport().size_changed.connect(on_viewport_size_changed)
+	$TimedMessage.panel_hidden.connect(timed_message_hidden)
+	$TimedMessage.show_message("",0)
 	init_game_stat()
-	$HUD/RightContainer.theme.default_font_size = vp_rect.size.y / 32
-	CloundCount.init(0, "Cloud count(0-999) ", vp_rect.size.y / 32
+
+	var vp_size := get_viewport().get_visible_rect().size
+	$HUD/RightContainer.theme.default_font_size = vp_size.y / 32
+	CloundCount.init(0, "Cloud count(0-999) ", vp_size.y / 32
 		).set_limits(0, true,Global.CloudCount, 999, true)
-	TeamCount.init(1,"Team count(0-100) ", vp_rect.size.y / 32
+	TeamCount.init(1,"Team count(0-100) ", vp_size.y / 32
 		).set_limits(1,true, Global.TeamCount, 100, true)
-	BallPerTeam.init(2, "Balls / team(0-200) ", vp_rect.size.y / 32
+	BallPerTeam.init(2, "Balls / team(0-200) ", vp_size.y / 32
 		).set_limits(0,true, Global.BallPerTeam, 200, true)
-	ShieldPerBall.init(3, "Shield / ball(0-12) ", vp_rect.size.y / 32
+	ShieldPerBall.init(3, "Shield / ball(0-12) ", vp_size.y / 32
 		).set_limits(0,true, Global.ShieldCount, 12, true)
-	$HUD/RightContainer.position.x = vp_rect.size.x - $HUD/RightContainer.size.x
+	$HUD/RightContainer.position.x = vp_size.x - $HUD/RightContainer.size.x
 
 	make_clouds()
 	do_change_team_count()
 
-	var msgrect := Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.4 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.2   )
-	$TimedMessage.init(msgrect.size.y /5, msgrect, tr("gd4game2d 4.0.0"))
-	$TimedMessage.show_message("Copyright 2023,2024 SeukWon Kang (kasworld@gmail.com)")
 
 var qt :QuadTree
 func build_quadtree()->void:
 	var count := $BallContainer.get_child_count() + $BulletContainer.get_child_count() + $HommingContainer.get_child_count()
-	qt = QuadTree.new(vp_rect, count)
+	qt = QuadTree.new(get_viewport().get_visible_rect(), count)
 	for o in $BallContainer.get_children():
 		qt.insert(o.position, o)
 	for o in $BulletContainer.get_children():
@@ -120,6 +128,13 @@ var key2fn := {
 	KEY_B:_on_button_background_pressed,
 	KEY_D:_on_button_danger_line_pressed,
 }
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed:
+		var fn = key2fn.get(event.keycode)
+		if fn != null:
+			fn.call()
+	elif event is InputEventMouseButton and event.is_pressed():
+		pass
 
 func _on_button_quit_pressed() -> void:
 	get_tree().quit()
@@ -140,13 +155,6 @@ func _on_button_danger_line_pressed() -> void:
 	view_dangerlines = not view_dangerlines
 	$BallContainer.get_children().all(show_danger_pointer)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed:
-		var fn = key2fn.get(event.keycode)
-		if fn != null:
-			fn.call()
-	elif event is InputEventMouseButton and event.is_pressed():
-		pass
 
 var view_dangerlines := true
 func show_danger_pointer(o):
@@ -154,6 +162,7 @@ func show_danger_pointer(o):
 	return true
 
 func ball_spawn_effect(t :ColorTeam):
+	var vp_rect := get_viewport().get_visible_rect()
 	var obj := ball_spawn_scene.instantiate()
 	$EffectContainer.add_child(obj)
 	t.inc_ball_count()
@@ -264,19 +273,20 @@ func enable_team_ball_input(b :bool):
 	TeamCount.disable_buttons(not b)
 	BallPerTeam.disable_buttons(not b)
 
-func init_teamstats(colorteam_list :Array[ColorTeam]):
+func init_teamstats():
+	var vp_size := get_viewport().get_visible_rect().size
 	for o in $HUD/TeamStatGrid.get_children():
 		$HUD/TeamStatGrid.remove_child(o)
 	$HUD/TeamStatGrid.columns = ColorTeam.Stat.keys().size() + 1
 
-	var header_label_settings := new_label_settings(vp_rect.size.y / 50)
+	var header_label_settings := new_label_settings(vp_size.y / 50)
 	add_header(header_label_settings)
 	for t in colorteam_list:
-		t.name_label.label_settings.font_size = vp_rect.size.y / 50
+		t.name_label.label_settings.font_size = vp_size.y / 50
 		$HUD/TeamStatGrid.add_child(t.name_label)
 		for k in t.labels:
 			var lb :Label = t.labels[k]
-			lb.label_settings.font_size = vp_rect.size.y / 50
+			lb.label_settings.font_size = vp_size.y / 50
 			$HUD/TeamStatGrid.add_child(lb)
 	add_header(header_label_settings)
 
@@ -302,7 +312,8 @@ func add_label_to_teamstat(s :String, lbs :LabelSettings)->Label:
 	return lb
 
 func init_game_stat():
-	var lbset := new_label_settings(vp_rect.size.y / 30)
+	var vp_size := get_viewport().get_visible_rect().size
+	var lbset := new_label_settings(vp_size.y / 30)
 	for s in GameStatName.keys():
 		var lb := Label.new()
 		lb.label_settings = lbset
