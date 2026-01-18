@@ -73,7 +73,7 @@ func make_clouds():
 func _ready():
 	randomize()
 	vp_rect = get_viewport_rect()
-	$Background.init_bg(vp_rect)
+	#$Background.init_bg(vp_rect)
 
 	init_game_stat()
 	$HUD/RightContainer.theme.default_font_size = vp_rect.size.y / 32
@@ -134,7 +134,7 @@ func _on_button_cloud_pressed() -> void:
 	$CloudContainer.visible = not $CloudContainer.visible
 
 func _on_button_background_pressed() -> void:
-	$Background.toggle_bg()
+	RenderingServer.set_default_clear_color(NamedColorList.color_list.pick_random()[0])
 
 func _on_button_danger_line_pressed() -> void:
 	view_dangerlines = not view_dangerlines
