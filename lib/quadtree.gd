@@ -1,10 +1,10 @@
 class_name QuadTree
 
 var boundary: Rect2
-var children :Array # [0]-[3]: NW, NE, SW, SE
+var children :Array[QuadTree] # [0]-[3]: NW, NE, SW, SE
 var points :Dictionary[Vector2, Variant]
 var max_depth :int
-var capacity := 0
+var capacity :int
 var depth :int
 
 func _init(boundary_a :Rect2, capacity_a :int, max_depth_a :int = 0, depth_a :int = 0):
