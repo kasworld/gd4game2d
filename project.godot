@@ -20,7 +20,6 @@ config/icon="res://resource/ball.png"
 
 [autoload]
 
-NamedColorList="*res://global/named_color_list.gd"
 Global="*res://global/global.gd"
 
 [display]

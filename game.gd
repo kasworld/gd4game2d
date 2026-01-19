@@ -149,7 +149,7 @@ func _on_button_cloud_pressed() -> void:
 	$CloudContainer.visible = not $CloudContainer.visible
 
 func _on_button_background_pressed() -> void:
-	RenderingServer.set_default_clear_color(NamedColorList.color_list.pick_random()[0])
+	RenderingServer.set_default_clear_color(NamedColors.random_color())
 
 func _on_button_danger_line_pressed() -> void:
 	view_dangerlines = not view_dangerlines

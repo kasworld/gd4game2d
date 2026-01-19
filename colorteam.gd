@@ -56,8 +56,8 @@ func dec_stat(k :Stat):
 	labels[ks].text = str(stats[ks])
 
 func _init(ci :int, ball_per_team :int):
-	color = NamedColorList.get_color(ci)
-	name = NamedColorList.get_colorname(ci)
+	color = NamedColors.iter_color(ci)
+	name = NamedColors.color_to_name[ci][1]
 
 	label_settings = LabelSettings.new()
 	label_settings.outline_size = 2
@@ -79,7 +79,7 @@ func make_label(s :String)->Label:
 static func make_colorteam_list(team_count :int, ball_per_team :int)->Array[ColorTeam]:
 	var in_use_index := {}
 	var rtn :Array[ColorTeam] = []
-	var color_count := NamedColorList.color_list.size()
+	var color_count := NamedColors.color_list.size()
 	for t in team_count:
 		var try_color_index :int
 		var try_count := 10
