@@ -1,8 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dy5phk1hngop7"]
+[gd_scene format=3 uid="uid://dy5phk1hngop7"]
 
 [ext_resource type="Texture2D" uid="uid://bc1gt5fvhe58f" path="res://resource/ring.png" id="1_goyje"]
 [ext_resource type="Script" uid="uid://bfge0cgqrdud4" path="res://homming_explode_effect.gd" id="2_pudct"]
 
-[node name="HommingExplodeEffect" type="Sprite2D"]
+[node name="HommingExplodeEffect" type="Sprite2D" unique_id=1787400534]
 texture = ExtResource("1_goyje")
 script = ExtResource("2_pudct")

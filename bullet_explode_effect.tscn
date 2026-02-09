@@ -1,8 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dfa1niklea7dd"]
+[gd_scene format=3 uid="uid://dfa1niklea7dd"]
 
 [ext_resource type="Texture2D" uid="uid://dvyyrpqnnmsql" path="res://resource/ball.png" id="1_x8bic"]
 [ext_resource type="Script" uid="uid://bwlq6bpo6tnnv" path="res://bullet_explode_effect.gd" id="2_c4xs1"]
 
-[node name="BulletExplodeEffect" type="Sprite2D"]
+[node name="BulletExplodeEffect" type="Sprite2D" unique_id=730296952]
 texture = ExtResource("1_x8bic")
 script = ExtResource("2_c4xs1")

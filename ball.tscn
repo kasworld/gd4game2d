@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://b770gdo2mqi4w"]
+[gd_scene format=3 uid="uid://b770gdo2mqi4w"]
 
 [ext_resource type="Script" uid="uid://31vw6uxe6c35" path="res://ball.gd" id="1_v147x"]
 [ext_resource type="Texture2D" uid="uid://dvyyrpqnnmsql" path="res://resource/ball.png" id="2_va4id"]
@@ -7,22 +7,22 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_y6oq3"]
 radius = 16.1245
 
-[node name="Ball" type="Area2D"]
+[node name="Ball" type="Area2D" unique_id=1056649574]
 collision_mask = 57
 script = ExtResource("1_v147x")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1512278658]
 shape = SubResource("CircleShape2D_y6oq3")
 
-[node name="ColorBallSprite" type="Sprite2D" parent="."]
+[node name="ColorBallSprite" type="Sprite2D" parent="." unique_id=1729858600]
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("2_va4id")
 
-[node name="ShieldContainer" type="Node2D" parent="."]
+[node name="ShieldContainer" type="Node2D" parent="." unique_id=294344314]
 
-[node name="DangerPointerContainer" parent="." instance=ExtResource("3_fg04u")]
+[node name="DangerPointerContainer" parent="." unique_id=904177621 instance=ExtResource("3_fg04u")]
 
-[node name="DirSprite" type="Sprite2D" parent="."]
+[node name="DirSprite" type="Sprite2D" parent="." unique_id=2116455720]
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_va4id")
 

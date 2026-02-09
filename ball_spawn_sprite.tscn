@@ -1,8 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b183gwkmqcfc4"]
+[gd_scene format=3 uid="uid://b183gwkmqcfc4"]
 
 [ext_resource type="Texture2D" uid="uid://dvyyrpqnnmsql" path="res://resource/ball.png" id="1_ait7c"]
 [ext_resource type="Script" uid="uid://bgmequy2ya0s5" path="res://ball_spawn_sprite.gd" id="2_kmi0y"]
 
-[node name="BallSpawnSprite" type="Sprite2D"]
+[node name="BallSpawnSprite" type="Sprite2D" unique_id=1335028694]
 texture = ExtResource("1_ait7c")
 script = ExtResource("2_kmi0y")

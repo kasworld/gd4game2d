@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://ps4caq2gwlh7"]
+[gd_scene format=3 uid="uid://ps4caq2gwlh7"]
 
 [ext_resource type="Script" uid="uid://co3bsyniwoirj" path="res://bullet.gd" id="1_p3vqn"]
 [ext_resource type="Texture2D" uid="uid://dvyyrpqnnmsql" path="res://resource/ball.png" id="2_soofr"]
@@ -6,21 +6,21 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_2r48v"]
 radius = 8.06226
 
-[node name="Bullet" type="Area2D"]
+[node name="Bullet" type="Area2D" unique_id=1026489974]
 collision_layer = 16
 collision_mask = 25
 script = ExtResource("1_p3vqn")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=337963579]
 shape = SubResource("CircleShape2D_2r48v")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=742940692]
 
-[node name="MainSprite" type="Sprite2D" parent="."]
+[node name="MainSprite" type="Sprite2D" parent="." unique_id=1683489019]
 scale = Vector2(0.4, 0.2)
 texture = ExtResource("2_soofr")
 
-[node name="SubSprite" type="Sprite2D" parent="."]
+[node name="SubSprite" type="Sprite2D" parent="." unique_id=1359976897]
 position = Vector2(10, 0)
 scale = Vector2(0.2, 0.1)
 texture = ExtResource("2_soofr")
